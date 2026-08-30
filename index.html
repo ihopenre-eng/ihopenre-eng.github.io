@@ -4,17 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="이성현(lshdf)의 공개 CVE 및 GitHub Security Advisory 보안 리포트 목록입니다." />
+    <meta name="description" content="Lee Seonghyeon (이성현, lshdf)의 보안 연구, 공개 CVE/GHSA 크레딧, 오픈소스 엔지니어링 및 HAKCA 제품 개발 이력입니다." />
     <link rel="canonical" href="https://ihopenre-eng.github.io/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Lee Seonghyeon (lshdf) · Security Reports" />
-    <meta property="og:description" content="Published CVEs and GitHub Security Advisories." />
+    <meta property="og:title" content="Lee Seonghyeon (lshdf) · Security Research & Product Engineering" />
+    <meta property="og:description" content="Public CVE/GHSA credits, open-source engineering, and HAKCA product work." />
     <meta property="og:url" content="https://ihopenre-eng.github.io/" />
     <meta name="theme-color" content="#000000" />
-    <title>lshdf · Security Reports</title>
+    <title>Lee Seonghyeon (lshdf) · Security Research &amp; Product Engineering</title>
     <script type="application/ld+json">
-      {"@context":"https://schema.org","@type":"Person","name":"Lee Seonghyeon","alternateName":["이성현","lshdf","ihopenre-eng"],"url":"https://ihopenre-eng.github.io/","sameAs":["https://github.com/ihopenre-eng"]}
+      {"@context":"https://schema.org","@type":"Person","name":"Lee Seonghyeon","alternateName":["이성현","lshdf","ihopenre-eng"],"jobTitle":"Security Researcher and Product Engineer","knowsAbout":["Security research","Responsible disclosure","Open-source software","Product engineering"],"url":"https://ihopenre-eng.github.io/","sameAs":["https://github.com/ihopenre-eng","https://gitlab.com/ihopenre-eng","https://hakca.vn/"]}
     </script>
     <style>
       :root { color-scheme: dark; }
@@ -25,6 +25,10 @@
       .identity { margin: 0 0 1.25rem; color: #a3a3a3; font-size: .72rem; font-weight: 500; letter-spacing: .08em; }
       .identity a { color: inherit; font: inherit; text-decoration: none; }
       .identity a:hover, .identity a:focus-visible { color: #f5f5f5; text-decoration: underline; text-underline-offset: .25em; }
+      .profile { margin: 0 0 3rem; }
+      .profile h1 { margin: 0 0 .85rem; font-size: clamp(1.55rem, 4.5vw, 2.25rem); font-weight: 620; letter-spacing: -.045em; line-height: 1.08; }
+      .profile p { max-width: 54ch; margin: .3rem 0 0; color: #a3a3a3; font-size: .92rem; line-height: 1.55; }
+      .profile a { color: #f5f5f5; font: inherit; text-decoration: underline; text-underline-offset: .22em; }
       h1, h2 { margin: 0 0 1rem; font-size: .75rem; font-weight: 650; letter-spacing: .12em; }
       ul { margin: 0; padding: 0; list-style: none; }
       li { display: flex; justify-content: space-between; gap: 1rem; padding: .65rem 0; border-bottom: 1px solid #252525; }
@@ -46,13 +50,18 @@
   <body>
     <main>
       <p class="identity">Lee Seonghyeon · 이성현 · lshdf · <a href="https://github.com/ihopenre-eng" rel="me" aria-label="GitHub 프로필: ihopenre-eng">GitHub @ihopenre-eng</a></p>
+      <header class="profile">
+        <h1>Security Research &amp; Product Engineering</h1>
+        <p>Independent security research, public CVE/GHSA credits, and open-source engineering.</p>
+        <p>Creator of <a href="https://hakca.vn/">HAKCA</a>, a study-café reservation platform.</p>
+      </header>
       <nav class="tabs" role="tablist" aria-label="리포트 분류">
         <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel">Security <small>08</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel">Merged PRs · MRs <small>42</small></button>
       </nav>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
         <section aria-labelledby="cve-title">
-          <h1 id="cve-title">CVE</h1>
+          <h2 id="cve-title">CVE</h2>
           <ul>
             <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327">CVE-2026-73842</a><span>CRITICAL</span></li>
             <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx">CVE-2026-73841</a><span>HIGH</span></li>

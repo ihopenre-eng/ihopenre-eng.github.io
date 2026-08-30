@@ -26,29 +26,81 @@
       li { display: flex; justify-content: space-between; gap: 1rem; padding: .65rem 0; border-bottom: 1px solid #252525; }
       a { color: #f5f5f5; font-size: .92rem; text-decoration: none; } a:hover, a:focus-visible { text-decoration: underline; text-underline-offset: .25em; }
       span { color: #8a8a8a; font-size: .68rem; letter-spacing: .06em; }
+      .tabs { display: flex; gap: 1.5rem; margin-bottom: 3rem; border-bottom: 1px solid #252525; }
+      .tab { margin: 0 0 -1px; padding: 0 0 .75rem; border: 0; border-bottom: 1px solid transparent; color: #777; background: none; font: inherit; font-size: .75rem; font-weight: 650; letter-spacing: .08em; cursor: pointer; }
+      .tab[aria-selected="true"] { color: #f5f5f5; border-bottom-color: #f5f5f5; }
+      .tab small { margin-left: .35rem; color: inherit; font-size: .62rem; }
+      .tab-panel[hidden] { display: none; }
+      .pr-list li { display: block; padding: .85rem 0; }
+      .pr-list a { display: grid; grid-template-columns: minmax(160px, .72fr) minmax(0, 1.28fr); gap: 1rem; align-items: baseline; }
+      .pr-repo { color: #f5f5f5; font-size: .78rem; font-weight: 600; letter-spacing: 0; }
+      .pr-title { font-size: .82rem; letter-spacing: 0; }
       @media (max-width: 480px) { main { width: min(100% - 2rem, 640px); padding-top: 3rem; } a { font-size: .82rem; } }
+      @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }
     </style>
   </head>
   <body>
     <main>
-      <section aria-labelledby="cve-title">
-        <h1 id="cve-title">CVE</h1>
-        <ul>
-          <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327">CVE-2026-73842</a><span>CRITICAL</span></li>
-          <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx">CVE-2026-73841</a><span>HIGH</span></li>
-          <li><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq">CVE-2026-73505</a><span>HIGH</span></li>
-          <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g">CVE-2026-73840</a><span>MEDIUM</span></li>
-          <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h">CVE-2026-73506</a><span>MEDIUM</span></li>
-        </ul>
-      </section>
-      <section aria-labelledby="ghsa-title">
-        <h2 id="ghsa-title">GHSA</h2>
-        <ul>
-          <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw">GHSA-hj4x-hm4v-7wpw</a><span>HIGH</span></li>
-          <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4">GHSA-gc47-hwcc-8qp4</a><span>HIGH</span></li>
-          <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w">GHSA-6rg8-xpvg-m49w</a><span>LOW</span></li>
+      <nav class="tabs" role="tablist" aria-label="리포트 분류">
+        <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel">Security <small>08</small></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel">Merged PRs <small>23</small></button>
+      </nav>
+      <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
+        <section aria-labelledby="cve-title">
+          <h1 id="cve-title">CVE</h1>
+          <ul>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327">CVE-2026-73842</a><span>CRITICAL</span></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx">CVE-2026-73841</a><span>HIGH</span></li>
+            <li><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq">CVE-2026-73505</a><span>HIGH</span></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g">CVE-2026-73840</a><span>MEDIUM</span></li>
+            <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h">CVE-2026-73506</a><span>MEDIUM</span></li>
+          </ul>
+        </section>
+        <section aria-labelledby="ghsa-title">
+          <h2 id="ghsa-title">GHSA</h2>
+          <ul>
+            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw">GHSA-hj4x-hm4v-7wpw</a><span>HIGH</span></li>
+            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4">GHSA-gc47-hwcc-8qp4</a><span>HIGH</span></li>
+            <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w">GHSA-6rg8-xpvg-m49w</a><span>LOW</span></li>
+          </ul>
+        </section>
+      </div>
+      <section class="tab-panel" id="prs-panel" role="tabpanel" aria-labelledby="prs-tab" hidden>
+        <h2>Merged PRs</h2>
+        <ul class="pr-list">
+          <li><a href="https://github.com/grafana/sigma-rule-deployment/pull/347"><span class="pr-repo">grafana/sigma-rule-deployment</span><span class="pr-title">Add highest level template helper</span></a></li>
+          <li><a href="https://github.com/oauth2-proxy/oauth2-proxy/pull/3474"><span class="pr-repo">oauth2-proxy/oauth2-proxy</span><span class="pr-title">docs: clarify the default nginx split-cookie example</span></a></li>
+          <li><a href="https://github.com/grafana/sigma-rule-deployment/pull/346"><span class="pr-repo">grafana/sigma-rule-deployment</span><span class="pr-title">Use rule titles in deployment comments</span></a></li>
+          <li><a href="https://github.com/updatecli/website/pull/3563"><span class="pr-repo">updatecli/website</span><span class="pr-title">docs: add Git commit resource guide</span></a></li>
+          <li><a href="https://github.com/grafana/pdc-agent/pull/324"><span class="pr-repo">grafana/pdc-agent</span><span class="pr-title">ssh: Parse Windows OpenSSH versions</span></a></li>
+          <li><a href="https://github.com/dapr/docs/pull/5261"><span class="pr-repo">dapr/docs</span><span class="pr-title">docs(cli): add mcpservers reference and refresh the command list</span></a></li>
+          <li><a href="https://github.com/medusajs/medusa/pull/16179"><span class="pr-repo">medusajs/medusa</span><span class="pr-title">fix(product): delete individual variant metadata fields</span></a></li>
+          <li><a href="https://github.com/Boeing/config-file-validator/pull/601"><span class="pr-repo">Boeing/config-file-validator</span><span class="pr-title">fix(formatter): preserve JSON blank lines</span></a></li>
+          <li><a href="https://github.com/cloudflare/circl/pull/667"><span class="pr-repo">cloudflare/circl</span><span class="pr-title">internal/test: unify ACVP test vector parsing</span></a></li>
+          <li><a href="https://github.com/Eventual-Inc/Daft/pull/7300"><span class="pr-repo">Eventual-Inc/Daft</span><span class="pr-title">refactor(io): migrate Delta Lake scans to DataSource</span></a></li>
+          <li><a href="https://github.com/crossplane/cli/pull/197"><span class="pr-repo">crossplane/cli</span><span class="pr-title">validate: Recognize Kubernetes built-in resources</span></a></li>
+          <li><a href="https://github.com/objectionary/eo/pull/5826"><span class="pr-repo">objectionary/eo</span><span class="pr-title">#5773: Fix printf byte format rewriting</span></a></li>
+          <li><a href="https://github.com/Boeing/config-file-validator/pull/592"><span class="pr-repo">Boeing/config-file-validator</span><span class="pr-title">fix(formatter): normalize JSON blank lines before closing delimiters</span></a></li>
+          <li><a href="https://github.com/dapr/quickstarts/pull/1338"><span class="pr-repo">dapr/quickstarts</span><span class="pr-title">docs: fix broken relative links in tutorial READMEs</span></a></li>
+          <li><a href="https://github.com/JanDeDobbeleer/oh-my-posh/pull/7709"><span class="pr-repo">JanDeDobbeleer/oh-my-posh</span><span class="pr-title">test(prompt): remove cross-test global state dependencies</span></a></li>
+          <li><a href="https://github.com/JanDeDobbeleer/oh-my-posh/pull/7707"><span class="pr-repo">JanDeDobbeleer/oh-my-posh</span><span class="pr-title">test(serve): wait on records instead of wall-clock silence</span></a></li>
+          <li><a href="https://github.com/openfga/dotnet-sdk/pull/228"><span class="pr-repo">openfga/dotnet-sdk</span><span class="pr-title">fix: compare contextual tuples by value</span></a></li>
+          <li><a href="https://github.com/updatecli/updatecli/pull/9609"><span class="pr-repo">updatecli/updatecli</span><span class="pr-title">feat(gitcommit): add Git commit source resource</span></a></li>
+          <li><a href="https://github.com/alpha-omega-security/scrutineer/pull/655"><span class="pr-repo">alpha-omega-security/scrutineer</span><span class="pr-title">perf(worker): buffer scan log accumulation</span></a></li>
+          <li><a href="https://github.com/open-telemetry/opentelemetry-helm-charts/pull/2317"><span class="pr-repo">open-telemetry/opentelemetry-helm-charts</span><span class="pr-title">fix(kube-stack): grant leader election lease RBAC</span></a></li>
+          <li><a href="https://github.com/traefik/traefik-helm-chart/pull/1933"><span class="pr-repo">traefik/traefik-helm-chart</span><span class="pr-title">fix(ports): support IPv6 hostIP values</span></a></li>
+          <li><a href="https://github.com/dapr/dapr/pull/10215"><span class="pr-repo">dapr/dapr</span><span class="pr-title">fix: preserve sub-millisecond latency precision</span></a></li>
+          <li><a href="https://github.com/grafana/docker-otel-lgtm/pull/1596"><span class="pr-repo">grafana/docker-otel-lgtm</span><span class="pr-title">fix: prevent interactive shutdown hangs</span></a></li>
         </ul>
       </section>
     </main>
+    <script>
+      const tabs = document.querySelectorAll('[data-tab]');
+      const panels = document.querySelectorAll('.tab-panel');
+      tabs.forEach((tab) => tab.addEventListener('click', () => {
+        tabs.forEach((item) => item.setAttribute('aria-selected', String(item === tab)));
+        panels.forEach((panel) => { panel.hidden = panel.id !== tab.dataset.tab; });
+      }));
+    </script>
   </body>
 </html>

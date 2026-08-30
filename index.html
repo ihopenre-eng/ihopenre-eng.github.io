@@ -4,175 +4,46 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="index,follow" />
-    <meta
-      name="description"
-      content="이성현(lshdf)의 보안 연구, CVE 리포트, 오픈소스 기여 및 제품 개발 포트폴리오입니다. Lee Seonghyeon is a security researcher and open-source contributor."
-    />
+    <meta name="description" content="이성현(lshdf)의 공개 CVE 및 GitHub Security Advisory 보안 리포트 목록입니다." />
     <link rel="canonical" href="https://ihopenre-eng.github.io/" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Lee Seonghyeon · lshdf" />
-    <meta property="og:title" content="Lee Seonghyeon · Security Research & Open Source" />
-    <meta
-      property="og:description"
-      content="Security research, published CVEs, open-source contributions, and product development."
-    />
+    <meta property="og:title" content="Lee Seonghyeon (lshdf) · Security Reports" />
+    <meta property="og:description" content="Published CVEs and GitHub Security Advisories." />
     <meta property="og:url" content="https://ihopenre-eng.github.io/" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="theme-color" content="#0b1018" />
-    <title>Lee Seonghyeon (lshdf) · Security Research & Open Source</title>
+    <meta name="theme-color" content="#000000" />
+    <title>lshdf · CVE & GHSA</title>
     <link rel="stylesheet" href="styles.css" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Person",
-            "name": "Lee Seonghyeon",
-            "alternateName": ["이성현", "lshdf", "ihopenre-eng"],
-            "url": "https://ihopenre-eng.github.io/",
-            "jobTitle": "Security Researcher and Open Source Contributor",
-            "description": "Security researcher, open-source contributor, and product developer.",
-            "sameAs": [
-              "https://github.com/ihopenre-eng",
-              "https://velog.io/@ihopenre-eng/posts",
-              "https://www.holopin.io/@ihopenreeng"
-            ]
-          },
-          {
-            "@type": "WebSite",
-            "name": "Lee Seonghyeon · lshdf",
-            "url": "https://ihopenre-eng.github.io/",
-            "inLanguage": ["ko", "en"]
-          }
-        ]
+        "@type": "Person",
+        "name": "Lee Seonghyeon",
+        "alternateName": ["이성현", "lshdf", "ihopenre-eng"],
+        "url": "https://ihopenre-eng.github.io/",
+        "sameAs": ["https://github.com/ihopenre-eng"]
       }
     </script>
   </head>
   <body>
-    <a class="skip-link" href="#main">본문으로 이동</a>
-    <header class="site-header">
-      <a class="wordmark" href="/" aria-label="홈">lshdf<span>.</span></a>
-      <nav aria-label="주요 메뉴">
-        <a href="#research">Research</a>
-        <a href="#work">Work</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </header>
-
-    <main id="main">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow">SECURITY RESEARCH · OPEN SOURCE · PRODUCT</p>
-          <h1 id="hero-title">Lee Seonghyeon<br /><span>이성현 · lshdf</span></h1>
-          <p class="lead">
-            웹과 제품의 신뢰 경계를 연구하고, 책임 있는 공개와 재현 가능한 개선을 통해
-            오픈소스에 기여합니다.
-          </p>
-          <div class="actions">
-            <a class="button primary" href="https://github.com/ihopenre-eng">GitHub 프로필</a>
-            <a class="button" href="#research">보안 리포트 보기</a>
-          </div>
-        </div>
-        <div class="signal" aria-hidden="true">
-          <div class="signal-core">LSHDF</div>
-          <span class="node node-a"></span>
-          <span class="node node-b"></span>
-          <span class="node node-c"></span>
-          <span class="signal-line line-a"></span>
-          <span class="signal-line line-b"></span>
-          <span class="signal-line line-c"></span>
-        </div>
+    <main>
+      <section aria-labelledby="cve-title">
+        <h1 id="cve-title">CVE</h1>
+        <ul>
+          <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327">CVE-2026-73842</a><span>CRITICAL</span></li>
+          <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx">CVE-2026-73841</a><span>HIGH</span></li>
+          <li><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq">CVE-2026-73505</a><span>HIGH</span></li>
+          <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g">CVE-2026-73840</a><span>MEDIUM</span></li>
+          <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h">CVE-2026-73506</a><span>MEDIUM</span></li>
+        </ul>
       </section>
-
-      <section class="overview" aria-label="활동 요약">
-        <article>
-          <strong>Security</strong>
-          <span>Published CVEs &amp; advisories</span>
-        </article>
-        <article>
-          <strong>Open Source</strong>
-          <span>Upstream fixes and documentation</span>
-        </article>
-        <article>
-          <strong>Product</strong>
-          <span>Web applications and client delivery</span>
-        </article>
-      </section>
-
-      <section id="research" class="section" aria-labelledby="research-title">
-        <div class="section-heading">
-          <p class="eyebrow">01 / SECURITY RESEARCH</p>
-          <h2 id="research-title">Published security credits</h2>
-          <p>공개된 GitHub Security Advisory와 CVE 기준으로 정리한 보안 리포트입니다.</p>
-        </div>
-        <div class="report-grid">
-          <a class="report critical" href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327">
-            <span>CRITICAL · CVE-2026-73842</span>
-            <strong>OpenChoreo cluster-gateway</strong>
-          </a>
-          <a class="report high" href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx">
-            <span>HIGH · CVE-2026-73841</span>
-            <strong>OpenChoreo API authorization</strong>
-          </a>
-          <a class="report high" href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq">
-            <span>HIGH · CVE-2026-73505</span>
-            <strong>Oh My Posh template handling</strong>
-          </a>
-          <a class="report medium" href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g">
-            <span>MEDIUM · CVE-2026-73840</span>
-            <strong>OpenChoreo webhook boundary</strong>
-          </a>
-          <a class="report medium" href="https://github.com/advisories/GHSA-fwjx-9p69-h25h">
-            <span>MEDIUM · CVE-2026-73506</span>
-            <strong>Oh My Posh terminal rendering</strong>
-          </a>
-          <a class="report all-reports" href="https://github.com/ihopenre-eng/ihopenre-eng">
-            <span>MORE</span>
-            <strong>GitHub profile security reports ↗</strong>
-          </a>
-        </div>
-      </section>
-
-      <section id="work" class="section split" aria-labelledby="work-title">
-        <div class="section-heading">
-          <p class="eyebrow">02 / SELECTED WORK</p>
-          <h2 id="work-title">Products built for real use</h2>
-        </div>
-        <div class="work-list">
-          <a href="https://hakca.vn/" class="work-item">
-            <span class="index">01</span>
-            <span>
-              <strong>HAKCA</strong>
-              <small>Study-café reservation platform</small>
-            </span>
-            <span class="arrow">↗</span>
-          </a>
-          <a href="https://12pdfedit.netlify.app/" class="work-item">
-            <span class="index">02</span>
-            <span>
-              <strong>12PDF Edit</strong>
-              <small>Browser-based PDF editing workflow</small>
-            </span>
-            <span class="arrow">↗</span>
-          </a>
-          <article class="work-item muted">
-            <span class="index">03</span>
-            <span>
-              <strong>TBM AI Program</strong>
-              <small>AI-assisted Tool Box Meeting program delivery</small>
-            </span>
-          </article>
-        </div>
+      <section aria-labelledby="ghsa-title">
+        <h2 id="ghsa-title">GHSA</h2>
+        <ul>
+          <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw">GHSA-hj4x-hm4v-7wpw</a><span>HIGH</span></li>
+          <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4">GHSA-gc47-hwcc-8qp4</a><span>HIGH</span></li>
+          <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w">GHSA-6rg8-xpvg-m49w</a><span>LOW</span></li>
+        </ul>
       </section>
     </main>
-
-    <footer id="contact">
-      <p>Open to security research and meaningful open-source collaboration.</p>
-      <div>
-        <a href="mailto:ihopenre@gmail.com">Email</a>
-        <a href="https://github.com/ihopenre-eng">GitHub</a>
-        <a href="https://velog.io/@ihopenre-eng/posts">Velog</a>
-      </div>
-    </footer>
   </body>
 </html>

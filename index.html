@@ -34,16 +34,27 @@
       li { display: flex; justify-content: space-between; gap: 1rem; padding: .65rem 0; border-bottom: 1px solid #252525; }
       a { color: #f5f5f5; font-size: .92rem; text-decoration: none; } a:hover, a:focus-visible { text-decoration: underline; text-underline-offset: .25em; }
       span { color: #8a8a8a; font-size: .68rem; letter-spacing: .06em; }
-      .tabs { display: flex; gap: 1.5rem; margin-bottom: 3rem; border-bottom: 1px solid #252525; }
+      .tabs { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; margin-bottom: 3rem; border-bottom: 1px solid #252525; }
       .tab { margin: 0 0 -1px; padding: 0 0 .75rem; border: 0; border-bottom: 1px solid transparent; color: #777; background: none; font: inherit; font-size: .75rem; font-weight: 650; letter-spacing: .08em; cursor: pointer; }
       .tab[aria-selected="true"] { color: #f5f5f5; border-bottom-color: #f5f5f5; }
+      .tab:focus-visible { outline: 1px solid #a3a3a3; outline-offset: 4px; }
       .tab small { margin-left: .35rem; color: inherit; font-size: .62rem; }
       .tab-panel[hidden] { display: none; }
       .pr-list li { display: block; padding: .85rem 0; }
       .pr-list a { display: grid; grid-template-columns: minmax(160px, .72fr) minmax(0, 1.28fr); gap: 1rem; align-items: baseline; }
       .pr-repo { color: #f5f5f5; font-size: .78rem; font-weight: 600; letter-spacing: 0; }
       .pr-title { font-size: .82rem; letter-spacing: 0; }
+      .project-list li { display: block; padding: 1.25rem 0; }
+      .project-list li:first-child { padding-top: 0; }
+      .project-list h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+      .project-list h3 a { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font: inherit; }
+      .project-list h3 span { font-size: 1rem; font-weight: 400; }
+      .project-list p { max-width: 54ch; margin: .5rem 0 0; color: #a3a3a3; font-size: .85rem; line-height: 1.6; }
+      .contact { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid #252525; }
+      .contact-links { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; }
+      .contact-links a { font-size: .82rem; }
       @media (max-width: 480px) { main { width: min(100% - 2rem, 640px); padding-top: 3rem; } a { font-size: .82rem; } }
+      @media (max-width: 480px) { .tabs { flex-wrap: nowrap; gap: .75rem; } .tab { font-size: .65rem; letter-spacing: .015em; min-height: 44px; } .tab small { margin-left: .15rem; font-size: .55rem; } }
       @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }
     </style>
   </head>
@@ -55,9 +66,10 @@
         <p>Independent security research, public CVE/GHSA credits, and open-source engineering.</p>
         <p>Creator of <a href="https://hakca.vn/">HAKCA</a>, a study-café reservation platform.</p>
       </header>
-      <nav class="tabs" role="tablist" aria-label="리포트 분류">
-        <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel">Security <small>10</small></button>
-        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel">Merged PRs · MRs <small>42</small></button>
+      <nav class="tabs" role="tablist" aria-label="포트폴리오 분류">
+        <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">Security <small>08</small></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">Merged PRs · MRs <small>42</small></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="development-panel" id="development-tab" data-tab="development-panel" data-route="development" tabindex="-1">Development <small>03</small></button>
       </nav>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
         <section aria-labelledby="cve-title">
@@ -126,14 +138,63 @@
           <li><a href="https://gitlab.com/gitlab-org/cli/-/merge_requests/3545"><span class="pr-repo">gitlab-org/cli !3545</span><span class="pr-title">fix(ci): stop tracing a canceled job</span></a></li>
         </ul>
       </section>
+      <section class="tab-panel" id="development-panel" role="tabpanel" aria-labelledby="development-tab" hidden>
+        <h2>Selected projects</h2>
+        <ul class="project-list">
+          <li>
+            <h3><a href="https://hakca.vn/">HAKCA <span aria-hidden="true">↗</span></a></h3>
+            <p>Study-café reservation platform.</p>
+          </li>
+          <li>
+            <h3><a href="https://github.com/ihopenre-eng/clidash">clidash <span aria-hidden="true">↗</span></a></h3>
+            <p>A terminal dashboard for AI coding CLI token usage, cost estimates, and accounts.</p>
+          </li>
+          <li>
+            <h3><a href="https://github.com/updatecli/logmask">logmask <span aria-hidden="true">↗</span></a></h3>
+            <p>A Go library that masks registered secrets in logs.</p>
+          </li>
+        </ul>
+      </section>
+      <footer class="contact" aria-labelledby="contact-title">
+        <h2 id="contact-title">Contact</h2>
+        <div class="contact-links">
+          <a href="mailto:ihopenre@gmail.com">ihopenre@gmail.com</a>
+          <a href="https://github.com/ihopenre-eng" rel="me">GitHub ↗</a>
+        </div>
+      </footer>
     </main>
     <script>
-      const tabs = document.querySelectorAll('[data-tab]');
+      const tabs = [...document.querySelectorAll('[data-tab]')];
       const panels = document.querySelectorAll('.tab-panel');
-      tabs.forEach((tab) => tab.addEventListener('click', () => {
-        tabs.forEach((item) => item.setAttribute('aria-selected', String(item === tab)));
+      function selectTab(tab) {
+        tabs.forEach((item) => {
+          item.setAttribute('aria-selected', String(item === tab));
+          item.tabIndex = item === tab ? 0 : -1;
+        });
         panels.forEach((panel) => { panel.hidden = panel.id !== tab.dataset.tab; });
-      }));
+      }
+      function syncTab() {
+        selectTab(tabs.find((tab) => tab.dataset.route === location.hash.slice(1)) || tabs[0]);
+      }
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => {
+          selectTab(tab);
+          history.replaceState(null, '', '#' + tab.dataset.route);
+        });
+        tab.addEventListener('keydown', (event) => {
+          let next;
+          if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+          else if (event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          tabs[next].focus();
+          tabs[next].click();
+        });
+      });
+      window.addEventListener('hashchange', syncTab);
+      syncTab();
     </script>
   </body>
 </html>

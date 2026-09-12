@@ -38,10 +38,11 @@
       .tab-panel[hidden] { display: none; }
       #security-panel li { display: block; }
       #security-panel li a { display: block; line-height: 1.6; overflow-wrap: anywhere; }
-      #security-panel .badge-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
-      #security-panel .badge-grid li { padding: 0; border: 0; }
+      .recognition { margin-bottom: 3rem; }
+      .badge-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
+      .badge-grid li { display: block; padding: 0; border: 0; }
       .badge-grid img { display: block; width: 100%; max-width: 140px; height: auto; aspect-ratio: 1; object-fit: contain; }
-      @media (max-width: 480px) { #security-panel .badge-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (max-width: 480px) { .badge-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
       .pr-list li { display: block; padding: .85rem 0; }
       .pr-list a { display: grid; grid-template-columns: minmax(160px, .72fr) minmax(0, 1.28fr); gap: 1rem; align-items: baseline; }
       .pr-repo { color: #f5f5f5; font-size: .78rem; font-weight: 600; letter-spacing: 0; }
@@ -88,7 +89,9 @@
             <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w">[GHSA-6rg8-xpvg-m49w] Hatchet: proxy-header spoofing &amp; login rate-limit bypass (LOW)</a></li>
           </ul>
         </section>
-        <section aria-labelledby="recognition-title">
+      </div>
+      <section class="tab-panel" id="prs-panel" role="tabpanel" aria-labelledby="prs-tab" hidden>
+        <section class="recognition" aria-labelledby="recognition-title">
           <h2 id="recognition-title">Recognition</h2>
           <ul class="badge-grid">
             <li><a href="https://www.holopin.io/userbadge/cmrt2gcmm0006l2042ttekvo7"><img src="https://assets.holopin.io/eyJidWNrZXQiOiJob2xvcGluLWFzc2V0cyIsImtleSI6ImFzc2V0cy9jbHJxaGU4aGMzNjU4MGZqd3dsZHgxaG93IiwiZWRpdHMiOnsicm90YXRlIjpudWxsfX0=" width="140" height="140" loading="lazy" alt="Dapr Runtime Contributor badge" /></a></li>
@@ -97,8 +100,6 @@
             <li><a href="https://www.holopin.io/userbadge/cmrxdswal0001l1045s2lpjpu"><img src="https://assets.holopin.io/eyJidWNrZXQiOiJob2xvcGluLWFzc2V0cyIsImtleSI6ImFzc2V0cy9jbGcwdTR4YnQ4MTQ1MGZtZndqZG05c3RlIiwiZWRpdHMiOnsicm90YXRlIjpudWxsfX0=" width="140" height="140" loading="lazy" alt="Oh My Posh Open Sourcerer badge" /></a></li>
           </ul>
         </section>
-      </div>
-      <section class="tab-panel" id="prs-panel" role="tabpanel" aria-labelledby="prs-tab" hidden>
         <h2>Merged PRs · MRs</h2>
         <ul class="pr-list">
           <li><a href="https://github.com/aws-amplify/amplify-backend/pull/3291"><span class="pr-repo">aws-amplify/amplify-backend</span><span class="pr-title">fix(create-amplify): exit quietly when a prompt is cancelled with ctrl+c</span></a></li>

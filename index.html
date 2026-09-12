@@ -36,6 +36,12 @@
       .tab:focus-visible { outline: 1px solid #a3a3a3; outline-offset: 4px; }
       .tab small { margin-left: .35rem; color: inherit; font-size: .62rem; }
       .tab-panel[hidden] { display: none; }
+      #security-panel li { display: block; }
+      #security-panel li a { display: block; line-height: 1.6; overflow-wrap: anywhere; }
+      #security-panel .badge-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
+      #security-panel .badge-grid li { padding: 0; border: 0; }
+      .badge-grid img { display: block; width: 100%; max-width: 140px; height: auto; aspect-ratio: 1; object-fit: contain; }
+      @media (max-width: 480px) { #security-panel .badge-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
       .pr-list li { display: block; padding: .85rem 0; }
       .pr-list a { display: grid; grid-template-columns: minmax(160px, .72fr) minmax(0, 1.28fr); gap: 1rem; align-items: baseline; }
       .pr-repo { color: #f5f5f5; font-size: .78rem; font-weight: 600; letter-spacing: 0; }
@@ -66,20 +72,29 @@
         <section aria-labelledby="cve-title">
           <h2 id="cve-title">CVE</h2>
           <ul>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327">CVE-2026-73842</a><span>CRITICAL</span></li>
-            <li><a href="https://github.com/traefik/traefik/security/advisories/GHSA-w4v4-9rw7-5326">CVE-2026-88008</a><span>HIGH</span></li>
-            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4">CVE-2026-86070</a><span>HIGH</span></li>
-            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw">CVE-2026-86069</a><span>HIGH</span></li>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx">CVE-2026-73841</a><span>HIGH</span></li>
-            <li><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq">CVE-2026-73505</a><span>HIGH</span></li>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g">CVE-2026-73840</a><span>MEDIUM</span></li>
-            <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h">CVE-2026-73506</a><span>MEDIUM</span></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327">[CVE-2026-73842] OpenChoreo: cluster-gateway data-plane Secret disclosure (CRITICAL)</a></li>
+            <li><a href="https://github.com/traefik/traefik/security/advisories/GHSA-w4v4-9rw7-5326">[CVE-2026-88008] Traefik: h2c request smuggling &amp; middleware bypass (HIGH)</a></li>
+            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4">[CVE-2026-86070] Updatecli: credential-bearing URLs exposed in logs (HIGH)</a></li>
+            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw">[CVE-2026-86069] Updatecli: path traversal &amp; arbitrary file write (HIGH)</a></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx">[CVE-2026-73841] OpenChoreo: cross-project command execution &amp; wirelog access (HIGH)</a></li>
+            <li><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq">[CVE-2026-73505] Oh My Posh: path template injection &amp; command execution (HIGH)</a></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g">[CVE-2026-73840] OpenChoreo: webhook signature bypass &amp; unauthenticated builds (MEDIUM)</a></li>
+            <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h">[CVE-2026-73506] Oh My Posh: terminal escape sequence injection (MEDIUM)</a></li>
           </ul>
         </section>
         <section aria-labelledby="ghsa-title">
           <h2 id="ghsa-title">GHSA</h2>
           <ul>
-            <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w">GHSA-6rg8-xpvg-m49w</a><span>LOW</span></li>
+            <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w">[GHSA-6rg8-xpvg-m49w] Hatchet: proxy-header spoofing &amp; login rate-limit bypass (LOW)</a></li>
+          </ul>
+        </section>
+        <section aria-labelledby="recognition-title">
+          <h2 id="recognition-title">Recognition</h2>
+          <ul class="badge-grid">
+            <li><a href="https://www.holopin.io/userbadge/cmrt2gcmm0006l2042ttekvo7"><img src="https://assets.holopin.io/eyJidWNrZXQiOiJob2xvcGluLWFzc2V0cyIsImtleSI6ImFzc2V0cy9jbHJxaGU4aGMzNjU4MGZqd3dsZHgxaG93IiwiZWRpdHMiOnsicm90YXRlIjpudWxsfX0=" width="140" height="140" loading="lazy" alt="Dapr Runtime Contributor badge" /></a></li>
+            <li><a href="https://www.holopin.io/userbadge/cms303a4m0001ld047ftsaal1"><img src="https://assets.holopin.io/eyJidWNrZXQiOiJob2xvcGluLWFzc2V0cyIsImtleSI6ImFzc2V0cy9jbHJxZ3lkdnM1NTk4MGZqdng3bTkxYjg0IiwiZWRpdHMiOnsicm90YXRlIjpudWxsfX0=" width="140" height="140" loading="lazy" alt="Dapr Quickstarts Contributor badge" /></a></li>
+            <li><a href="https://www.holopin.io/userbadge/cmsczmhcb0003ky04bptcrxm5"><img src="https://assets.holopin.io/eyJidWNrZXQiOiJob2xvcGluLWFzc2V0cyIsImtleSI6ImFzc2V0cy9jbHJxZjgxcTcxOTg3OTBnbGRuMTVicGgyMyIsImVkaXRzIjp7InJvdGF0ZSI6bnVsbH19" width="140" height="140" loading="lazy" alt="Dapr Docs Contributor badge" /></a></li>
+            <li><a href="https://www.holopin.io/userbadge/cmrxdswal0001l1045s2lpjpu"><img src="https://assets.holopin.io/eyJidWNrZXQiOiJob2xvcGluLWFzc2V0cyIsImtleSI6ImFzc2V0cy9jbGcwdTR4YnQ4MTQ1MGZtZndqZG05c3RlIiwiZWRpdHMiOnsicm90YXRlIjpudWxsfX0=" width="140" height="140" loading="lazy" alt="Oh My Posh Open Sourcerer badge" /></a></li>
           </ul>
         </section>
       </div>

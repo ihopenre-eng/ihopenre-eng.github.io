@@ -17,97 +17,53 @@
       {"@context":"https://schema.org","@type":"Person","name":"Lee Seonghyeon","alternateName":["이성현","ihopenre-eng"],"jobTitle":"Security Researcher and Product Engineer","knowsAbout":["Security research","Responsible disclosure","Open-source software","Product engineering"],"url":"https://ihopenre-eng.github.io/","sameAs":["https://github.com/ihopenre-eng","https://gitlab.com/ihopenre-eng","https://hakca.vn/"]}
     </script>
     <style>
-      :root { color-scheme: dark; --bg: #0a0b0d; --surface: #111317; --surface-raised: #16191d; --line: #2a2e33; --text: #f3f5f7; --muted: #969da6; --accent: #c6f65b; --accent-ink: #0d1303; }
+      :root { color-scheme: dark; }
       * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-      body { min-width: 320px; margin: 0; background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-      body::before { position: fixed; z-index: -1; inset: 0; background: radial-gradient(circle at 18% -8%, rgba(198, 246, 91, .12), transparent 28rem), radial-gradient(circle at 88% 20%, rgba(86, 117, 255, .09), transparent 30rem); content: ""; pointer-events: none; }
-      a { color: inherit; text-decoration: none; }
-      a:hover { color: var(--accent); }
-      a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-      [hidden] { display: none !important; }
-      main { width: min(1120px, calc(100% - 3rem)); margin: 0 auto; padding: 1.5rem 0 4.5rem; }
-      .site-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .25rem 0 2.75rem; }
-      .wordmark { color: var(--text); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .9rem; font-weight: 800; letter-spacing: -.04em; }
-      .wordmark span { color: var(--accent); }
-      .header-links { display: flex; gap: .9rem; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .68rem; }
-      .header-links a { padding: .45rem .2rem; }
-      .intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .55fr); gap: clamp(2rem, 6vw, 6rem); align-items: end; padding: clamp(2.25rem, 6vw, 5.5rem) 0 3.75rem; border-bottom: 1px solid var(--line); }
-      .eyebrow, h2 { margin: 0; color: var(--accent); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .72rem; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
-      h1 { max-width: 11ch; margin: .7rem 0 0; font-size: clamp(2.8rem, 6vw, 5.7rem); font-weight: 650; letter-spacing: -.075em; line-height: .94; }
-      h1 em { color: var(--muted); font-style: normal; }
-      .intro-copy { max-width: 32ch; margin: 0 0 1.3rem; color: #c3c8ce; font-size: 1rem; line-height: 1.6; }
-      .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--line); }
-      .metrics div { min-width: 0; padding: 1rem; background: rgba(17, 19, 23, .86); }
-      .metrics dt { margin-top: .2rem; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; }
-      .metrics dd { margin: 0; color: var(--text); font-size: 1.35rem; font-weight: 700; letter-spacing: -.04em; }
-      .tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .55rem; margin: 2.25rem 0; }
-      .tab { display: flex; align-items: center; justify-content: space-between; min-height: 3.5rem; padding: .9rem 1rem; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: rgba(17, 19, 23, .68); font: 700 .78rem/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .02em; cursor: pointer; transition: background 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out, transform 160ms ease-out; }
-      .tab:hover { border-color: #4a535d; color: var(--text); transform: translateY(-1px); }
-      .tab[aria-selected="true"] { border-color: var(--accent); color: var(--accent-ink); background: var(--accent); }
-      .tab small { font: inherit; opacity: .7; }
-      .tab-panel { min-width: 0; }
-      .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
-      .section-heading p { margin: 0; color: var(--muted); font-size: .8rem; }
+      body { margin: 0; min-width: 320px; background: #000; color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      main { width: min(640px, calc(100% - 3rem)); margin: 0 auto; padding: clamp(4rem, 14vh, 8rem) 0; }
+      section + section { margin-top: 4rem; }
+      .identity { margin: 0 0 1.25rem; color: #a3a3a3; font-size: .72rem; font-weight: 500; letter-spacing: .08em; }
+      .identity a { color: inherit; font: inherit; text-decoration: none; }
+      .identity a:hover, .identity a:focus-visible { color: #f5f5f5; text-decoration: underline; text-underline-offset: .25em; }
+      h1, h2 { margin: 0 0 1rem; font-size: .75rem; font-weight: 650; letter-spacing: .12em; }
       ul { margin: 0; padding: 0; list-style: none; }
-      .security-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; counter-reset: report; }
-      .security-list li { position: relative; min-width: 0; counter-increment: report; }
-      .security-list li::before { position: absolute; z-index: 1; top: 1rem; left: 1rem; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .65rem; content: "0" counter(report); }
-      .security-list a { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 5.1rem; padding: 1rem 1.1rem 1rem 3.2rem; border: 1px solid var(--line); border-radius: 10px; background: rgba(17, 19, 23, .72); transition: border-color 160ms ease-out, background 160ms ease-out, transform 160ms ease-out; }
-      .security-list a:hover { border-color: #52606c; background: var(--surface-raised); transform: translateY(-2px); }
-      .cve-code { overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .81rem; font-weight: 700; }
-      .severity { flex: none; padding: .35rem .45rem; border: 1px solid currentColor; border-radius: 999px; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .59rem; font-weight: 800; letter-spacing: .04em; }
-      .severity-critical { color: #ff8792; } .severity-high { color: #ffb86c; } .severity-medium { color: #e4da80; } .severity-low { color: #92ddb0; }
-      .recognition { margin-bottom: 2.5rem; }
-      .badge-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; }
-      .badge-grid li { display: grid; place-items: center; min-height: 156px; border: 1px solid var(--line); border-radius: 10px; background: rgba(17, 19, 23, .72); transition: border-color 160ms ease-out, transform 160ms ease-out; }
-      .badge-grid li:hover { border-color: #52606c; transform: translateY(-2px); }
-      .badge-grid img { display: block; width: min(100%, 130px); height: auto; aspect-ratio: 1; object-fit: contain; }
-      .pr-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
-      .pr-list li { min-width: 0; }
-      .pr-list a { display: block; min-height: 7rem; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: 10px; background: rgba(17, 19, 23, .72); transition: border-color 160ms ease-out, background 160ms ease-out, transform 160ms ease-out; }
-      .pr-list a:hover { border-color: #52606c; background: var(--surface-raised); transform: translateY(-2px); }
-      .pr-repo { display: block; overflow: hidden; color: var(--accent); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .72rem; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-      .pr-title { display: -webkit-box; margin-top: .65rem; overflow: hidden; color: #d3d7db; font-size: .88rem; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-      .project-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
-      .project-list li { min-width: 0; padding: 1.25rem; border: 1px solid var(--line); border-radius: 10px; background: rgba(17, 19, 23, .72); transition: border-color 160ms ease-out, background 160ms ease-out, transform 160ms ease-out; }
-      .project-list li:hover { border-color: #52606c; background: var(--surface-raised); transform: translateY(-2px); }
-      .project-list h3 { margin: 0; font-size: 1.1rem; letter-spacing: -.025em; }
-      .project-list h3 a { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
-      .project-list h3 span { color: var(--accent); font-size: .95rem; font-weight: 500; }
-      .project-list p { margin: .65rem 0 0; color: var(--muted); font-size: .9rem; line-height: 1.55; }
-      .contact { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.5rem; margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
-      .contact h2 { margin-bottom: 0; }
-      .contact-links { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; }
-      .contact-links a { color: var(--muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .72rem; }
-      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; } }
-      @media (max-width: 720px) { main { width: min(100% - 2rem, 1120px); padding-top: 1rem; } .site-header { padding-bottom: 1.5rem; } .intro { grid-template-columns: 1fr; gap: 1.75rem; padding: 2.5rem 0; } h1 { font-size: clamp(2.75rem, 14vw, 4.5rem); } .security-list, .pr-list, .project-list { grid-template-columns: 1fr; } .badge-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-      @media (max-width: 480px) { .header-links { gap: .55rem; font-size: .62rem; } .tabs { grid-template-columns: 1fr; margin: 1.5rem 0; } .metrics div { padding: .8rem .6rem; } .metrics dd { font-size: 1.1rem; } .metrics dt { font-size: .55rem; } .section-heading { align-items: flex-start; flex-direction: column; gap: .4rem; } .security-list a { min-height: 4.6rem; } }
+      li { display: flex; justify-content: space-between; gap: 1rem; padding: .65rem 0; border-bottom: 1px solid #252525; }
+      a { color: #f5f5f5; font-size: .92rem; text-decoration: none; } a:hover, a:focus-visible { text-decoration: underline; text-underline-offset: .25em; }
+      span { color: #8a8a8a; font-size: .68rem; letter-spacing: .06em; }
+      .tabs { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; margin-bottom: 3rem; border-bottom: 1px solid #252525; }
+      .tab { margin: 0 0 -1px; padding: 0 0 .75rem; border: 0; border-bottom: 1px solid transparent; color: #777; background: none; font: inherit; font-size: .75rem; font-weight: 650; letter-spacing: .08em; cursor: pointer; }
+      .tab[aria-selected="true"] { color: #f5f5f5; border-bottom-color: #f5f5f5; }
+      .tab:focus-visible { outline: 1px solid #a3a3a3; outline-offset: 4px; }
+      .tab small { margin-left: .35rem; color: inherit; font-size: .62rem; }
+      .tab-panel[hidden] { display: none; }
+      #security-panel li { display: block; }
+      #security-panel li a { display: block; line-height: 1.6; overflow-wrap: anywhere; }
+      .recognition { margin-bottom: 3rem; }
+      .badge-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
+      .badge-grid li { display: block; padding: 0; border: 0; }
+      .badge-grid img { display: block; width: 100%; max-width: 140px; height: auto; aspect-ratio: 1; object-fit: contain; }
+      @media (max-width: 480px) { .badge-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      .pr-list li { display: block; padding: .85rem 0; }
+      .pr-list a { display: grid; grid-template-columns: minmax(160px, .72fr) minmax(0, 1.28fr); gap: 1rem; align-items: baseline; }
+      .pr-repo { color: #f5f5f5; font-size: .78rem; font-weight: 600; letter-spacing: 0; }
+      .pr-title { font-size: .82rem; letter-spacing: 0; }
+      .project-list li { display: block; padding: 1.25rem 0; }
+      .project-list li:first-child { padding-top: 0; }
+      .project-list h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+      .project-list h3 a { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font: inherit; }
+      .project-list h3 span { font-size: 1rem; font-weight: 400; }
+      .project-list p { max-width: 54ch; margin: .5rem 0 0; color: #a3a3a3; font-size: .85rem; line-height: 1.6; }
+      .contact { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid #252525; }
+      .contact-links { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; }
+      .contact-links a { font-size: .82rem; }
+      @media (max-width: 480px) { main { width: min(100% - 2rem, 640px); padding-top: 3rem; } a { font-size: .82rem; } }
+      @media (max-width: 480px) { .tabs { flex-wrap: nowrap; gap: .75rem; } .tab { font-size: .65rem; letter-spacing: .015em; min-height: 44px; } .tab small { margin-left: .15rem; font-size: .55rem; } }
+      @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }
     </style>
   </head>
   <body>
     <main>
-      <header class="site-header">
-        <a class="wordmark" href="#security" aria-label="lshdf 보안 포트폴리오 홈">lshdf<span>.</span></a>
-        <nav class="header-links" aria-label="외부 링크">
-          <a href="https://github.com/ihopenre-eng">GitHub ↗</a>
-          <a href="https://ihopenre.is-a.dev/">Web ↗</a>
-        </nav>
-      </header>
-      <section class="intro" aria-labelledby="page-title">
-        <div>
-          <p class="eyebrow">Lee Seonghyeon · 이성현</p>
-          <h1 id="page-title">Security research.<br /><em>Open-source engineering.</em></h1>
-        </div>
-        <div>
-          <p class="intro-copy">Public vulnerability research, shipped fixes, and practical developer tools.</p>
-          <dl class="metrics">
-            <div><dd>09</dd><dt>Public CVEs</dt></div>
-            <div><dd>43</dd><dt>Merged PRs · MRs</dt></div>
-            <div><dd>04</dd><dt>Projects</dt></div>
-          </dl>
-        </div>
-      </section>
+      <p class="identity">Lee Seonghyeon · 이성현 · lshdf</p>
       <nav class="tabs" role="tablist" aria-label="포트폴리오 분류">
         <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">Security <small>09</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">Merged PRs · MRs <small>43</small></button>
@@ -115,29 +71,23 @@
       </nav>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
         <section aria-labelledby="cve-title">
-          <div class="section-heading">
-            <h2 id="cve-title">Public CVE credits</h2>
-            <p>Responsible disclosures · reporter credit</p>
-          </div>
-          <ul class="security-list">
-            <li class="severity-critical"><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327"><span class="cve-code">CVE-2026-73842</span><span class="severity">CRITICAL</span></a></li>
-            <li class="severity-high"><a href="https://github.com/traefik/traefik/security/advisories/GHSA-w4v4-9rw7-5326"><span class="cve-code">CVE-2026-88008</span><span class="severity">HIGH</span></a></li>
-            <li class="severity-high"><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4"><span class="cve-code">CVE-2026-86070</span><span class="severity">HIGH</span></a></li>
-            <li class="severity-high"><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw"><span class="cve-code">CVE-2026-86069</span><span class="severity">HIGH</span></a></li>
-            <li class="severity-high"><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx"><span class="cve-code">CVE-2026-73841</span><span class="severity">HIGH</span></a></li>
-            <li class="severity-high"><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq"><span class="cve-code">CVE-2026-73505</span><span class="severity">HIGH</span></a></li>
-            <li class="severity-medium"><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g"><span class="cve-code">CVE-2026-73840</span><span class="severity">MEDIUM</span></a></li>
-            <li class="severity-medium"><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h"><span class="cve-code">CVE-2026-73506</span><span class="severity">MEDIUM</span></a></li>
-            <li class="severity-low"><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w"><span class="cve-code">CVE-2026-100401</span><span class="severity">LOW</span></a></li>
+          <h2 id="cve-title">CVE</h2>
+          <ul>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327">CVE-2026-73842 · CRITICAL</a></li>
+            <li><a href="https://github.com/traefik/traefik/security/advisories/GHSA-w4v4-9rw7-5326">CVE-2026-88008 · HIGH</a></li>
+            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4">CVE-2026-86070 · HIGH</a></li>
+            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw">CVE-2026-86069 · HIGH</a></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx">CVE-2026-73841 · HIGH</a></li>
+            <li><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq">CVE-2026-73505 · HIGH</a></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g">CVE-2026-73840 · MEDIUM</a></li>
+            <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h">CVE-2026-73506 · MEDIUM</a></li>
+            <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w">CVE-2026-100401 · LOW</a></li>
           </ul>
         </section>
       </div>
       <section class="tab-panel" id="prs-panel" role="tabpanel" aria-labelledby="prs-tab" hidden>
         <section class="recognition" aria-labelledby="recognition-title">
-          <div class="section-heading">
-            <h2 id="recognition-title">Recognition</h2>
-            <p>Open-source contributor badges</p>
-          </div>
+          <h2 id="recognition-title">Recognition</h2>
           <ul class="badge-grid">
             <li><a href="https://www.holopin.io/userbadge/cmrt2gcmm0006l2042ttekvo7"><img src="https://assets.holopin.io/eyJidWNrZXQiOiJob2xvcGluLWFzc2V0cyIsImtleSI6ImFzc2V0cy9jbHJxaGU4aGMzNjU4MGZqd3dsZHgxaG93IiwiZWRpdHMiOnsicm90YXRlIjpudWxsfX0=" width="140" height="140" loading="lazy" alt="Dapr Runtime Contributor badge" /></a></li>
             <li><a href="https://www.holopin.io/userbadge/cms303a4m0001ld047ftsaal1"><img src="https://assets.holopin.io/eyJidWNrZXQiOiJob2xvcGluLWFzc2V0cyIsImtleSI6ImFzc2V0cy9jbHJxZ3lkdnM1NTk4MGZqdng3bTkxYjg0IiwiZWRpdHMiOnsicm90YXRlIjpudWxsfX0=" width="140" height="140" loading="lazy" alt="Dapr Quickstarts Contributor badge" /></a></li>
@@ -145,10 +95,7 @@
             <li><a href="https://www.holopin.io/userbadge/cmrxdswal0001l1045s2lpjpu"><img src="https://assets.holopin.io/eyJidWNrZXQiOiJob2xvcGluLWFzc2V0cyIsImtleSI6ImFzc2V0cy9jbGcwdTR4YnQ4MTQ1MGZtZndqZG05c3RlIiwiZWRpdHMiOnsicm90YXRlIjpudWxsfX0=" width="140" height="140" loading="lazy" alt="Oh My Posh Open Sourcerer badge" /></a></li>
           </ul>
         </section>
-        <div class="section-heading">
-          <h2>Merged PRs · MRs</h2>
-          <p>GitHub and GitLab contributions</p>
-        </div>
+        <h2>Merged PRs · MRs</h2>
         <ul class="pr-list">
           <li><a href="https://github.com/aws-amplify/amplify-backend/pull/3291"><span class="pr-repo">aws-amplify/amplify-backend</span><span class="pr-title">fix(create-amplify): exit quietly when a prompt is cancelled with ctrl+c</span></a></li>
           <li><a href="https://github.com/grafana/sigma-rule-deployment/pull/347"><span class="pr-repo">grafana/sigma-rule-deployment</span><span class="pr-title">Add highest level template helper</span></a></li>
@@ -196,10 +143,7 @@
         </ul>
       </section>
       <section class="tab-panel" id="development-panel" role="tabpanel" aria-labelledby="development-tab" hidden>
-        <div class="section-heading">
-          <h2>Selected projects</h2>
-          <p>Products and developer tools</p>
-        </div>
+        <h2>Selected projects</h2>
         <ul class="project-list">
           <li>
             <h3><a href="https://hakca.vn/">HAKCA <span aria-hidden="true">↗</span></a></h3>

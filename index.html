@@ -22,7 +22,8 @@
       body { margin: 0; min-width: 320px; background: #000; color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
       main { width: min(640px, calc(100% - 3rem)); margin: 0 auto; padding: clamp(4rem, 14vh, 8rem) 0; }
       section + section { margin-top: 4rem; }
-      .identity { margin: 0 0 1.25rem; color: #a3a3a3; font-size: .72rem; font-weight: 500; letter-spacing: .08em; }
+      .identity { margin: 0 0 .45rem; color: #a3a3a3; font-size: .72rem; font-weight: 500; letter-spacing: .08em; }
+      .intro { margin: 0 0 2rem; color: #d1d5da; font-size: .78rem; line-height: 1.6; }
       .identity a { color: inherit; font: inherit; text-decoration: none; }
       .identity a:hover, .identity a:focus-visible { color: #f5f5f5; text-decoration: underline; text-underline-offset: .25em; }
       h1, h2 { margin: 0 0 1rem; font-size: .75rem; font-weight: 650; letter-spacing: .12em; }
@@ -37,7 +38,10 @@
       .tab small { margin-left: .35rem; color: inherit; font-size: .62rem; }
       .tab-panel[hidden] { display: none; }
       #security-panel li { display: block; }
-      #security-panel li a { display: block; line-height: 1.6; overflow-wrap: anywhere; }
+      #security-panel li a { display: flex; align-items: baseline; gap: .65rem; line-height: 1.6; overflow-wrap: anywhere; }
+      #security-panel .cve-code { color: #f5f5f5; font-size: .86rem; letter-spacing: 0; }
+      #security-panel .cve-type { padding: .14rem .4rem; border: 1px solid #343a40; border-radius: 999px; font-size: .59rem; letter-spacing: .04em; white-space: nowrap; }
+      #security-panel .cve-severity { margin-left: auto; color: #d1d5da; font-size: .62rem; font-weight: 650; letter-spacing: .08em; white-space: nowrap; }
       .recognition { margin-bottom: 3rem; }
       .badge-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
       .badge-grid li { display: block; padding: 0; border: 0; }
@@ -56,14 +60,16 @@
       .contact { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid #252525; }
       .contact-links { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; }
       .contact-links a { font-size: .82rem; }
-      @media (max-width: 480px) { main { width: min(100% - 2rem, 640px); padding-top: 3rem; } a { font-size: .82rem; } }
+      @media (max-width: 480px) { main { width: min(100% - 2rem, 640px); padding-top: 3rem; } a { font-size: .82rem; } #security-panel li a { align-items: flex-start; flex-wrap: wrap; } #security-panel .cve-severity { margin-left: 0; } }
       @media (max-width: 480px) { .tabs { flex-wrap: nowrap; gap: .75rem; } .tab { font-size: .65rem; letter-spacing: .015em; min-height: 44px; } .tab small { margin-left: .15rem; font-size: .55rem; } }
       @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }
+      @media (min-width: 561px) { .intro { white-space: nowrap; } }
     </style>
   </head>
   <body>
     <main>
       <p class="identity">Lee Seonghyeon · 이성현 · lshdf</p>
+      <p class="intro">Student at the Korean International School in Ho Chi Minh City · Incoming Sogang University</p>
       <nav class="tabs" role="tablist" aria-label="포트폴리오 분류">
         <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">Security <small>09</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">Merged PRs · MRs <small>43</small></button>
@@ -73,15 +79,15 @@
         <section aria-labelledby="cve-title">
           <h2 id="cve-title">CVE</h2>
           <ul>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327">CVE-2026-73842 · CRITICAL</a></li>
-            <li><a href="https://github.com/traefik/traefik/security/advisories/GHSA-w4v4-9rw7-5326">CVE-2026-88008 · HIGH</a></li>
-            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4">CVE-2026-86070 · HIGH</a></li>
-            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw">CVE-2026-86069 · HIGH</a></li>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx">CVE-2026-73841 · HIGH</a></li>
-            <li><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq">CVE-2026-73505 · HIGH</a></li>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g">CVE-2026-73840 · MEDIUM</a></li>
-            <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h">CVE-2026-73506 · MEDIUM</a></li>
-            <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w">CVE-2026-100401 · LOW</a></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327"><span class="cve-code">CVE-2026-73842</span><span class="cve-type">AUTHENTICATION BYPASS</span><span class="cve-severity">CRITICAL</span></a></li>
+            <li><a href="https://github.com/traefik/traefik/security/advisories/GHSA-w4v4-9rw7-5326"><span class="cve-code">CVE-2026-88008</span><span class="cve-type">HTTP REQUEST SMUGGLING</span><span class="cve-severity">HIGH</span></a></li>
+            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4"><span class="cve-code">CVE-2026-86070</span><span class="cve-type">CREDENTIAL EXPOSURE</span><span class="cve-severity">HIGH</span></a></li>
+            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw"><span class="cve-code">CVE-2026-86069</span><span class="cve-type">PATH TRAVERSAL</span><span class="cve-severity">HIGH</span></a></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx"><span class="cve-code">CVE-2026-73841</span><span class="cve-type">AUTHORIZATION BYPASS</span><span class="cve-severity">HIGH</span></a></li>
+            <li><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq"><span class="cve-code">CVE-2026-73505</span><span class="cve-type">COMMAND INJECTION</span><span class="cve-severity">HIGH</span></a></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g"><span class="cve-code">CVE-2026-73840</span><span class="cve-type">WEBHOOK AUTH BYPASS</span><span class="cve-severity">MEDIUM</span></a></li>
+            <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h"><span class="cve-code">CVE-2026-73506</span><span class="cve-type">TERMINAL ESCAPE INJECTION</span><span class="cve-severity">MEDIUM</span></a></li>
+            <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w"><span class="cve-code">CVE-2026-100401</span><span class="cve-type">RATE LIMIT BYPASS</span><span class="cve-severity">LOW</span></a></li>
           </ul>
         </section>
       </div>

@@ -63,11 +63,16 @@
       .writeup-kicker { margin: 0 0 .9rem; color: #a3a3a3; font-size: .7rem; font-weight: 650; letter-spacing: .11em; text-transform: uppercase; }
       .writeup h1, .writeup h2 { color: #f5f5f5; font-family: Georgia, "Times New Roman", serif; font-weight: 500; letter-spacing: -.025em; }
       .writeup h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.08; }
-      .writeup h2 { margin: 0 0 .9rem; font-size: 1.55rem; }
+      .writeup h2 { margin: 0 0 1rem; font-size: 1.5rem; }
       .writeup p.writeup-meta { display: inline-flex; gap: .5rem; margin: 1.5rem 0 0; color: #d1d5da; font-size: .76rem; }
       .writeup-meta span { padding: .24rem .5rem; border-radius: 999px; color: inherit; background: #1d1f22; font: inherit; letter-spacing: 0; }
-      .writeup section + section { margin-top: 2.75rem; }
-      .writeup p, .writeup li { max-width: 66ch; color: #e1e4e8; font-size: 1rem; line-height: 1.7; }
+      .writeup section + section { margin-top: 3.25rem; padding-top: 2.75rem; border-top: 1px solid #1d1f22; }
+      .writeup p, .writeup li { max-width: 66ch; color: #e6e9ee; font-size: 1rem; line-height: 1.75; }
+      .writeup-lead { font-size: 1.12rem; line-height: 1.65; color: #f0f2f4; }
+      .writeup-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem 1.5rem; max-width: none; margin: 1.75rem 0 0; padding: 1.15rem 1.3rem; border: 1px solid #25282c; border-radius: 10px; background: #101214; }
+      .writeup-facts div { display: flex; flex-direction: column; gap: .35rem; }
+      .writeup-facts dt { color: #8a8a8a; font-size: .63rem; font-weight: 650; letter-spacing: .1em; text-transform: uppercase; }
+      .writeup-facts dd { max-width: none; margin: 0; color: #f0f2f4; font-size: .9rem; line-height: 1.5; }
       .writeup p { margin: 0 0 1rem; }
       .writeup ul, .writeup ol { margin: 0; padding-left: 1.3rem; }
       .writeup li { display: list-item; padding: 0; border: 0; }
@@ -206,8 +211,12 @@
 
         <section aria-labelledby="writeup-summary">
           <h2 id="writeup-summary">Summary</h2>
-          <p>OpenChoreo’s cluster-gateway accepted requests on its internal listener without authenticating the caller, and its “read-only” proxy was not actually read-only. Anyone who could reach that listener could read tenant Secrets, create or delete workloads, and exec into pods across every connected data plane.</p>
-          <p>It was rated CVSS 3.1 9.0 (Critical) and fixed in 1.0.3, 1.1.3, and 1.2.0. <a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327">Advisory</a> · <a href="https://www.cve.org/CVERecord?id=CVE-2026-73842">CVE record</a></p>
+          <p class="writeup-lead">OpenChoreo’s cluster-gateway accepted requests on its internal listener without authenticating the caller, and its “read-only” proxy was not actually read-only. Anyone who could reach that listener could read tenant Secrets, create or delete workloads, and exec into pods across every connected data plane.</p>
+          <dl class="writeup-facts">
+            <div><dt>Severity</dt><dd>CVSS 3.1 · 9.0 Critical</dd></div>
+            <div><dt>Fixed in</dt><dd>1.0.3 · 1.1.3 · 1.2.0</dd></div>
+            <div><dt>References</dt><dd><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327">Advisory</a> · <a href="https://www.cve.org/CVERecord?id=CVE-2026-73842">CVE record</a></dd></div>
+          </dl>
         </section>
 
         <section aria-labelledby="writeup-background">

@@ -58,11 +58,7 @@
       .project-list h3 a { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font: inherit; }
       .project-list h3 span { font-size: 1rem; font-weight: 400; }
       .project-list p { max-width: 54ch; margin: .5rem 0 0; color: #a3a3a3; font-size: .85rem; line-height: 1.6; }
-      .bounty-badges { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
-      .bounty-badges li { display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .85rem; border: 1px solid #343a40; border-radius: 999px; }
       .bounty-name { color: #f5f5f5; font-size: .82rem; font-weight: 600; letter-spacing: .01em; }
-      .bounty-lv { color: #8a8a8a; font-size: .6rem; font-weight: 650; letter-spacing: .08em; }
-      .bounty-hof { margin-top: 3.5rem; }
       .bounty-hof li a { font-size: inherit; }
       .bounty-profile { margin-top: 2.5rem; }
       .bounty-profile a { font-size: .82rem; }
@@ -126,7 +122,7 @@
         <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">Security <small>09</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">Merged PRs · MRs <small>43</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="development-panel" id="development-tab" data-tab="development-panel" data-route="development" tabindex="-1">Development <small>05</small></button>
-        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="bugbounty-panel" id="bugbounty-tab" data-tab="bugbounty-panel" data-route="bugbounty" tabindex="-1">Bug Bounty <small>03</small></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="bugbounty-panel" id="bugbounty-tab" data-tab="bugbounty-panel" data-route="bugbounty" tabindex="-1">Bug Bounty <small>01</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="writeups-panel" id="writeups-tab" data-tab="writeups-panel" data-route="writeups" tabindex="-1">Writeups <small>01</small></button>
       </nav>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
@@ -228,14 +224,6 @@
         </ul>
       </section>
       <div class="tab-panel" id="bugbounty-panel" role="tabpanel" aria-labelledby="bugbounty-tab" hidden>
-        <section class="bounty-ach" aria-labelledby="bounty-ach-title">
-          <h2 id="bounty-ach-title">Bugcrowd achievements</h2>
-          <ul class="bounty-badges">
-            <li><span class="bounty-name">P1 Warrior</span><span class="bounty-lv">LVL 1</span></li>
-            <li><span class="bounty-name">Bounty Bee</span><span class="bounty-lv">LVL 1</span></li>
-            <li><span class="bounty-name">Submission Shogun</span><span class="bounty-lv">LVL 1</span></li>
-          </ul>
-        </section>
         <section class="bounty-hof" aria-labelledby="bounty-hof-title">
           <h2 id="bounty-hof-title">Hall of Fame</h2>
           <ul>

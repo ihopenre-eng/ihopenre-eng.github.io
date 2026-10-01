@@ -52,6 +52,8 @@
       .pr-list a { display: grid; grid-template-columns: minmax(160px, .72fr) minmax(0, 1.28fr); gap: 1rem; align-items: baseline; }
       .pr-repo { color: #f5f5f5; font-size: .78rem; font-weight: 600; letter-spacing: 0; }
       .pr-title { font-size: .82rem; letter-spacing: 0; }
+      .pr-count { margin-left: .5rem; color: #8a8a8a; font-size: .62rem; font-weight: 650; letter-spacing: .06em; }
+      .pr-group { margin-top: 3.5rem; }
       .project-list li { display: block; padding: 1.25rem 0; }
       .project-list li:first-child { padding-top: 0; }
       .project-list h3 { margin: 0; font-size: 1rem; font-weight: 600; }
@@ -167,8 +169,9 @@
             <li><a href="https://www.holopin.io/userbadge/cmrxdswal0001l1045s2lpjpu"><img src="https://assets.holopin.io/eyJidWNrZXQiOiJob2xvcGluLWFzc2V0cyIsImtleSI6ImFzc2V0cy9jbGcwdTR4YnQ4MTQ1MGZtZndqZG05c3RlIiwiZWRpdHMiOnsicm90YXRlIjpudWxsfX0=" width="140" height="140" loading="lazy" alt="Oh My Posh Open Sourcerer badge" /></a></li>
           </ul>
         </section>
-        <h2>Merged PRs · MRs</h2>
-        <ul class="pr-list">
+        <section aria-labelledby="gh-prs-title">
+          <h2 id="gh-prs-title">GitHub · Merged PRs <span class="pr-count">20</span></h2>
+          <ul class="pr-list">
           <li><a href="https://github.com/aws-amplify/amplify-backend/pull/3291"><span class="pr-repo">aws-amplify/amplify-backend</span><span class="pr-title">fix(create-amplify): exit quietly when a prompt is cancelled with ctrl+c</span></a></li>
           <li><a href="https://github.com/grafana/sigma-rule-deployment/pull/347"><span class="pr-repo">grafana/sigma-rule-deployment</span><span class="pr-title">Add highest level template helper</span></a></li>
           <li><a href="https://github.com/grafana/sigma-rule-deployment/pull/346"><span class="pr-repo">grafana/sigma-rule-deployment</span><span class="pr-title">Use rule titles in deployment comments</span></a></li>
@@ -189,6 +192,11 @@
           <li><a href="https://github.com/traefik/traefik-helm-chart/pull/1933"><span class="pr-repo">traefik/traefik-helm-chart</span><span class="pr-title">fix(ports): support IPv6 hostIP values</span></a></li>
           <li><a href="https://github.com/dapr/dapr/pull/10215"><span class="pr-repo">dapr/dapr</span><span class="pr-title">fix: preserve sub-millisecond latency precision</span></a></li>
           <li><a href="https://github.com/grafana/docker-otel-lgtm/pull/1596"><span class="pr-repo">grafana/docker-otel-lgtm</span><span class="pr-title">fix: prevent interactive shutdown hangs</span></a></li>
+          </ul>
+        </section>
+        <section class="pr-group" aria-labelledby="gl-mrs-title">
+          <h2 id="gl-mrs-title">GitLab · Merged MRs <span class="pr-count">15</span></h2>
+          <ul class="pr-list">
           <li><a href="https://gitlab.com/gitlab-org/cli/-/merge_requests/3551"><span class="pr-repo">gitlab-org/cli !3551</span><span class="pr-title">fix(cluster): distinguish missing manifests from read failures</span></a></li>
           <li><a href="https://gitlab.com/gitlab-org/cli/-/merge_requests/3549"><span class="pr-repo">gitlab-org/cli !3549</span><span class="pr-title">fix(api): return client errors during placeholder expansion</span></a></li>
           <li><a href="https://gitlab.com/gitlab-org/cli/-/merge_requests/3547"><span class="pr-repo">gitlab-org/cli !3547</span><span class="pr-title">fix(ci): paginate interactive job selection</span></a></li>
@@ -204,7 +212,8 @@
           <li><a href="https://gitlab.com/gitlab-org/cli/-/merge_requests/3541"><span class="pr-repo">gitlab-org/cli !3541</span><span class="pr-title">fix(ci): reject failed responses when linting a remote URL</span></a></li>
           <li><a href="https://gitlab.com/gitlab-org/cli/-/merge_requests/3539"><span class="pr-repo">gitlab-org/cli !3539</span><span class="pr-title">test: keep command tests inside their temp directories on Windows</span></a></li>
           <li><a href="https://gitlab.com/gitlab-org/cli/-/merge_requests/3545"><span class="pr-repo">gitlab-org/cli !3545</span><span class="pr-title">fix(ci): stop tracing a canceled job</span></a></li>
-        </ul>
+          </ul>
+        </section>
       </section>
       <section class="tab-panel" id="development-panel" role="tabpanel" aria-labelledby="development-tab" hidden>
         <h2>Selected projects</h2>

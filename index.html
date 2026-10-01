@@ -21,7 +21,7 @@
       * { box-sizing: border-box; }
       body { margin: 0; min-width: 320px; background: #000; color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
       main { width: min(640px, calc(100% - 3rem)); margin: 0 auto; padding: clamp(4rem, 14vh, 8rem) 0; }
-      main:has(#writeups-panel:not([hidden])) { width: min(860px, calc(100% - 3rem)); }
+      main:has(.writeup:not([hidden])) { width: min(860px, calc(100% - 3rem)); }
       section + section { margin-top: 4rem; }
       .identity { margin: 0 0 .45rem; color: #a3a3a3; font-size: .72rem; font-weight: 500; letter-spacing: .08em; }
       .intro { margin: 0 0 2rem; color: #d1d5da; font-size: .78rem; line-height: 1.6; }
@@ -66,6 +66,22 @@
       .bounty-hof li a { font-size: inherit; }
       .bounty-profile { margin-top: 2.5rem; }
       .bounty-profile a { font-size: .82rem; }
+      .writeup-index li { display: block; padding: 0; border: 0; }
+      .writeup-index li + li { margin-top: .75rem; }
+      .writeup-index a { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.25rem; padding: 1.05rem 1.15rem; border: 1px solid #252525; border-radius: 10px; font-size: inherit; text-decoration: none; transition: border-color .2s ease, background .2s ease, transform .2s ease; }
+      .writeup-index a:hover, .writeup-index a:focus-visible { border-color: #3a3a3a; background: #0d0f11; text-decoration: none; transform: translateX(3px); }
+      .wi-main { display: flex; flex-direction: column; gap: .35rem; min-width: 0; }
+      .wi-title { color: #f5f5f5; font-size: .92rem; font-weight: 600; letter-spacing: 0; }
+      .wi-desc { color: #a3a3a3; font-size: .78rem; line-height: 1.5; }
+      .wi-meta { display: flex; flex-direction: column; align-items: flex-end; gap: .4rem; flex-shrink: 0; text-align: right; }
+      .wi-code { color: #d1d5da; font-size: .68rem; letter-spacing: .02em; white-space: nowrap; }
+      .wi-sev { padding: .16rem .5rem; border: 1px solid #343a40; border-radius: 999px; color: #d1d5da; font-size: .58rem; font-weight: 650; letter-spacing: .06em; white-space: nowrap; }
+      .wi-sev-critical { color: #f0b4b4; border-color: #4a2f2f; }
+      .wi-sev-high { color: #e6c79a; border-color: #4a3f2a; }
+      .wi-sev-medium, .wi-sev-low { color: #cdd3da; border-color: #343a40; }
+      .writeup-back { display: inline-block; margin-bottom: 2rem; color: #8a8a8a; font-size: .78rem; text-decoration: none; }
+      .writeup-back:hover, .writeup-back:focus-visible { color: #f5f5f5; text-decoration: underline; text-underline-offset: .25em; }
+      @media (max-width: 480px) { .writeup-index a { flex-direction: column; gap: .7rem; } .wi-meta { flex-direction: row; align-items: center; text-align: left; } }
       .writeup { max-width: none; }
       .writeup-header { margin-bottom: 3.25rem; }
       .writeup-kicker { margin: 0 0 .9rem; color: #a3a3a3; font-size: .7rem; font-weight: 650; letter-spacing: .11em; text-transform: uppercase; }
@@ -96,7 +112,7 @@
       .contact { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid #252525; }
       .contact-links { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; }
       .contact-links a { font-size: .82rem; }
-      @media (max-width: 480px) { main, main:has(#writeups-panel:not([hidden])) { width: min(100% - 2rem, 860px); padding-top: 3rem; } a { font-size: .82rem; } #security-panel li a { align-items: flex-start; flex-wrap: wrap; } #security-panel .cve-severity { margin-left: 0; } }
+      @media (max-width: 480px) { main, main:has(.writeup:not([hidden])) { width: min(100% - 2rem, 860px); padding-top: 3rem; } a { font-size: .82rem; } #security-panel li a { align-items: flex-start; flex-wrap: wrap; } #security-panel .cve-severity { margin-left: 0; } }
       @media (max-width: 480px) { .tabs { flex-wrap: wrap; gap: .75rem; } .tab { font-size: .65rem; letter-spacing: .015em; min-height: 44px; } .tab small { margin-left: .15rem; font-size: .55rem; } .writeup h1 { font-size: 2.15rem; } .writeup p, .writeup li { font-size: .95rem; } }
       @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }
       @media (min-width: 561px) { .intro { white-space: nowrap; } }
@@ -111,7 +127,7 @@
       @keyframes panel-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
       @keyframes item-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
       .tab-panel:not([hidden]) { animation: panel-in .42s cubic-bezier(.22, 1, .36, 1) both; }
-      .tab-panel:not([hidden]):not(.writeup) li { animation: item-in .45s cubic-bezier(.22, 1, .36, 1) both; animation-delay: calc(min(var(--i, 0), 14) * 28ms + 60ms); }
+      .tab-panel:not([hidden]) li:not(.writeup li) { animation: item-in .45s cubic-bezier(.22, 1, .36, 1) both; animation-delay: calc(min(var(--i, 0), 14) * 28ms + 60ms); }
       @media (prefers-reduced-motion: reduce) {
         main, .tab, .tab-indicator.is-animated { transition: none; }
         .tab-panel:not([hidden]), .tab-panel:not([hidden]) li { animation: none; }
@@ -243,10 +259,18 @@
         </section>
         <p class="bounty-profile"><a href="https://bugcrowd.com/ihopenre-eng" rel="me">Bugcrowd profile ↗</a></p>
       </div>
-      <article class="tab-panel writeup" id="writeups-panel" role="tabpanel" aria-labelledby="writeups-tab" hidden>
-        <header class="writeup-header">
-          <p class="writeup-kicker">Security writeup · public disclosure</p>
-          <h1>Writeup: CVE-2026-73842 in OpenChoreo</h1>
+      <div class="tab-panel" id="writeups-panel" role="tabpanel" aria-labelledby="writeups-tab" hidden>
+        <section class="writeup-index-view" aria-labelledby="writeups-index-title">
+          <h2 id="writeups-index-title">Writeups</h2>
+          <ul class="writeup-index">
+            <li><a href="#writeups/cve-2026-73842"><span class="wi-main"><span class="wi-title">OpenChoreo cluster-gateway</span><span class="wi-desc">Unauthenticated proxy with full CRUD across every connected data plane.</span></span><span class="wi-meta"><span class="wi-code">CVE-2026-73842</span><span class="wi-sev wi-sev-critical">Critical 9.0</span></span></a></li>
+          </ul>
+        </section>
+        <article class="writeup" id="wr-cve-2026-73842" data-writeup="cve-2026-73842" aria-labelledby="writeup-h-73842" hidden>
+          <a class="writeup-back" href="#writeups">← All writeups</a>
+          <header class="writeup-header">
+            <p class="writeup-kicker">Security writeup · public disclosure</p>
+            <h1 id="writeup-h-73842">Writeup: CVE-2026-73842 in OpenChoreo</h1>
           <p class="writeup-meta"><span>2026년 10월 1일</span><span>@이성현</span><span>@ihopenre-eng</span></p>
         </header>
 
@@ -354,7 +378,8 @@ blockedPaths:  "/api/v1/namespaces/kube-system/secrets"
             <li>Control planes that proxy into many clusters share this risk. In the same review, I also reported <a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx">CVE-2026-73841</a> and <a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g">CVE-2026-73840</a>.</li>
           </ul>
         </section>
-      </article>
+        </article>
+      </div>
       <footer class="contact" aria-labelledby="contact-title">
         <h2 id="contact-title">Contact</h2>
         <div class="contact-links">
@@ -374,9 +399,22 @@ blockedPaths:  "/api/v1/namespaces/kube-system/secrets"
       indicator.setAttribute('aria-hidden', 'true');
       tabList.append(indicator);
       tabList.classList.add('has-indicator');
-      document.querySelectorAll('.tab-panel:not(.writeup) ul').forEach((list) => {
+      document.querySelectorAll('.tab-panel ul').forEach((list) => {
+        if (list.closest('.writeup')) return;
         [...list.children].forEach((item, i) => item.style.setProperty('--i', i));
       });
+      const writeups = [...document.querySelectorAll('#writeups-panel .writeup')];
+      const writeupIndex = document.querySelector('.writeup-index-view');
+      function syncWriteups() {
+        const slug = location.hash.slice(1).split('/')[1] || '';
+        let opened = null;
+        writeups.forEach((article) => {
+          const match = article.dataset.writeup === slug;
+          article.hidden = !match;
+          if (match) opened = article;
+        });
+        writeupIndex.hidden = !!opened;
+      }
       function moveIndicator(animate) {
         const tab = tabs.find((item) => item.getAttribute('aria-selected') === 'true');
         if (!tab) return;
@@ -396,12 +434,15 @@ blockedPaths:  "/api/v1/namespaces/kube-system/secrets"
         moveIndicator(animate);
       }
       function syncTab(animate) {
-        selectTab(tabs.find((tab) => tab.dataset.route === location.hash.slice(1)) || tabs[0], animate);
+        const route = location.hash.slice(1).split('/')[0];
+        selectTab(tabs.find((tab) => tab.dataset.route === route) || tabs[0], animate);
+        syncWriteups();
       }
       tabs.forEach((tab, index) => {
         tab.addEventListener('click', () => {
           selectTab(tab);
           history.replaceState(null, '', '#' + tab.dataset.route);
+          syncWriteups();
         });
         tab.addEventListener('keydown', (event) => {
           let next;

@@ -104,6 +104,8 @@
       .writeup p code, .writeup li code { overflow-wrap: anywhere; word-break: break-word; }
       .writeup pre { margin: 1.25rem 0; overflow-x: auto; padding: 1.15rem 1.25rem; border: 1px solid #25282c; border-radius: 8px; background: #121416; }
       .writeup pre code { display: block; min-width: max-content; padding: 0; color: #d7dadf; background: none; font-size: .8rem; line-height: 1.65; }
+      .writeup-figure { margin: 1.75rem 0 0; padding: 1.25rem; border: 1px solid #25282c; border-radius: 10px; background: #101214; max-width: none; overflow-x: auto; }
+      .writeup-figure svg { display: block; width: 100%; height: auto; min-width: 560px; }
       .writeup table { width: 100%; margin-top: 1rem; border-collapse: collapse; color: #e1e4e8; font-size: .9rem; text-align: left; }
       .writeup th, .writeup td { padding: .7rem .5rem; border-bottom: 1px solid #25282c; vertical-align: top; }
       .writeup th { color: #a3a3a3; font-size: .72rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
@@ -411,7 +413,40 @@ blockedPaths:  "/api/v1/namespaces/kube-system/secrets"
             <li><code>pkg/server/service/smart_roundtripper.go</code> — a request with <code>Connection: Upgrade</code> is sent to the backend over HTTP/1, letting the backend perform the upgrade.</li>
             <li><code>net/http/httputil.ReverseProxy</code> — when the backend returns <code>101</code>, the reverse proxy switches to tunnel mode and just copies bytes.</li>
           </ul>
-          <p>The security boundary breaks at the last step. The router and middleware were chosen for the initial request only. After <code>101</code>, Traefik no longer parses the stream as HTTP requests, so it never re-runs routing or middleware for the HTTP/2 streams that follow. The <code>/admin</code> request never reaches the <code>/admin</code> router: it rides the tunnel that <code>/public</code> opened, so none of <code>/admin</code>’s middleware runs.</p>
+          <p>The security boundary breaks at the last step. The router and middleware were chosen for the initial request only. After <code>101</code>, Traefik no longer parses the stream as HTTP requests, so it never re-runs routing or middleware for the HTTP/2 streams that follow.</p>
+          <figure class="writeup-figure">
+            <svg viewBox="0 0 760 300" role="img" aria-label="An h2c tunnel through /public reaches /admin with no auth" font-size="13">
+              <defs>
+                <marker id="t88008-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5c636b"/></marker>
+                <marker id="t88008-arrow-crit" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#f0808a"/></marker>
+              </defs>
+              <text x="24" y="28" font-size="15" font-weight="600" fill="#f0f2f4">An h2c tunnel through /public reaches /admin with no auth</text>
+              <g>
+                <rect x="24" y="112" width="120" height="48" rx="8" fill="none" stroke="#7aa7ff" stroke-width="1.25"/>
+                <text x="84" y="141" text-anchor="middle" font-weight="600" fill="#e6e9ee">Attacker</text>
+              </g>
+              <g>
+                <rect x="312" y="112" width="136" height="48" rx="8" fill="none" stroke="#5c636b" stroke-width="1.25"/>
+                <text x="380" y="141" text-anchor="middle" font-weight="600" fill="#e6e9ee">Traefik</text>
+              </g>
+              <g>
+                <rect x="616" y="72" width="120" height="48" rx="8" fill="none" stroke="#5c636b" stroke-width="1.25"/>
+                <text x="676" y="101" text-anchor="middle" fill="#7fcf9f">/public</text>
+                <rect x="616" y="164" width="120" height="48" rx="8" fill="none" stroke="#5c636b" stroke-width="1.25"/>
+                <text x="676" y="193" text-anchor="middle" fill="#f0808a">/admin</text>
+                <text x="676" y="240" text-anchor="middle" font-size="11.5" fill="#8a8a8a">one shared backend</text>
+              </g>
+              <g fill="none">
+                <path d="M144 128H312" stroke="#5c636b" stroke-width="1.25" marker-end="url(#t88008-arrow)"/>
+                <path d="M448 120 Q540 96 616 96" stroke="#5c636b" stroke-width="1.25" marker-end="url(#t88008-arrow)"/>
+                <path d="M448 152 Q540 188 616 188" stroke="#f0808a" stroke-width="2" marker-end="url(#t88008-arrow-crit)"/>
+              </g>
+              <text x="228" y="116" text-anchor="middle" font-size="11.5" fill="#8a8a8a">GET /public, Upgrade: h2c</text>
+              <text x="532" y="78" text-anchor="middle" font-size="11.5" fill="#8a8a8a">101, tunnel opens</text>
+              <text x="536" y="210" text-anchor="middle" font-size="11.5" font-weight="600" fill="#f0808a">HTTP/2 GET /admin, no middleware</text>
+            </svg>
+          </figure>
+          <p>The <code>/admin</code> request never reaches the <code>/admin</code> router: it rides the tunnel that <code>/public</code> opened, so none of <code>/admin</code>’s middleware runs.</p>
         </section>
 
         <section aria-labelledby="writeup-poc-88008">

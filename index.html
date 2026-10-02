@@ -73,10 +73,6 @@
       .wi-desc { color: #a3a3a3; font-size: .78rem; line-height: 1.5; }
       .wi-meta { display: flex; flex-direction: column; align-items: flex-end; gap: .4rem; flex-shrink: 0; text-align: right; }
       .wi-code { color: #d1d5da; font-size: .68rem; letter-spacing: .02em; white-space: nowrap; }
-      .wi-sev { padding: .16rem .5rem; border: 1px solid #343a40; border-radius: 999px; color: #d1d5da; font-size: .58rem; font-weight: 650; letter-spacing: .06em; white-space: nowrap; }
-      .wi-sev-critical { color: #f0b4b4; border-color: #4a2f2f; }
-      .wi-sev-high { color: #e6c79a; border-color: #4a3f2a; }
-      .wi-sev-medium, .wi-sev-low { color: #cdd3da; border-color: #343a40; }
       .writeup-back { display: inline-block; margin-bottom: 2rem; color: #8a8a8a; font-size: .78rem; text-decoration: none; }
       .writeup-back:hover, .writeup-back:focus-visible { color: #f5f5f5; text-decoration: underline; text-underline-offset: .25em; }
       @media (max-width: 480px) { .writeup-index a { flex-direction: column; gap: .7rem; } .wi-meta { flex-direction: row; align-items: center; text-align: left; } }
@@ -261,8 +257,8 @@
         <section class="writeup-index-view" aria-labelledby="writeups-index-title">
           <h2 id="writeups-index-title">Writeups</h2>
           <ul class="writeup-index">
-            <li><a href="#writeups/cve-2026-88008"><span class="wi-main"><span class="wi-title">Traefik h2c upgrade</span><span class="wi-desc">A client-chosen h2c upgrade tunnels past router middleware to protected paths on the same backend.</span></span><span class="wi-meta"><span class="wi-code">CVE-2026-88008</span><span class="wi-sev wi-sev-high">High 7.0</span></span></a></li>
-            <li><a href="#writeups/cve-2026-73842"><span class="wi-main"><span class="wi-title">OpenChoreo cluster-gateway</span><span class="wi-desc">Unauthenticated proxy with full CRUD across every connected data plane.</span></span><span class="wi-meta"><span class="wi-code">CVE-2026-73842</span><span class="wi-sev wi-sev-critical">Critical 9.0</span></span></a></li>
+            <li><a href="#writeups/cve-2026-88008"><span class="wi-main"><span class="wi-title">Traefik h2c upgrade</span><span class="wi-desc">A client-chosen h2c upgrade tunnels past router middleware to protected paths on the same backend.</span></span><span class="wi-meta"><span class="wi-code">CVE-2026-88008</span></span></a></li>
+            <li><a href="#writeups/cve-2026-73842"><span class="wi-main"><span class="wi-title">OpenChoreo cluster-gateway</span><span class="wi-desc">Unauthenticated proxy with full CRUD across every connected data plane.</span></span><span class="wi-meta"><span class="wi-code">CVE-2026-73842</span></span></a></li>
           </ul>
         </section>
         <article class="writeup" id="wr-cve-2026-73842" data-writeup="cve-2026-73842" aria-labelledby="writeup-h-73842" hidden>

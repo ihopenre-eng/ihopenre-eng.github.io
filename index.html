@@ -141,7 +141,7 @@
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">Merged PRs · MRs <small>35</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="development-panel" id="development-tab" data-tab="development-panel" data-route="development" tabindex="-1">Development <small>05</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="bugbounty-panel" id="bugbounty-tab" data-tab="bugbounty-panel" data-route="bugbounty" tabindex="-1">Bug Bounty <small>01</small></button>
-        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="writeups-panel" id="writeups-tab" data-tab="writeups-panel" data-route="writeups" tabindex="-1">Writeups <small>01</small></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="writeups-panel" id="writeups-tab" data-tab="writeups-panel" data-route="writeups" tabindex="-1">Writeups <small>02</small></button>
       </nav>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
         <section aria-labelledby="cve-title">
@@ -259,6 +259,7 @@
         <section class="writeup-index-view" aria-labelledby="writeups-index-title">
           <h2 id="writeups-index-title">Writeups</h2>
           <ul class="writeup-index">
+            <li><a href="#writeups/cve-2026-88008"><span class="wi-main"><span class="wi-title">Traefik h2c upgrade</span><span class="wi-desc">A client-chosen h2c upgrade tunnels past router middleware to protected paths on the same backend.</span></span><span class="wi-meta"><span class="wi-code">CVE-2026-88008</span><span class="wi-sev wi-sev-high">High 7.0</span></span></a></li>
             <li><a href="#writeups/cve-2026-73842"><span class="wi-main"><span class="wi-title">OpenChoreo cluster-gateway</span><span class="wi-desc">Unauthenticated proxy with full CRUD across every connected data plane.</span></span><span class="wi-meta"><span class="wi-code">CVE-2026-73842</span><span class="wi-sev wi-sev-critical">Critical 9.0</span></span></a></li>
           </ul>
         </section>
@@ -372,6 +373,88 @@ blockedPaths:  "/api/v1/namespaces/kube-system/secrets"
             <li>“Internal” is not an authentication mechanism. Every hop that can touch a cluster API needs its own caller check.</li>
             <li>Enforce restrictions on the server, not in the client. A client library promising read-only behavior cannot protect a server that accepts writes.</li>
             <li>Control planes that proxy into many clusters share this risk. In the same review, I also reported <a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx">CVE-2026-73841</a> and <a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g">CVE-2026-73840</a>.</li>
+          </ul>
+        </section>
+        </article>
+
+        <article class="writeup" id="wr-cve-2026-88008" data-writeup="cve-2026-88008" aria-labelledby="writeup-h-88008" hidden>
+          <a class="writeup-back" href="#writeups">← All writeups</a>
+          <header class="writeup-header">
+            <p class="writeup-kicker">Security writeup · public disclosure</p>
+            <h1 id="writeup-h-88008">Writeup: CVE-2026-88008 in Traefik</h1>
+          <p class="writeup-meta"><span>2026년 10월 2일</span><span>@이성현</span><span>@ihopenre-eng</span></p>
+        </header>
+
+        <section aria-labelledby="writeup-summary-88008">
+          <h2 id="writeup-summary-88008">Summary</h2>
+          <p class="writeup-lead">Traefik forwarded a client’s <code>Upgrade: h2c</code> request to the backend. If the backend accepted it and answered <code>101 Switching Protocols</code>, Traefik turned the connection into a raw byte tunnel and stopped applying its routers and middleware. An attacker could open the tunnel through an unauthenticated route, then send HTTP/2 requests to protected paths on the same backend, bypassing <code>BasicAuth</code>, <code>ForwardAuth</code>, <code>IPAllowList</code> and <code>RateLimit</code>.</p>
+          <dl class="writeup-facts">
+            <div><dt>Severity</dt><dd>CVSS 4.0 · 7.0 High</dd></div>
+            <div><dt>Fixed in</dt><dd>2.11.57 · 3.7.13</dd></div>
+            <div><dt>References</dt><dd><a href="https://github.com/advisories/GHSA-w4v4-9rw7-5326">Advisory</a> · <a href="https://www.cve.org/CVERecord?id=CVE-2026-88008">CVE record</a> · <a href="https://github.com/traefik/traefik/pull/13797">PR #13797</a></dd></div>
+          </dl>
+        </section>
+
+        <section aria-labelledby="writeup-background-88008">
+          <h2 id="writeup-background-88008">Background</h2>
+          <p>Traefik is a widely used open-source reverse proxy. Its security model is per request: each incoming HTTP request is matched to a router, and that router’s middleware (authentication, IP allowlists, rate limits) runs before the request reaches the backend. Two routers can point at the same backend with different protection, for example a public <code>/public</code> and an authenticated <code>/admin</code>.</p>
+          <p>HTTP/1.1 lets a client ask to switch protocols with <code>Connection: Upgrade</code> and an <code>Upgrade: &lt;token&gt;</code> header. WebSocket is the common case. <code>h2c</code> is another: it asks to continue the same connection as cleartext HTTP/2. Once a server answers <code>101 Switching Protocols</code>, the connection stops being HTTP/1.1 and a proxy can only pass bytes through.</p>
+          <p>Traefik already supports h2c backends when an operator configures them explicitly (<code>h2c://</code> or <code>transportH2C</code>). This bug is different: the client chose the upgrade, and Traefik let it through regardless of configuration.</p>
+        </section>
+
+        <section aria-labelledby="writeup-root-cause-88008">
+          <h2 id="writeup-root-cause-88008">Root cause</h2>
+          <p>Two things combine. Traefik forwards an arbitrary client-chosen upgrade token, and its routing and middleware run only on the first HTTP/1 request, not on what comes through the tunnel afterward. In the default proxy (<code>pkg/proxy/httputil</code>), the request path is:</p>
+          <ul>
+            <li><code>pkg/middlewares/forwardedheaders/forwarded_header.go</code> — <code>removeConnectionHeaders</code> preserves and forwards the <code>Upgrade</code> header when <code>Connection: Upgrade</code> is present, with no check that the token is <code>websocket</code>.</li>
+            <li><code>pkg/proxy/httputil/proxy.go</code> — <code>isWebSocketUpgrade</code> gives WebSocket special header handling, but this is not an allowlist. Other upgrade protocols still pass through.</li>
+            <li><code>pkg/server/service/smart_roundtripper.go</code> — a request with <code>Connection: Upgrade</code> is sent to the backend over HTTP/1, letting the backend perform the upgrade.</li>
+            <li><code>net/http/httputil.ReverseProxy</code> — when the backend returns <code>101</code>, the reverse proxy switches to tunnel mode and just copies bytes.</li>
+          </ul>
+          <p>The security boundary breaks at the last step. The router and middleware were chosen for the initial request only. After <code>101</code>, Traefik no longer parses the stream as HTTP requests, so it never re-runs routing or middleware for the HTTP/2 streams that follow. The <code>/admin</code> request never reaches the <code>/admin</code> router: it rides the tunnel that <code>/public</code> opened, so none of <code>/admin</code>’s middleware runs.</p>
+        </section>
+
+        <section aria-labelledby="writeup-poc-88008">
+          <h2 id="writeup-poc-88008">Proof of concept</h2>
+          <p>I reproduced it against Traefik built from master (commit <code>9bb0e55</code>, Go 1.26.4) with default configuration. The setup is a backend exposing <code>/public</code> and <code>/admin</code>, and a Traefik config where two routers point at that one backend but only <code>/admin</code> has <code>basicAuth</code>. The attacker confirms <code>/admin</code> is protected, opens an h2c tunnel through <code>/public</code> with no credentials, then sends <code>/admin</code> over the resulting HTTP/2 connection. The key request is a plain HTTP/1 call carrying the upgrade headers:</p>
+          <pre><code>GET /public HTTP/1.1
+Host: x
+Connection: Upgrade, HTTP2-Settings
+Upgrade: h2c
+HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
+          <p>The backend answers <code>101</code>, and from there the attacker speaks HTTP/2 to <code>/admin</code> on the same socket. The result:</p>
+          <pre><code>[1] Direct GET /admin (no creds)      -&gt; 401 "401 Unauthorized"
+[2] Upgrade: h2c to /public (no auth) -&gt; "HTTP/1.1 101 Switching Protocols"
+[3] HTTP/2 GET /admin over tunnel     -&gt; 200 "ADMIN SECRET DATA (proto=HTTP/2.0 path=/admin)"</code></pre>
+          <p>Step 1 proves the control: <code>/admin</code> returns 401 to a direct unauthenticated request. Step 3 returns 200 for the same endpoint once the tunnel is open. The full backend and attacker code is in the <a href="https://github.com/advisories/GHSA-w4v4-9rw7-5326">GitHub advisory</a>.</p>
+        </section>
+
+        <section aria-labelledby="writeup-impact-88008">
+          <h2 id="writeup-impact-88008">Impact and preconditions</h2>
+          <p>An unauthenticated attacker can bypass middleware protecting other paths on the same backend: <code>BasicAuth</code>, <code>ForwardAuth</code>, <code>IPAllowList</code>, <code>RateLimit</code> and per-route security headers. Tunneled requests also skip Traefik’s access logs, metrics and tracing, so the activity does not show up as individual requests.</p>
+          <p>It is not a blanket “Traefik plus any HTTP/2 backend” issue. Four conditions must hold: the attacker can reach a router without the relevant middleware; that router shares a backend with a protected router; the backend accepts <code>Upgrade: h2c</code> and returns <code>101</code>; and Traefik lets the upgrade complete. The last is always true on affected versions; the backend’s behavior is the real gate. Recent <code>golang.org/x/net/http2/h2c</code> servers no longer support the HTTP/1.1 upgrade, so they are not affected, but older implementations, non-Go servers, custom h2c handlers and some gRPC stacks may be.</p>
+          <p>The CVSS v4 vector is <code>AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:N/SC:H/SI:H/SA:N</code> (7.0). The <code>AT:P</code> (attack requirements: present) captures that backend precondition, and the subsequent-system confidentiality and integrity are High because the impact lands on the protected backend.</p>
+        </section>
+
+        <section aria-labelledby="writeup-fix-88008">
+          <h2 id="writeup-fix-88008">Fix and timeline</h2>
+          <p>The fix stops Traefik forwarding the <code>Upgrade: h2c</code> token and the <code>HTTP2-Settings</code> header. <code>Upgrade: websocket</code> is unaffected. It shipped in 2.11.57 and 3.7.13 via <a href="https://github.com/traefik/traefik/pull/13797">PR #13797</a>. Versions 3.4.2 through 3.6 are end-of-life and also affected; those users must move to 3.7.13.</p>
+          <table>
+            <thead><tr><th scope="col">Date (2026)</th><th scope="col">Event</th></tr></thead>
+            <tbody>
+              <tr><td>Sep 7</td><td>Advisory published by the Traefik maintainers</td></tr>
+              <tr><td>Sep 9</td><td>CVE-2026-88008 reserved</td></tr>
+              <tr><td>Sep 10</td><td>Published to NVD and the GitHub Advisory Database</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section aria-labelledby="writeup-takeaways-88008">
+          <h2 id="writeup-takeaways-88008">Takeaways</h2>
+          <ul>
+            <li><strong>A protocol upgrade is a security boundary.</strong> Any proxy that enforces policy per HTTP request loses that enforcement the moment the connection becomes an opaque tunnel. If the client gets to choose the upgrade, the client gets to choose when your middleware stops running.</li>
+            <li><strong>Forward an allowlist, not a denylist.</strong> Traefik handled WebSocket specially but passed every other upgrade token through. The safe shape is the reverse: forward only the protocols the proxy actually supports, reject the rest.</li>
+            <li><strong>Look for the same pattern elsewhere.</strong> Any reverse proxy, API gateway or service mesh that supports WebSocket upgrades is worth checking for whether it also forwards <code>h2c</code> or arbitrary upgrade tokens, and whether policy survives the switch. This is a bug class, not a single bug.</li>
           </ul>
         </section>
         </article>

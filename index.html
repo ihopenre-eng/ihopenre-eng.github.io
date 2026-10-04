@@ -41,7 +41,6 @@
       #security-panel li { display: block; }
       #security-panel li a { display: flex; align-items: baseline; gap: .65rem; line-height: 1.6; overflow-wrap: anywhere; }
       #security-panel .cve-code { color: #f5f5f5; font-size: .86rem; letter-spacing: 0; }
-      #security-panel .cve-type { padding: .14rem .4rem; border: 1px solid #343a40; border-radius: 999px; font-size: .59rem; letter-spacing: .04em; white-space: nowrap; }
       #security-panel .cve-severity { margin-left: auto; color: #d1d5da; font-size: .62rem; font-weight: 650; letter-spacing: .08em; white-space: nowrap; }
       .recognition { margin-bottom: 3rem; }
       .badge-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
@@ -145,21 +144,21 @@
         <section aria-labelledby="cve-title">
           <h2 id="cve-title">CVE</h2>
           <ul>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327"><span class="cve-code">CVE-2026-73842</span><span class="cve-type">AUTHENTICATION BYPASS</span><span class="cve-severity">CRITICAL</span></a></li>
-            <li><a href="https://github.com/traefik/traefik/security/advisories/GHSA-w4v4-9rw7-5326"><span class="cve-code">CVE-2026-88008</span><span class="cve-type">HTTP REQUEST SMUGGLING</span><span class="cve-severity">HIGH</span></a></li>
-            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4"><span class="cve-code">CVE-2026-86070</span><span class="cve-type">CREDENTIAL EXPOSURE</span><span class="cve-severity">HIGH</span></a></li>
-            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw"><span class="cve-code">CVE-2026-86069</span><span class="cve-type">PATH TRAVERSAL</span><span class="cve-severity">HIGH</span></a></li>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx"><span class="cve-code">CVE-2026-73841</span><span class="cve-type">AUTHORIZATION BYPASS</span><span class="cve-severity">HIGH</span></a></li>
-            <li><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq"><span class="cve-code">CVE-2026-73505</span><span class="cve-type">COMMAND INJECTION</span><span class="cve-severity">HIGH</span></a></li>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g"><span class="cve-code">CVE-2026-73840</span><span class="cve-type">WEBHOOK AUTH BYPASS</span><span class="cve-severity">MEDIUM</span></a></li>
-            <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h"><span class="cve-code">CVE-2026-73506</span><span class="cve-type">TERMINAL ESCAPE INJECTION</span><span class="cve-severity">MEDIUM</span></a></li>
-            <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w"><span class="cve-code">CVE-2026-100401</span><span class="cve-type">RATE LIMIT BYPASS</span><span class="cve-severity">LOW</span></a></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327"><span class="cve-code">CVE-2026-73842</span><span class="cve-severity">CRITICAL</span></a></li>
+            <li><a href="https://github.com/traefik/traefik/security/advisories/GHSA-w4v4-9rw7-5326"><span class="cve-code">CVE-2026-88008</span><span class="cve-severity">HIGH</span></a></li>
+            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4"><span class="cve-code">CVE-2026-86070</span><span class="cve-severity">HIGH</span></a></li>
+            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw"><span class="cve-code">CVE-2026-86069</span><span class="cve-severity">HIGH</span></a></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx"><span class="cve-code">CVE-2026-73841</span><span class="cve-severity">HIGH</span></a></li>
+            <li><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq"><span class="cve-code">CVE-2026-73505</span><span class="cve-severity">HIGH</span></a></li>
+            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g"><span class="cve-code">CVE-2026-73840</span><span class="cve-severity">MEDIUM</span></a></li>
+            <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h"><span class="cve-code">CVE-2026-73506</span><span class="cve-severity">MEDIUM</span></a></li>
+            <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w"><span class="cve-code">CVE-2026-100401</span><span class="cve-severity">LOW</span></a></li>
           </ul>
         </section>
         <section aria-labelledby="ghsa-title">
           <h2 id="ghsa-title">GHSA</h2>
           <ul>
-            <li><a href="https://github.com/oauth2-proxy/oauth2-proxy/security/advisories/GHSA-wr5q-7wxw-x568"><span class="cve-code">GHSA-wr5q-7wxw-x568</span><span class="cve-type">AUTHENTICATION BYPASS</span><span class="cve-severity">CRITICAL</span></a></li>
+            <li><a href="https://github.com/oauth2-proxy/oauth2-proxy/security/advisories/GHSA-wr5q-7wxw-x568"><span class="cve-code">GHSA-wr5q-7wxw-x568</span><span class="cve-severity">CRITICAL</span></a></li>
           </ul>
         </section>
       </div>

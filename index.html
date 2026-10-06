@@ -19,16 +19,20 @@
       {"@context":"https://schema.org","@type":"Person","name":"Lee Seonghyeon","alternateName":["이성현","ihopenre-eng"],"jobTitle":"Security Researcher and Product Engineer","knowsAbout":["Security research","Responsible disclosure","Open-source software","Product engineering"],"url":"https://ihopenre-eng.github.io/","sameAs":["https://github.com/ihopenre-eng","https://gitlab.com/ihopenre-eng","https://hakca.vn/"]}
     </script>
     <style>
-      :root { color-scheme: dark; }
+      :root { color-scheme: dark; --sidebar-width: 232px; }
       * { box-sizing: border-box; }
       html { -webkit-text-size-adjust: 100%; }
       * { scrollbar-width: none; }
       *::-webkit-scrollbar { display: none; }
-      body { margin: 0; min-width: 320px; background: #000; color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      body { margin: 0; min-width: 320px; padding-left: var(--sidebar-width); background: #000; color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
       main { width: min(640px, calc(100% - 3rem)); margin: 0 auto; padding: 3rem 0; }
       main:has(.writeup:not([hidden])) { width: min(860px, calc(100% - 3rem)); }
-      .site-header { position: sticky; top: 0; z-index: 20; padding-top: env(safe-area-inset-top); border-bottom: 1px solid #252525; background: #000; }
-      .header-inner { width: min(1040px, calc(100% - 4rem)); margin: 0 auto; }
+      .site-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 20; width: var(--sidebar-width); height: 100dvh; margin: 0; padding: 2.3rem 1.25rem 2rem max(1.5rem, env(safe-area-inset-left)); overflow-y: auto; overscroll-behavior: contain; border: 0; border-right: 1px solid #1d1d1d; background: #000; color: #f5f5f5; }
+      .sidebar-heading, .menu-trigger { display: none; }
+      .menu-trigger, .menu-close { align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 1px solid #303030; border-radius: 10px; background: #0a0a0a; color: #f5f5f5; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; transition: transform 120ms cubic-bezier(.23, 1, .32, 1); }
+      .menu-trigger svg, .menu-close svg { width: 18px; height: 18px; }
+      .menu-trigger:active, .menu-close:active { transform: scale(.97); }
+      .menu-trigger:focus-visible, .menu-close:focus-visible { outline: 1px solid #f5f5f5; outline-offset: 4px; }
       section + section { margin-top: 4rem; }
       .intro { margin: 0 0 2rem; color: #d1d5da; font-size: .78rem; line-height: 1.6; }
       h1, h2 { margin: 0 0 1rem; font-size: .75rem; font-weight: 650; letter-spacing: .12em; }
@@ -37,16 +41,13 @@
       a { color: #f5f5f5; font-size: .92rem; text-decoration: none; } a:hover, a:focus-visible { text-decoration: underline; text-underline-offset: .25em; }
       span { color: #8a8a8a; font-size: .68rem; letter-spacing: .06em; }
       .tabs-shell { position: relative; }
-      .tabs-shell::before, .tabs-shell::after { position: absolute; top: 0; bottom: 1px; z-index: 1; display: flex; align-items: center; width: 1.5rem; color: #aaa; font-size: 1rem; pointer-events: none; opacity: 0; }
-      .tabs-shell::before { left: 0; content: "‹"; background: linear-gradient(90deg, #000, #0000); }
-      .tabs-shell::after { right: 0; justify-content: flex-end; content: "›"; background: linear-gradient(270deg, #000, #0000); }
-      .tabs-shell[data-left]::before, .tabs-shell[data-right]::after { opacity: 1; }
-      .tabs { display: flex; flex-wrap: nowrap; justify-content: space-between; gap: 1.5rem; margin: 0; overflow-x: auto; overscroll-behavior-x: contain; }
-      .tab { flex: 0 0 auto; min-height: 44px; margin: 0; padding: .65rem 0; border: 0; border-bottom: 1px solid transparent; color: #888; background: none; font: inherit; font-size: .75rem; font-weight: 650; letter-spacing: .06em; white-space: nowrap; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
-      .tab[aria-selected="true"] { color: #f5f5f5; border-bottom-color: #f5f5f5; }
+      .tabs { display: flex; flex-direction: column; gap: .25rem; margin: 0; }
+      .tab { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex: 0 0 auto; min-height: 44px; margin: 0; padding: .7rem .75rem; border: 0; border-left: 2px solid transparent; color: #888; background: none; font: inherit; font-size: .75rem; font-weight: 600; letter-spacing: .015em; text-align: left; white-space: nowrap; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+      .tab[aria-selected="true"] { color: #f5f5f5; border-left-color: #f5f5f5; }
       .tab:focus-visible { outline: 1px solid #a3a3a3; outline-offset: -3px; border-radius: 3px; }
       .tab:active { color: #fff; }
-      .tab small { margin-left: .35rem; color: inherit; font-size: .62rem; }
+      .tab small { margin-left: auto; color: #666; font-size: .62rem; font-weight: 500; }
+      .tab[aria-selected="true"] small { color: #aaa; }
       .tab-panel[hidden] { display: none; }
       #security-panel li { display: block; }
       #security-panel li a { display: flex; align-items: baseline; gap: .65rem; line-height: 1.6; overflow-wrap: anywhere; }
@@ -152,33 +153,55 @@
       @media (max-width: 480px) { .contact-trigger { right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom)); } .contact-panel { right: 1rem; bottom: calc(4.5rem + env(safe-area-inset-bottom)); width: min(320px, calc(100vw - 2rem)); } }
       @media (max-width: 480px) { main, main:has(.writeup:not([hidden])) { width: min(100% - 2rem, 860px); padding-top: 2rem; } a { font-size: .82rem; } }
       @media (max-width: 600px) { #security-panel li { padding: .8rem 0; } #security-panel li a { flex-direction: column; align-items: flex-start; gap: .35rem; } #security-panel .cve-severity { margin-left: 0; line-height: 1.4; } }
-      @media (max-width: 1000px) { .header-inner { width: calc(100% - 3rem); } .tabs { justify-content: flex-start; } }
-      @media (max-width: 480px) { .header-inner { width: calc(100% - 2rem); } .tabs { gap: 1.4rem; } .tab { font-size: .74rem; letter-spacing: .015em; } .tab small { margin-left: .25rem; font-size: .58rem; } .writeup h1 { font-size: 2.15rem; } .writeup p, .writeup li { font-size: .95rem; } }
+      @media (max-width: 900px) {
+        body { padding-left: 0; }
+        main, main:has(.writeup:not([hidden])) { padding-top: calc(6rem + env(safe-area-inset-top)); }
+        .menu-trigger { position: fixed; top: max(1rem, env(safe-area-inset-top)); left: max(1rem, env(safe-area-inset-left)); z-index: 30; display: inline-flex; }
+        .site-sidebar { display: none; width: min(280px, calc(100vw - 3rem)); padding: calc(1rem + env(safe-area-inset-top)) 1rem calc(2rem + env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); opacity: 0; transform: translateX(-12px); transition: opacity 180ms ease, transform 180ms cubic-bezier(.23, 1, .32, 1), display 180ms allow-discrete, overlay 180ms allow-discrete; }
+        .site-sidebar:popover-open { display: block; opacity: 1; transform: none; }
+        @starting-style { .site-sidebar:popover-open { opacity: 0; transform: translateX(-12px); } }
+        .site-sidebar::backdrop { background: #0009; }
+        .site-sidebar[data-keyboard] { transition: none; }
+        .sidebar-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-left: .75rem; }
+        .sidebar-heading span { color: #aaa; font-size: .7rem; letter-spacing: .06em; }
+        .menu-close { display: inline-flex; border-color: transparent; background: transparent; }
+        .tab { font-size: .82rem; }
+        body:has(.site-sidebar:popover-open) { overflow: hidden; }
+      }
+      @media (max-width: 480px) { .writeup h1 { font-size: 2.15rem; } .writeup p, .writeup li { font-size: .95rem; } }
       @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }
       @media (min-width: 561px) { .intro { white-space: nowrap; } }
       /* 탭 선택 표시 */
       .tabs { position: relative; }
       .tab { transition: color .15s ease; }
       @media (hover: hover) and (pointer: fine) { .tab:hover { color: #bdbdbd; } }
-      .tabs.has-indicator .tab[aria-selected="true"] { border-bottom-color: transparent; }
-      .tab-indicator { position: absolute; top: 0; left: 0; width: 0; height: 1px; background: #f5f5f5; pointer-events: none; transform-origin: left; will-change: transform, width; }
-      .tab-indicator.is-animated { transition: transform .22s cubic-bezier(.22, 1, .36, 1), width .22s cubic-bezier(.22, 1, .36, 1); }
+      .tabs.has-indicator .tab[aria-selected="true"] { border-left-color: transparent; }
+      .tab-indicator { position: absolute; top: 0; left: 0; width: 2px; height: 26px; background: #f5f5f5; pointer-events: none; will-change: transform; }
+      .tab-indicator.is-animated { transition: transform .18s cubic-bezier(.22, 1, .36, 1); }
       .tab-panel[data-keyboard], .tab-panel[data-keyboard] li:not(.writeup li) { animation: none; }
       @keyframes panel-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
       @keyframes item-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
       .tab-panel:not([hidden]) { animation: panel-in .42s cubic-bezier(.22, 1, .36, 1) both; }
       .tab-panel:not([hidden]) li:not(.writeup li) { animation: item-in .45s cubic-bezier(.22, 1, .36, 1) both; animation-delay: calc(min(var(--i, 0), 14) * 28ms + 60ms); }
       @media (prefers-reduced-motion: reduce) {
-        main, .tab, .tab-indicator.is-animated { transition: none; }
+        main, .tab, .tab-indicator.is-animated, .site-sidebar, .menu-trigger, .menu-close { transition: none; }
         .tab-panel:not([hidden]), .tab-panel:not([hidden]) li { animation: none; }
       }
     </style>
   </head>
   <body>
-    <header class="site-header">
-      <div class="header-inner">
+    <button class="menu-trigger" id="menu-trigger" type="button" popovertarget="site-navigation" aria-controls="site-navigation" aria-expanded="false" aria-label="사이트 메뉴 열기">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+    </button>
+    <aside class="site-sidebar" id="site-navigation" aria-label="사이트 메뉴">
+      <div class="sidebar-heading">
+        <span>MENU</span>
+        <button class="menu-close" type="button" popovertarget="site-navigation" popovertargetaction="hide" aria-label="사이트 메뉴 닫기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+        </button>
+      </div>
       <div class="tabs-shell">
-      <nav class="tabs" role="tablist" aria-label="포트폴리오 분류">
+      <nav class="tabs" role="tablist" aria-label="포트폴리오 분류" aria-orientation="vertical">
         <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">Security <small>12</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">Merged PRs · MRs <small>35</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="development-panel" id="development-tab" data-tab="development-panel" data-route="development" tabindex="-1">Development <small>06</small></button>
@@ -188,8 +211,7 @@
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="research-panel" id="research-tab" data-tab="research-panel" data-route="research" tabindex="-1">Research <small>01</small></button>
       </nav>
       </div>
-      </div>
-    </header>
+    </aside>
     <main>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
         <section aria-labelledby="cve-title">
@@ -619,21 +641,73 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       const tabs = [...document.querySelectorAll('[data-tab]')];
       const panels = document.querySelectorAll('.tab-panel');
       const tabList = document.querySelector('.tabs');
-      const tabShell = document.querySelector('.tabs-shell');
+      const siteNavigation = document.getElementById('site-navigation');
+      const menuTrigger = document.getElementById('menu-trigger');
+      const mainContent = document.querySelector('main');
+      const mobileNavigation = matchMedia('(max-width: 900px)');
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-      function updateTabEdges() {
-        tabShell.toggleAttribute('data-left', tabList.scrollLeft > 2);
-        tabShell.toggleAttribute('data-right', tabList.scrollWidth - tabList.clientWidth - tabList.scrollLeft > 2);
+      function syncNavigationLayout() {
+        if (siteNavigation.matches(':popover-open')) siteNavigation.hidePopover();
+        siteNavigation.toggleAttribute('popover', mobileNavigation.matches);
+        if (mobileNavigation.matches) {
+          siteNavigation.setAttribute('popover', 'auto');
+          siteNavigation.setAttribute('role', 'dialog');
+          siteNavigation.setAttribute('aria-modal', 'true');
+        } else {
+          siteNavigation.removeAttribute('role');
+          siteNavigation.removeAttribute('aria-modal');
+        }
+        mainContent.inert = false;
+        contactTrigger.inert = false;
+        menuTrigger.setAttribute('aria-expanded', 'false');
+      }
+      function closeNavigation() {
+        if (siteNavigation.matches(':popover-open')) siteNavigation.hidePopover();
       }
       function revealTab(tab, animate) {
-        const left = tab.offsetLeft;
-        const right = left + tab.offsetWidth;
-        if (left < tabList.scrollLeft + 16 || right > tabList.scrollLeft + tabList.clientWidth - 16) {
-          tabList.scrollTo({ left: left - (tabList.clientWidth - tab.offsetWidth) / 2, behavior: animate && !reducedMotion.matches ? 'smooth' : 'instant' });
+        if (!tab.offsetHeight) return;
+        const top = tab.getBoundingClientRect().top - siteNavigation.getBoundingClientRect().top + siteNavigation.scrollTop;
+        const bottom = top + tab.offsetHeight;
+        if (top < siteNavigation.scrollTop || bottom > siteNavigation.scrollTop + siteNavigation.clientHeight) {
+          siteNavigation.scrollTo({ top: top - (siteNavigation.clientHeight - tab.offsetHeight) / 2, behavior: animate && !reducedMotion.matches ? 'smooth' : 'instant' });
         }
-        updateTabEdges();
       }
-      tabList.addEventListener('scroll', updateTabEdges, { passive: true });
+      menuTrigger.addEventListener('click', (event) => {
+        siteNavigation.toggleAttribute('data-keyboard', event.detail === 0);
+      });
+      document.querySelector('.menu-close').addEventListener('click', (event) => {
+        siteNavigation.toggleAttribute('data-keyboard', event.detail === 0);
+      });
+      siteNavigation.addEventListener('toggle', (event) => {
+        const opened = event.newState === 'open';
+        menuTrigger.setAttribute('aria-expanded', String(opened));
+        mainContent.inert = opened;
+        contactTrigger.inert = opened;
+        if (opened) {
+          const selected = tabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
+          selected.focus({ preventScroll: true });
+          moveIndicator(false);
+          revealTab(selected, false);
+        } else if (mobileNavigation.matches && siteNavigation.contains(document.activeElement)) {
+          menuTrigger.focus({ preventScroll: true });
+        }
+      });
+      siteNavigation.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') siteNavigation.setAttribute('data-keyboard', '');
+        if (event.key !== 'Tab' || !siteNavigation.matches(':popover-open')) return;
+        const controls = [...siteNavigation.querySelectorAll('button')].filter((button) => button.tabIndex >= 0);
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      });
+      mobileNavigation.addEventListener('change', syncNavigationLayout);
+      syncNavigationLayout();
       const indicator = document.createElement('div');
       indicator.className = 'tab-indicator';
       indicator.setAttribute('aria-hidden', 'true');
@@ -657,12 +731,12 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }
       function moveIndicator(animate) {
         const tab = tabs.find((item) => item.getAttribute('aria-selected') === 'true');
-        if (!tab) return;
-        const width = tab.offsetWidth + 'px';
-        const transform = `translate(${tab.offsetLeft}px, ${tab.offsetTop + tab.offsetHeight - 1}px)`;
-        if (indicator.style.width === width && indicator.style.transform === transform) return;
+        if (!tab || !tab.offsetHeight) return;
+        const height = Math.max(24, tab.offsetHeight - 18) + 'px';
+        const transform = `translateY(${tab.offsetTop + 9}px)`;
+        if (indicator.style.height === height && indicator.style.transform === transform) return;
         indicator.classList.toggle('is-animated', animate);
-        indicator.style.width = width;
+        indicator.style.height = height;
         indicator.style.transform = transform;
       }
       function selectTab(tab, animate = true) {
@@ -686,23 +760,30 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }
       tabs.forEach((tab, index) => {
         tab.addEventListener('click', (event) => {
+          siteNavigation.toggleAttribute('data-keyboard', event.detail === 0);
           selectTab(tab, event.detail !== 0);
           history.replaceState(null, '', '#' + tab.dataset.route);
           syncWriteups();
+          closeNavigation();
         });
         tab.addEventListener('keydown', (event) => {
           let next;
-          if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
-          else if (event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
+          if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+          else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
           else if (event.key === 'Home') next = 0;
           else if (event.key === 'End') next = tabs.length - 1;
           else return;
           event.preventDefault();
           tabs[next].focus({ preventScroll: true });
-          tabs[next].click();
+          selectTab(tabs[next], false);
+          history.replaceState(null, '', '#' + tabs[next].dataset.route);
+          syncWriteups();
         });
       });
-      window.addEventListener('hashchange', () => syncTab(true));
+      window.addEventListener('hashchange', () => {
+        syncTab(true);
+        closeNavigation();
+      });
       new ResizeObserver(() => {
         moveIndicator(false);
         revealTab(tabs.find((tab) => tab.getAttribute('aria-selected') === 'true'), false);

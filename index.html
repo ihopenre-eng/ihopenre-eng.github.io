@@ -150,7 +150,8 @@
       @media (hover: hover) and (pointer: fine) { .contact-trigger:hover { border-color: #707070; } .contact-close:hover { background: #202020; color: #fff; } }
       @media (prefers-reduced-motion: reduce) { .contact-panel, .contact-trigger { transition: none; transform: none; } }
       @media (max-width: 480px) { .contact-trigger { right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom)); } .contact-panel { right: 1rem; bottom: calc(4.5rem + env(safe-area-inset-bottom)); width: min(320px, calc(100vw - 2rem)); } }
-      @media (max-width: 480px) { main, main:has(.writeup:not([hidden])) { width: min(100% - 2rem, 860px); padding-top: 2rem; } a { font-size: .82rem; } #security-panel li a { align-items: flex-start; flex-wrap: wrap; } #security-panel .cve-severity { margin-left: 0; } }
+      @media (max-width: 480px) { main, main:has(.writeup:not([hidden])) { width: min(100% - 2rem, 860px); padding-top: 2rem; } a { font-size: .82rem; } }
+      @media (max-width: 600px) { #security-panel li { padding: .8rem 0; } #security-panel li a { flex-direction: column; align-items: flex-start; gap: .35rem; } #security-panel .cve-severity { margin-left: 0; line-height: 1.4; } }
       @media (max-width: 1000px) { .header-inner { width: calc(100% - 3rem); } .tabs { justify-content: flex-start; } }
       @media (max-width: 480px) { .header-inner { width: calc(100% - 2rem); } .tabs { gap: 1.4rem; } .tab { font-size: .74rem; letter-spacing: .015em; } .tab small { margin-left: .25rem; font-size: .58rem; } .writeup h1 { font-size: 2.15rem; } .writeup p, .writeup li { font-size: .95rem; } }
       @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }

@@ -23,7 +23,7 @@
       main { width: min(640px, calc(100% - 3rem)); margin: 0 auto; padding: clamp(4rem, 14vh, 8rem) 0; }
       main:has(.writeup:not([hidden])) { width: min(860px, calc(100% - 3rem)); }
       section + section { margin-top: 4rem; }
-      .identity { margin: 0 0 .45rem; color: #a3a3a3; font-size: .72rem; font-weight: 500; letter-spacing: .08em; }
+      .identity { margin: 0 0 1.5rem; color: #a3a3a3; font-size: .72rem; font-weight: 500; letter-spacing: .08em; }
       .intro { margin: 0 0 2rem; color: #d1d5da; font-size: .78rem; line-height: 1.6; }
       .identity a { color: inherit; font: inherit; text-decoration: none; }
       .identity a:hover, .identity a:focus-visible { color: #f5f5f5; text-decoration: underline; text-underline-offset: .25em; }
@@ -132,7 +132,6 @@
   <body>
     <main>
       <p class="identity">Lee Seonghyeon · 이성현 · lshdf</p>
-      <p class="identity">                                     </p>
       <nav class="tabs" role="tablist" aria-label="포트폴리오 분류">
         <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">Security <small>10</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">Merged PRs · MRs <small>35</small></button>

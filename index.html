@@ -61,6 +61,20 @@
       .project-list h3 a { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font: inherit; }
       .project-list h3 span { font-size: 1rem; font-weight: 400; }
       .project-list p { max-width: 54ch; margin: .5rem 0 0; color: #a3a3a3; font-size: .85rem; line-height: 1.6; }
+      .design-list { display: grid; gap: 1.5rem; }
+      .design-list li { display: block; padding: 0; border: 0; }
+      .design-card { display: block; overflow: hidden; border: 1px solid #272727; border-radius: 12px; font-size: inherit; text-decoration: none; }
+      .design-card:focus-visible { outline: 2px solid #f5f5f5; outline-offset: 5px; text-decoration: none; }
+      .design-card:hover { text-decoration: none; }
+      .design-preview { display: flex; align-items: center; justify-content: center; gap: 1.5rem; padding: 2rem; background: #0d0d0f; border-bottom: 1px solid #272727; }
+      .design-preview img { display: block; width: min(36%, 165px); height: auto; border: 1px solid #303036; border-radius: 18px; box-shadow: 0 12px 32px #0008; }
+      .design-caption { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 1.4rem 1.5rem; }
+      .design-caption h3 { margin: 0; color: #f5f5f5; font-size: 1.05rem; font-weight: 550; letter-spacing: -.015em; }
+      .design-caption p { margin: .5rem 0 0; color: #999; font-size: .76rem; line-height: 1.6; }
+      .design-link { display: inline-flex; align-items: center; gap: .5rem; flex-shrink: 0; color: #bbb; font-size: .68rem; letter-spacing: .02em; }
+      .design-link svg { width: 14px; height: 14px; }
+      @media (hover: hover) and (pointer: fine) { .design-card:hover { border-color: #555; } .design-card:hover .design-link { color: #fff; } }
+      @media (max-width: 480px) { .design-preview { gap: 1rem; padding: 1.5rem 1rem; } .design-preview img { width: 43%; border-radius: 14px; } .design-caption { align-items: flex-start; gap: 1rem; padding: 1.2rem; } .design-caption h3 { font-size: .95rem; } .design-link { margin-top: .2rem; } }
       .bounty-name { color: #f5f5f5; font-size: .82rem; font-weight: 600; letter-spacing: .01em; }
       .bounty-hof li a { font-size: inherit; }
       .bounty-profile { margin-top: 2.5rem; }
@@ -157,6 +171,7 @@
         <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">Security <small>10</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">Merged PRs · MRs <small>35</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="development-panel" id="development-tab" data-tab="development-panel" data-route="development" tabindex="-1">Development <small>05</small></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="design-panel" id="design-tab" data-tab="design-panel" data-route="design" tabindex="-1">Design <small>02</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="bugbounty-panel" id="bugbounty-tab" data-tab="bugbounty-panel" data-route="bugbounty" tabindex="-1">Bug Bounty <small>01</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="writeups-panel" id="writeups-tab" data-tab="writeups-panel" data-route="writeups" tabindex="-1">Writeups <small>02</small></button>
         <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="research-panel" id="research-tab" data-tab="research-panel" data-route="research" tabindex="-1">Research <small>01</small></button>
@@ -261,6 +276,31 @@
           <li>
             <h3><a href="https://github.com/updatecli/logmask">logmask <span aria-hidden="true">↗</span></a></h3>
             <p>A Go library that masks registered secrets in logs.</p>
+          </li>
+        </ul>
+      </section>
+      <section class="tab-panel" id="design-panel" role="tabpanel" aria-labelledby="design-tab" hidden>
+        <h2>Selected designs</h2>
+        <ul class="design-list">
+          <li>
+            <a class="design-card" href="https://www.figma.com/design/ySsZY1FaZ4kV8H70g5VqRq/CGV-Vietnam-%E2%80%94-Liquid-Glass-App?node-id=0-1" target="_blank" rel="noopener noreferrer" aria-label="CGV Vietnam — Liquid Glass App, Figma에서 보기 (새 탭)">
+              <div class="design-preview">
+                <img src="assets/design/cgv-home.png" width="393" height="852" loading="lazy" alt="CGV Vietnam 앱의 영화 추천과 예매 홈 화면" />
+                <img src="assets/design/cgv-movies.png" width="393" height="852" loading="lazy" alt="CGV Vietnam 앱의 영화 목록과 상영 형식 필터 화면" />
+              </div>
+              <div class="design-caption">
+                <div><h3>CGV Vietnam</h3><p>Cinema app · iOS · Liquid Glass</p></div>
+                <span class="design-link">Figma <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" /></svg></span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="design-card" href="https://www.figma.com/design/ndHPzr7WfiUJqvHkqEdEY7/KISMO?node-id=162-221" target="_blank" rel="noopener noreferrer" aria-label="KISMO, Figma에서 보기 (새 탭)">
+              <div class="design-caption">
+                <div><h3>KISMO</h3><p>UI design · Figma</p></div>
+                <span class="design-link">Figma <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" /></svg></span>
+              </div>
+            </a>
           </li>
         </ul>
       </section>

@@ -104,9 +104,28 @@
       .writeup table { width: 100%; margin-top: 1rem; border-collapse: collapse; color: #e1e4e8; font-size: .9rem; text-align: left; }
       .writeup th, .writeup td { padding: .7rem .5rem; border-bottom: 1px solid #25282c; vertical-align: top; }
       .writeup th { color: #a3a3a3; font-size: .72rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
-      .contact { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid #252525; }
-      .contact-links { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; }
-      .contact-links a { font-size: .82rem; }
+      main { padding-bottom: 7rem; }
+      .contact-trigger { position: fixed; right: max(1.5rem, env(safe-area-inset-right)); bottom: calc(1.5rem + env(safe-area-inset-bottom)); z-index: 10; display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; padding: .65rem 1rem; border: 1px solid #363636; border-radius: 999px; background: #111; color: #f5f5f5; font: inherit; font-size: .8rem; cursor: pointer; box-shadow: 0 4px 24px #0006; transition: transform 120ms cubic-bezier(.23, 1, .32, 1), border-color 150ms ease; }
+      .contact-trigger svg { width: 16px; height: 16px; }
+      .contact-trigger:active { transform: scale(.97); }
+      .contact-trigger:focus-visible, .contact-close:focus-visible, .contact-panel a:focus-visible { outline: 2px solid #f5f5f5; outline-offset: 4px; }
+      .contact-panel { position: fixed; inset: auto; right: max(1.5rem, env(safe-area-inset-right)); bottom: calc(5rem + env(safe-area-inset-bottom)); width: min(320px, calc(100vw - 3rem)); max-height: calc(100dvh - 7rem); overflow-y: auto; margin: 0; padding: 1.2rem; border: 1px solid #303030; border-radius: 16px; background: #101010; color: #f5f5f5; box-shadow: 0 12px 60px #0009; opacity: 0; transform: translateY(6px) scale(.98); transform-origin: bottom right; transition: opacity 160ms ease, transform 160ms cubic-bezier(.23, 1, .32, 1), display 160ms allow-discrete, overlay 160ms allow-discrete; }
+      .contact-panel:popover-open { opacity: 1; transform: none; }
+      @starting-style { .contact-panel:popover-open { opacity: 0; transform: translateY(6px) scale(.98); } }
+      .contact-panel::backdrop { background: transparent; }
+      .contact-panel[data-keyboard] { transition: none; }
+      .contact-panel-header { display: flex; align-items: center; justify-content: space-between; margin: -.3rem -.3rem 1rem 0; }
+      .contact-panel h2 { margin: 0; font-size: .85rem; letter-spacing: .02em; }
+      .contact-close { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 8px; background: none; color: #999; cursor: pointer; }
+      .contact-close svg { width: 16px; height: 16px; }
+      .contact-email { display: block; padding: 0 0 1.2rem; font-size: .92rem; }
+      .contact-email span { display: block; margin-bottom: .45rem; color: #888; font-size: .6rem; letter-spacing: .1em; }
+      .contact-profiles { display: grid; border-top: 1px solid #292929; padding-top: .45rem; }
+      .contact-profiles a { display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: .82rem; }
+      .contact-profiles a span { font-size: 1rem; }
+      @media (hover: hover) and (pointer: fine) { .contact-trigger:hover { border-color: #707070; } .contact-close:hover { background: #202020; color: #fff; } }
+      @media (prefers-reduced-motion: reduce) { .contact-panel, .contact-trigger { transition: none; transform: none; } }
+      @media (max-width: 480px) { .contact-trigger { right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom)); } .contact-panel { right: 1rem; bottom: calc(4.5rem + env(safe-area-inset-bottom)); width: min(320px, calc(100vw - 2rem)); } }
       @media (max-width: 480px) { main, main:has(.writeup:not([hidden])) { width: min(100% - 2rem, 860px); padding-top: 3rem; } a { font-size: .82rem; } #security-panel li a { align-items: flex-start; flex-wrap: wrap; } #security-panel .cve-severity { margin-left: 0; } }
       @media (max-width: 480px) { .tabs { flex-wrap: wrap; gap: .75rem; } .tab { font-size: .65rem; letter-spacing: .015em; min-height: 44px; } .tab small { margin-left: .15rem; font-size: .55rem; } .writeup h1 { font-size: 2.15rem; } .writeup p, .writeup li { font-size: .95rem; } }
       @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }
@@ -499,17 +518,37 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         </section>
         </article>
       </div>
-      <footer class="contact" aria-labelledby="contact-title">
-        <h2 id="contact-title">Contact</h2>
-        <div class="contact-links">
-          <a href="mailto:ihopenre@gmail.com">ihopenre@gmail.com</a>
-          <a href="https://github.com/ihopenre-eng" rel="me">GitHub ↗</a>
-          <a href="https://gitlab.com/ihopenre-eng" rel="me">GitLab ↗</a>
-          <a href="https://velog.io/@ihopenre-eng/posts" rel="me">Blog ↗</a>
-        </div>
-      </footer>
     </main>
+    <button class="contact-trigger" id="contact-trigger" type="button" popovertarget="contact-panel" aria-controls="contact-panel" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+      Contact
+    </button>
+    <aside class="contact-panel" id="contact-panel" popover="auto" role="dialog" aria-labelledby="contact-title">
+      <div class="contact-panel-header">
+        <h2 id="contact-title">Contact</h2>
+        <button class="contact-close" type="button" popovertarget="contact-panel" popovertargetaction="hide" aria-label="연락처 닫기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <a class="contact-email" href="mailto:ihopenre@gmail.com"><span>EMAIL</span>ihopenre@gmail.com</a>
+      <nav class="contact-profiles" aria-label="연락처 및 프로필">
+        <a href="https://github.com/ihopenre-eng" rel="me">GitHub <span aria-hidden="true">↗</span></a>
+        <a href="https://gitlab.com/ihopenre-eng" rel="me">GitLab <span aria-hidden="true">↗</span></a>
+        <a href="https://velog.io/@ihopenre-eng/posts" rel="me">Blog <span aria-hidden="true">↗</span></a>
+      </nav>
+    </aside>
     <script>
+      const contactTrigger = document.getElementById('contact-trigger');
+      const contactPanel = document.getElementById('contact-panel');
+      contactTrigger.addEventListener('click', (event) => {
+        contactPanel.toggleAttribute('data-keyboard', event.detail === 0);
+      });
+      contactPanel.addEventListener('toggle', (event) => {
+        contactTrigger.setAttribute('aria-expanded', String(event.newState === 'open'));
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') contactPanel.setAttribute('data-keyboard', '');
+      });
       const tabs = [...document.querySelectorAll('[data-tab]')];
       const panels = document.querySelectorAll('.tab-panel');
       const tabList = document.querySelector('.tabs');

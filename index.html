@@ -133,7 +133,7 @@
         .tab-panel:not([hidden]), .tab-panel:not([hidden]) li { animation: none; }
       }
     </style>
-    <link rel="stylesheet" href="assets/dock.css?v=20261017-rail" />
+    <link rel="stylesheet" href="assets/dock.css?v=20261017-rail-hint" />
   </head>
   <body>
     <aside class="site-dock" id="site-navigation" aria-label="사이트 내비게이션" aria-describedby="dock-swipe-help">
@@ -165,6 +165,11 @@
           <img src="favicon.png" width="30" height="30" alt="" /><span class="dock-tip">Contact</span>
         </button>
       </div>
+      <div class="dock-rail-cues" aria-hidden="true">
+        <svg class="dock-rail-cue-left" viewBox="0 0 8 12"><path d="m6 2-4 4 4 4"/></svg>
+        <svg class="dock-rail-cue-right" viewBox="0 0 8 12"><path d="m2 2 4 4-4 4"/></svg>
+      </div>
+      <p class="dock-rail-hint" aria-hidden="true">좌우로 밀어서 더 보기</p>
     </aside>
     <p class="dock-sr-only" id="dock-swipe-help">누른 채 드래그한 뒤 놓으면 탭이 전환됩니다. 모바일에서는 바의 왼쪽이나 오른쪽 끝으로 이동하면 그 방향의 숨겨진 탭들이 나타납니다. 클릭과 방향키로도 선택할 수 있습니다.</p>
     <main>
@@ -708,7 +713,7 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }).observe(tabList);
       syncTab(false);
     </script>
-    <script src="assets/dock-swipe.js?v=20261017-rail"></script>
+    <script src="assets/dock-swipe.js?v=20261017-rail-hint"></script>
     <script src="assets/dock-scroll.js?v=20261017-rail"></script>
   </body>
 </html>

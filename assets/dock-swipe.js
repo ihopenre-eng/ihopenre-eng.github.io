@@ -4,11 +4,32 @@
   const mobile = matchMedia('(max-width: 900px)');
   const tabs = [...nav.querySelectorAll('[data-tab]')];
   const indicator = nav.querySelector('.dock-indicator');
+  const dock = nav.closest('.site-dock');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let gesture = null;
   let suppressClickUntil = 0;
   let edgeFrame = 0;
   let edgeTime = 0;
+  const hintKey = 'portfolio-dock-hint-seen-v1';
+  let hintSeen = false;
+  try { hintSeen = localStorage.getItem(hintKey) === '1'; } catch { /* 안내 상태는 저장소 없이도 동작한다. */ }
+
+  function updateRailHints() {
+    const maxScroll = nav.scrollWidth - nav.clientWidth;
+    dock.toggleAttribute('data-rail-left', mobile.matches && nav.scrollLeft > 2);
+    dock.toggleAttribute('data-rail-right', mobile.matches && nav.scrollLeft < maxScroll - 2);
+    dock.toggleAttribute('data-show-rail-hint', mobile.matches && maxScroll > 2 && !hintSeen);
+  }
+  function dismissRailHint() {
+    if (!mobile.matches || hintSeen) return;
+    hintSeen = true;
+    dock.removeAttribute('data-show-rail-hint');
+    try { localStorage.setItem(hintKey, '1'); } catch { /* 현재 방문에서는 안내를 다시 표시하지 않는다. */ }
+  }
+  nav.addEventListener('scroll', updateRailHints, { passive: true });
+  new ResizeObserver(updateRailHints).observe(nav);
+  mobile.addEventListener('change', updateRailHints);
+  requestAnimationFrame(updateRailHints);
 
   // 이전에 잘못 추가한 도크 위치 기억 기능의 값만 정리한다.
   try { localStorage.removeItem('portfolio-dock-position-v1'); } catch { /* 저장소 없이도 전환할 수 있다. */ }
@@ -99,6 +120,7 @@
     if (!gesture.moved) {
       if (Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) < 6) return;
       gesture.moved = true;
+      dismissRailHint();
       nav.setAttribute('data-scrubbing', '');
       gesture.button.setPointerCapture(event.pointerId);
       if (mobile.matches) { edgeTime = performance.now(); edgeFrame = requestAnimationFrame(edgeScroll); }

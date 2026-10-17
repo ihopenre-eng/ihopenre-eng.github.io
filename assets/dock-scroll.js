@@ -2,7 +2,7 @@
 (() => {
   const dock = document.getElementById('site-navigation');
   const nav = dock.querySelector('.dock-tabs');
-  const popovers = [...document.querySelectorAll('#dock-more-panel, #contact-panel')];
+  const popovers = [...document.querySelectorAll('#dock-more-panel[popover]')];
   let lastY = Math.max(0, scrollY);
   let travel = 0;
   let frame = 0;

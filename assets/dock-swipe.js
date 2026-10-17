@@ -77,7 +77,7 @@
       gesture.moved = true;
       nav.setAttribute('data-scrubbing', '');
       gesture.button.setPointerCapture(event.pointerId);
-      for (const panel of document.querySelectorAll('#dock-more-panel, #contact-panel')) if (panel.matches(':popover-open')) panel.hidePopover();
+      for (const panel of document.querySelectorAll('#dock-more-panel[popover]')) if (panel.matches(':popover-open')) panel.hidePopover();
     }
     activateAt(event.clientX, event.clientY);
   }, { passive: true });

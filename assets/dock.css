@@ -28,7 +28,7 @@
 .dock-tab-label[data-instant], .dock-tip[data-instant] { transition: none; }
 .dock-footer { position: relative; margin-top: 10px; padding-top: 10px; border: 0; }
 .dock-profile img { display: block; width: 34px; height: 34px; padding: 0; object-fit: cover; border: 0; border-radius: 50%; background: #111; pointer-events: none; }
-.dock-profile[aria-expanded="true"], .dock-more[aria-expanded="true"] { background: #303030; color: #fff; }
+.dock-profile[aria-selected="true"], .dock-more[aria-expanded="true"] { background: #303030; color: #fff; }
 .dock-more { display: none; }
 .dock-tabs.has-indicator .dock-tab[aria-selected="true"] { background: transparent; }
 .dock-indicator { position: absolute; top: 0; left: 0; width: 64px; height: 52px; border: 0; border-radius: 28px; background: #303030; box-shadow: none; pointer-events: none; will-change: transform; }
@@ -44,7 +44,6 @@
 .dock-menu-item small { margin-left: auto; color: #8e969e; font-size: .68rem; }
 .dock-menu-item[aria-current="page"], .dock-menu-item:focus-visible { background: #202020; color: #fff; outline: none; }
 .dock-menu-item:active { background: #282828; }
-.contact-panel { inset: auto auto max(1.5rem, calc(50dvh - 250px)) 7.5rem; border-color: #252525; border-radius: 18px; background: #090909; transform-origin: bottom left; }
 @media (hover: hover) and (pointer: fine) {
   .dock-tab:not([aria-selected="true"]):hover { background: #171717; }
   .dock-tab:hover .dock-tab-label, .dock-profile:hover .dock-tip { opacity: 1; }
@@ -65,12 +64,12 @@
   .dock-footer { display: flex; gap: 0; margin: 0; padding: 0; border: 0; }
   .dock-indicator { background: transparent; border-radius: 999px; }
   .dock-indicator::before { content: ""; position: absolute; inset: 0 clamp(0px, calc((100vw - 320px) / 17.5), 4px); border-radius: inherit; background: #303030; }
-  .dock-more, .dock-more[aria-expanded="true"], .dock-profile[aria-expanded="true"] { display: grid; background: transparent; }
+  .dock-more, .dock-more[aria-expanded="true"], .dock-profile[aria-selected="true"] { display: grid; background: transparent; }
+  .dock-profile[aria-selected="true"]::before { content: ""; position: absolute; inset: 0 clamp(0px, calc((100vw - 320px) / 17.5), 4px); border-radius: inherit; background: #303030; }
   .dock-more::before { content: ""; position: absolute; width: calc(var(--dock-control) * .82); height: calc(var(--dock-control) * .82); border-radius: 50%; background: #171717; }
   .dock-more[data-active]::before, .dock-more[aria-expanded="true"]::before { background: #303030; }
   .dock-tab-label, .dock-tip { left: 50%; top: auto; bottom: calc(100% + 20px); transform: translateX(-50%); }
-  .dock-profile img { width: clamp(26px, calc(var(--dock-height) * .42), 30px); height: clamp(26px, calc(var(--dock-height) * .42), 30px); }
-  .contact-panel { inset: auto 1rem calc(5.75rem + env(safe-area-inset-bottom)) auto; width: min(320px, calc(100vw - 2rem)); transform-origin: bottom right; }
+  .dock-profile img { position: relative; width: clamp(26px, calc(var(--dock-height) * .42), 30px); height: clamp(26px, calc(var(--dock-height) * .42), 30px); }
 }
 @media (min-width: 901px) and (max-height: 620px) {
   .site-dock { top: 1rem; max-height: calc(100dvh - 2rem); overflow-y: auto; overscroll-behavior: contain; transform: none; }

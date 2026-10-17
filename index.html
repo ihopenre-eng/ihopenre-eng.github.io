@@ -143,7 +143,7 @@
         .tab-panel:not([hidden]), .tab-panel:not([hidden]) li { animation: none; }
       }
     </style>
-    <link rel="stylesheet" href="assets/dock.css?v=20261017-flat-motion" />
+    <link rel="stylesheet" href="assets/dock.css?v=20261017-mobile-spacing" />
   </head>
   <body>
     <aside class="site-dock" id="site-navigation" aria-label="사이트 내비게이션" aria-describedby="dock-swipe-help">
@@ -611,6 +611,10 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       const morePanel = document.getElementById('dock-more-panel');
       const mobileNavigation = matchMedia('(max-width: 900px)');
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+      siteNavigation.addEventListener('pointerdown', () => siteNavigation.setAttribute('data-pointer-input', ''));
+      document.addEventListener('keydown', (event) => {
+        if (!['Shift', 'Control', 'Alt', 'Meta'].includes(event.key)) siteNavigation.removeAttribute('data-pointer-input');
+      });
       const motionEase = getComputedStyle(siteNavigation).getPropertyValue('--ease-out').trim();
       let panelMotion = null;
       let tooltipWarmUntil = 0;

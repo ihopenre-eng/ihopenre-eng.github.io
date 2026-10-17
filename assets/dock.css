@@ -12,10 +12,13 @@
 .dock-tab[aria-selected="true"] { color: #fff; background: #303030; }
 .dock-tab[aria-selected="true"] > svg { stroke-width: 2; }
 .dock-tab:focus-visible, .dock-profile:focus-visible, .dock-more:focus-visible { outline: 2px solid #d9dde1; outline-offset: 2px; }
+/* 터치·마우스로 만든 포커스에는 원을 그리지 않고 키보드 포커스는 유지한다. */
+.site-dock[data-pointer-input] :is(.dock-tab, .dock-profile, .dock-more):focus-visible { outline: none; }
 .dock-tab:active, .dock-profile:active, .dock-more:active { transform: scale(.94); }
 .dock-tab-label, .dock-tip { position: absolute; left: calc(100% + 22px); top: 50%; display: flex; align-items: center; gap: 12px; width: max-content; min-height: 36px; padding: 7px 10px; border: 0; border-radius: 10px; background: #171717; color: #f1f1f1; font-size: .75rem; font-weight: 500; letter-spacing: 0; line-height: 1.3; white-space: nowrap; opacity: 0; transform: translateY(-50%); pointer-events: none; transition: opacity 125ms var(--ease-out); }
 .dock-tab-label small { color: #aaa; font-size: .65rem; font-variant-numeric: tabular-nums; }
 .dock-tab:focus-visible .dock-tab-label, .dock-profile:focus-visible .dock-tip { opacity: 1; transition: none; }
+.site-dock[data-pointer-input] :focus-visible :is(.dock-tab-label, .dock-tip) { opacity: 0; }
 .dock-tab-label[data-instant], .dock-tip[data-instant] { transition: none; }
 .dock-footer { position: relative; margin-top: 10px; padding-top: 10px; border: 0; }
 .dock-profile img { display: block; width: 34px; height: 34px; padding: 0; object-fit: cover; border: 0; border-radius: 50%; background: #111; pointer-events: none; }
@@ -45,12 +48,12 @@
 @media (max-width: 900px) {
   body { padding-left: 0; }
   main, main:has(.writeup:not([hidden])) { padding-top: calc(2.5rem + env(safe-area-inset-top)); padding-bottom: calc(8rem + env(safe-area-inset-bottom)); }
-  .site-dock { display: flex; align-items: center; gap: 4px; top: auto; left: 50%; bottom: calc(12px + env(safe-area-inset-bottom)); width: max-content; max-width: calc(100vw - 24px); padding: 7px; border-radius: 36px; transform: translateX(-50%); }
-  .dock-tabs { flex-direction: row; gap: 4px; }
+  .site-dock { --dock-gap: clamp(4px, calc((100vw - 314px) / 5), 20px); display: flex; align-items: center; gap: var(--dock-gap); top: auto; left: 50%; bottom: calc(12px + env(safe-area-inset-bottom)); width: max-content; max-width: calc(100vw - 24px); padding: 7px; border-radius: 36px; transform: translateX(-50%); }
+  .dock-tabs { flex-direction: row; gap: var(--dock-gap); }
   .dock-tab, .dock-more, .dock-profile { width: 46px; height: 46px; border-radius: 50%; }
   .dock-tab > svg, .dock-more > svg { width: 25px; height: 25px; }
   .dock-tab[data-mobile-secondary] { display: none; }
-  .dock-footer { display: flex; gap: 4px; margin: 0; padding: 0; border: 0; }
+  .dock-footer { display: flex; gap: var(--dock-gap); margin: 0; padding: 0; border: 0; }
   .dock-more { display: grid; }
   .dock-more[data-active] { background: #303030; color: #fff; }
   .dock-tab-label, .dock-tip { left: 50%; top: auto; bottom: calc(100% + 20px); transform: translateX(-50%); }
@@ -58,8 +61,7 @@
   .contact-panel { inset: auto 1rem calc(5.75rem + env(safe-area-inset-bottom)) auto; width: min(320px, calc(100vw - 2rem)); transform-origin: bottom right; }
 }
 @media (max-width: 359px) {
-  .site-dock { gap: 2px; padding: 7px 5px; }
-  .dock-tabs, .dock-footer { gap: 2px; }
+  .site-dock { --dock-gap: clamp(2px, calc((100vw - 298px) / 5), 12px); padding: 7px 5px; }
   .dock-tab, .dock-more, .dock-profile { width: 44px; height: 44px; }
 }
 @media (min-width: 901px) and (max-height: 620px) {

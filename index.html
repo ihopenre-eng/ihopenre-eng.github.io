@@ -143,7 +143,7 @@
         .tab-panel:not([hidden]), .tab-panel:not([hidden]) li { animation: none; }
       }
     </style>
-    <link rel="stylesheet" href="assets/dock.css?v=20261017-mobile-spacing" />
+    <link rel="stylesheet" href="assets/dock.css?v=20261017-reference-scroll" />
   </head>
   <body>
     <aside class="site-dock" id="site-navigation" aria-label="사이트 내비게이션" aria-describedby="dock-swipe-help">
@@ -163,7 +163,7 @@
         <button class="dock-tab" type="button" role="tab" aria-label="Bug Bounty, 1건" aria-selected="false" aria-controls="bugbounty-panel" id="bugbounty-tab" data-tab="bugbounty-panel" data-route="bugbounty" data-mobile-secondary tabindex="-1">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="10" height="15" rx="5"/><path d="m9 3 1.5 3m4.5-3-1.5 3M3 9l4 2m10 0 4-2M3 15h4m10 0h4M4 21l4-3m8 0 4 3M12 10v10"/></svg><span class="dock-tab-label">Bug Bounty <small>01</small></span>
         </button>
-        <button class="dock-tab" type="button" role="tab" aria-label="Writeups, 2개" aria-selected="false" aria-controls="writeups-panel" id="writeups-tab" data-tab="writeups-panel" data-route="writeups" tabindex="-1">
+        <button class="dock-tab" type="button" role="tab" aria-label="Writeups, 2개" aria-selected="false" aria-controls="writeups-panel" id="writeups-tab" data-tab="writeups-panel" data-route="writeups" data-mobile-secondary tabindex="-1">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Zm0 0v6h6M8 13h8m-8 4h6"/></svg><span class="dock-tab-label">Writeups <small>02</small></span>
         </button>
         <button class="dock-tab" type="button" role="tab" aria-label="Research, 1개" aria-selected="false" aria-controls="research-panel" id="research-tab" data-tab="research-panel" data-route="research" data-mobile-secondary tabindex="-1">
@@ -171,8 +171,8 @@
         </button>
       </nav>
       <div class="dock-footer">
-        <button class="dock-more" id="dock-more-trigger" type="button" popovertarget="dock-more-panel" aria-haspopup="menu" aria-controls="dock-more-panel" aria-expanded="false" aria-label="더 보기: Design, Bug Bounty, Research">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+        <button class="dock-more" id="dock-more-trigger" type="button" popovertarget="dock-more-panel" aria-haspopup="menu" aria-controls="dock-more-panel" aria-expanded="false" aria-label="더 보기: Design, Bug Bounty, Writeups, Research">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
         </button>
         <button class="dock-profile" id="contact-trigger" type="button" popovertarget="contact-panel" aria-controls="contact-panel" aria-expanded="false" aria-label="연락처 열기">
           <img src="favicon.png" width="30" height="30" alt="" /><span class="dock-tip">Contact</span>
@@ -611,6 +611,7 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       const morePanel = document.getElementById('dock-more-panel');
       const mobileNavigation = matchMedia('(max-width: 900px)');
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+      const overflowLabel = '더 보기: ' + tabs.filter((tab) => tab.hasAttribute('data-mobile-secondary')).map((tab) => tab.querySelector('.dock-tab-label').childNodes[0].textContent.trim()).join(', ');
       siteNavigation.addEventListener('pointerdown', () => siteNavigation.setAttribute('data-pointer-input', ''));
       document.addEventListener('keydown', (event) => {
         if (!['Shift', 'Control', 'Alt', 'Meta'].includes(event.key)) siteNavigation.removeAttribute('data-pointer-input');
@@ -728,7 +729,7 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         });
         const overflowSelected = mobileNavigation.matches && tab.hasAttribute('data-mobile-secondary');
         moreTrigger.toggleAttribute('data-active', overflowSelected);
-        moreTrigger.setAttribute('aria-label', overflowSelected ? '더 보기, 현재 ' + tab.querySelector('.dock-tab-label').textContent.trim() : '더 보기: Design, Bug Bounty, Research');
+        moreTrigger.setAttribute('aria-label', overflowSelected ? '더 보기, 현재 ' + tab.querySelector('.dock-tab-label').textContent.trim() : overflowLabel);
         if (overflowSelected) tabs.find((item) => !item.hasAttribute('data-mobile-secondary')).tabIndex = 0;
         morePanel.querySelectorAll('button').forEach((item) => {
           if (item.dataset.route === tab.dataset.route) item.setAttribute('aria-current', 'page');
@@ -790,6 +791,7 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }).observe(tabList);
       syncTab(false);
     </script>
-    <script src="assets/dock-swipe.js?v=20261017-motion"></script>
+    <script src="assets/dock-swipe.js?v=20261017-release"></script>
+    <script src="assets/dock-scroll.js?v=20261017"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-// 도크와 항목 순서는 고정하고, 누른 채 훑는 탭을 즉시 선택한다.
+// 드래그 중에는 배경만 미리 보고, 손을 놓을 때 탭 전환을 확정한다.
 (() => {
   const nav = document.querySelector('.dock-tabs');
   const mobile = matchMedia('(max-width: 900px)');
@@ -21,11 +21,14 @@
       const distance = Math.abs(position - (mobile.matches ? b.left + b.width / 2 : b.top + b.height / 2));
       return !best || distance < best.distance ? { tab, distance } : best;
     }, null)?.tab;
-    if (nearest && nearest.getAttribute('aria-selected') !== 'true') activateTab(nearest, false);
+    if (!nearest) return;
+    gesture.pendingTab = nearest;
+    tabs.forEach((tab) => tab.toggleAttribute('data-drag-preview', tab === nearest));
+    indicator.hidden = false;
+    indicator.style.width = nearest.offsetWidth + 'px';
+    indicator.style.height = nearest.offsetHeight + 'px';
     if (reduceMotion.matches) {
-      nav.removeAttribute('data-scrubbing');
-      moveIndicator(false);
-      nav.setAttribute('data-scrubbing', '');
+      indicator.style.transform = `translate(${nearest.offsetLeft}px, ${nearest.offsetTop}px)`;
       return;
     }
     // 배경만 포인터에 붙인다. 도크 위치와 탭 순서는 바뀌지 않는다.
@@ -43,15 +46,14 @@
     const previous = gesture;
     gesture = null;
     nav.removeAttribute('data-scrubbing');
+    tabs.forEach((tab) => tab.removeAttribute('data-drag-preview'));
     if (previous.button.hasPointerCapture(previous.id)) previous.button.releasePointerCapture(previous.id);
     if (previous.moved || previous.pointerType === 'touch') suppressClickUntil = performance.now() + 300;
     if (previous.moved) {
-      if (cancelled) {
-        history.replaceState(null, '', previous.hash || location.pathname + location.search);
-        syncTab(false);
-        window.scrollTo({ top: previous.scrollY, behavior: 'instant' });
+      if (cancelled || previous.multiTouch) {
+        moveIndicator(false);
       } else {
-        moveIndicator(!reduceMotion.matches);
+        activateTab(previous.pendingTab, true);
         tabs.find((tab) => tab.getAttribute('aria-selected') === 'true')?.focus({ preventScroll: true });
       }
     } else if (!cancelled && !previous.multiTouch && previous.pointerType === 'touch') {
@@ -65,7 +67,7 @@
     const button = event.target.closest('[data-tab]');
     if (!button) return;
     suppressClickUntil = 0;
-    gesture = { id: event.pointerId, pointerType: event.pointerType, button, x: event.clientX, y: event.clientY, hash: location.hash, scrollY, moved: false, multiTouch: false };
+    gesture = { id: event.pointerId, pointerType: event.pointerType, button, pendingTab: button, x: event.clientX, y: event.clientY, moved: false, multiTouch: false };
   });
   window.addEventListener('pointermove', (event) => {
     if (!gesture || event.pointerId !== gesture.id) return;

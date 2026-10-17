@@ -148,10 +148,10 @@
         .tab-panel:not([hidden]), .tab-panel:not([hidden]) li { animation: none; }
       }
     </style>
-    <link rel="stylesheet" href="assets/dock.css?v=20261017" />
+    <link rel="stylesheet" href="assets/dock.css?v=20261017-drag" />
   </head>
   <body>
-    <aside class="site-dock" id="site-navigation" aria-label="사이트 내비게이션">
+    <aside class="site-dock" id="site-navigation" aria-label="사이트 내비게이션" aria-describedby="dock-move-help">
       <nav class="dock-tabs" role="tablist" aria-label="포트폴리오 분류" aria-orientation="vertical">
         <button class="dock-tab" type="button" role="tab" aria-label="Security, 12건" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.3 3 7.5 7.5 9.5 4.5-2 7.5-5.2 7.5-9.5V6L12 3Z"/><path d="m8.5 12 2.3 2.3 4.7-5"/></svg><span class="dock-tab-label">Security <small>12</small></span>
@@ -184,6 +184,8 @@
         </button>
       </div>
     </aside>
+    <p class="dock-sr-only" id="dock-move-help">도크를 드래그해 위치를 옮길 수 있습니다. 도크 안에 포커스한 뒤 Alt와 방향키로 이동하고, Alt와 Home으로 기본 위치로 되돌립니다.</p>
+    <p class="dock-sr-only" id="dock-position-status" role="status" aria-live="polite"></p>
     <div class="dock-more-panel" id="dock-more-panel" popover="auto" role="menu" aria-label="추가 탭"></div>
     <main>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
@@ -771,5 +773,6 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }).observe(tabList);
       syncTab(false);
     </script>
+    <script src="assets/dock-drag.js?v=20261017"></script>
   </body>
 </html>

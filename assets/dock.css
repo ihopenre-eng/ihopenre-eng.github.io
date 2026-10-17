@@ -13,14 +13,14 @@
 .dock-tabs[data-scrubbing] .dock-tab[data-drag-preview] > svg { stroke-width: 2; }
 .dock-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .dock-tabs { position: relative; display: flex; flex-direction: column; gap: 6px; margin: 0; touch-action: none; }
-.dock-tab, .dock-profile, .dock-more { position: relative; z-index: 1; display: grid; place-items: center; flex: 0 0 auto; width: 64px; height: 52px; margin: 0; padding: 0; border: 0; border-radius: 28px; background: transparent; color: #f5f5f5; font: inherit; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; transition: transform 120ms var(--ease-out); }
-.dock-tab > svg, .dock-more > svg { display: block; width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.dock-tab, .dock-profile { position: relative; z-index: 1; display: grid; place-items: center; flex: 0 0 auto; width: 64px; height: 52px; margin: 0; padding: 0; border: 0; border-radius: 28px; background: transparent; color: #f5f5f5; font: inherit; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; transition: transform 120ms var(--ease-out); }
+.dock-tab > svg { display: block; width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
 .dock-tab[aria-selected="true"] { color: #fff; background: #303030; }
 .dock-tab[aria-selected="true"] > svg { stroke-width: 2; }
-.dock-tab:focus-visible, .dock-profile:focus-visible, .dock-more:focus-visible { outline: 2px solid #d9dde1; outline-offset: 2px; }
+.dock-tab:focus-visible, .dock-profile:focus-visible { outline: 2px solid #d9dde1; outline-offset: 2px; }
 /* 터치·마우스로 만든 포커스에는 원을 그리지 않고 키보드 포커스는 유지한다. */
-.site-dock[data-pointer-input] :is(.dock-tab, .dock-profile, .dock-more):focus-visible { outline: none; }
-.dock-tab:active, .dock-profile:active, .dock-more:active { transform: scale(.94); }
+.site-dock[data-pointer-input] :is(.dock-tab, .dock-profile):focus-visible { outline: none; }
+.dock-tab:active, .dock-profile:active { transform: scale(.94); }
 .dock-tab-label, .dock-tip { position: absolute; left: calc(100% + 22px); top: 50%; display: flex; align-items: center; gap: 12px; width: max-content; min-height: 36px; padding: 7px 10px; border: 0; border-radius: 10px; background: #171717; color: #f1f1f1; font-size: .75rem; font-weight: 500; letter-spacing: 0; line-height: 1.3; white-space: nowrap; opacity: 0; transform: translateY(-50%); pointer-events: none; transition: opacity 125ms var(--ease-out); }
 .dock-tab-label small { color: #aaa; font-size: .65rem; font-variant-numeric: tabular-nums; }
 .dock-tab:focus-visible .dock-tab-label, .dock-profile:focus-visible .dock-tip { opacity: 1; transition: none; }
@@ -28,27 +28,15 @@
 .dock-tab-label[data-instant], .dock-tip[data-instant] { transition: none; }
 .dock-footer { position: relative; margin-top: 10px; padding-top: 10px; border: 0; }
 .dock-profile img { display: block; width: 34px; height: 34px; padding: 0; object-fit: cover; border: 0; border-radius: 50%; background: #111; pointer-events: none; }
-.dock-profile[aria-selected="true"], .dock-more[aria-expanded="true"] { background: #303030; color: #fff; }
-.dock-more { display: none; }
+.dock-profile[aria-selected="true"] { background: #303030; color: #fff; }
 .dock-tabs.has-indicator .dock-tab[aria-selected="true"] { background: transparent; }
 .dock-indicator { position: absolute; top: 0; left: 0; width: 64px; height: 52px; border: 0; border-radius: 28px; background: #303030; box-shadow: none; pointer-events: none; will-change: transform; }
 .dock-indicator[hidden] { display: none; }
 .dock-indicator.is-animated { transition: transform 200ms var(--ease-in-out); }
-.dock-more-panel { position: fixed; inset: auto 1rem calc(5.75rem + env(safe-area-inset-bottom)) auto; width: min(250px, calc(100vw - 2rem)); margin: 0; padding: 8px; border: 1px solid #252525; border-radius: 18px; background: #090909; color: #f5f5f5; box-shadow: 0 12px 40px #0008; opacity: 0; transform: translateY(5px); transform-origin: bottom right; transition: opacity 140ms ease, transform 140ms cubic-bezier(.23, 1, .32, 1), display 140ms allow-discrete, overlay 140ms allow-discrete; }
-.dock-more-panel:popover-open { opacity: 1; transform: none; }
-@starting-style { .dock-more-panel:popover-open { opacity: 0; transform: translateY(5px); } }
-.dock-more-panel[data-keyboard] { transition: none; }
-.dock-menu-item { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 10px 12px; border: 0; border-radius: 11px; background: none; color: #c2c7cc; font: inherit; font-size: .82rem; text-align: left; cursor: pointer; touch-action: manipulation; }
-.dock-menu-item svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.dock-menu-item > span { color: inherit; font-size: inherit; letter-spacing: 0; }
-.dock-menu-item small { margin-left: auto; color: #8e969e; font-size: .68rem; }
-.dock-menu-item[aria-current="page"], .dock-menu-item:focus-visible { background: #202020; color: #fff; outline: none; }
-.dock-menu-item:active { background: #282828; }
 @media (hover: hover) and (pointer: fine) {
   .dock-tab:not([aria-selected="true"]):hover { background: #171717; }
   .dock-tab:hover .dock-tab-label, .dock-profile:hover .dock-tip { opacity: 1; }
-  .dock-profile:hover, .dock-more:hover { background: #171717; }
-  .dock-menu-item:hover { background: #171717; color: #fff; }
+  .dock-profile:hover { background: #171717; }
 }
 @media (max-width: 900px) {
   body { padding-left: 0; }
@@ -56,18 +44,16 @@
   /* 참고 이미지의 5칸·가로형 선택 배경 비율을 화면 너비에 맞춘다. */
   .site-dock { --dock-width: min(460px, calc(100vw - 24px)); --dock-height: clamp(56px, calc((100vw - 24px) / 6.7), 68px); --dock-slot: calc((var(--dock-width) - 12px) / 5); --dock-control: calc(var(--dock-height) - 12px); display: flex; align-items: center; gap: 0; top: auto; left: 50%; bottom: calc(12px + env(safe-area-inset-bottom)); width: var(--dock-width); height: var(--dock-height); padding: 6px; border-radius: 999px; transform: translateX(-50%); }
   .site-dock[data-scroll-hidden] { transform: translate(-50%, calc(100% + 24px + env(safe-area-inset-bottom))); }
-  .dock-tabs { flex-direction: row; gap: 0; }
-  .dock-tab, .dock-more, .dock-profile { width: var(--dock-slot); height: var(--dock-control); border-radius: 999px; }
-  .dock-tab > svg, .dock-more > svg { width: clamp(24px, calc(var(--dock-height) * .42), 28px); height: clamp(24px, calc(var(--dock-height) * .42), 28px); }
-  .dock-more > svg { position: relative; z-index: 1; }
-  .dock-tab[data-mobile-secondary] { display: none; }
+  .dock-tabs { flex: 0 0 calc(var(--dock-slot) * 4); width: calc(var(--dock-slot) * 4); min-width: 0; height: var(--dock-control); flex-direction: row; gap: 0; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; border-radius: 999px; }
+  .dock-tab, .dock-profile { width: var(--dock-slot); height: var(--dock-control); border-radius: 999px; }
+  .dock-tab > svg { width: clamp(24px, calc(var(--dock-height) * .42), 28px); height: clamp(24px, calc(var(--dock-height) * .42), 28px); }
+  .dock-tabs .dock-tab-label { display: none; }
+  .dock-tabs .dock-tab:focus-visible { outline-offset: -3px; }
   .dock-footer { display: flex; gap: 0; margin: 0; padding: 0; border: 0; }
   .dock-indicator { background: transparent; border-radius: 999px; }
   .dock-indicator::before { content: ""; position: absolute; inset: 0 clamp(0px, calc((100vw - 320px) / 17.5), 4px); border-radius: inherit; background: #303030; }
-  .dock-more, .dock-more[aria-expanded="true"], .dock-profile[aria-selected="true"] { display: grid; background: transparent; }
+  .dock-profile[aria-selected="true"] { background: transparent; }
   .dock-profile[aria-selected="true"]::before { content: ""; position: absolute; inset: 0 clamp(0px, calc((100vw - 320px) / 17.5), 4px); border-radius: inherit; background: #303030; }
-  .dock-more::before { content: ""; position: absolute; width: calc(var(--dock-control) * .82); height: calc(var(--dock-control) * .82); border-radius: 50%; background: #171717; }
-  .dock-more[data-active]::before, .dock-more[aria-expanded="true"]::before { background: #303030; }
   .dock-tab-label, .dock-tip { left: 50%; top: auto; bottom: calc(100% + 20px); transform: translateX(-50%); }
   .dock-profile img { position: relative; width: clamp(26px, calc(var(--dock-height) * .42), 30px); height: clamp(26px, calc(var(--dock-height) * .42), 30px); }
 }
@@ -79,6 +65,6 @@
   .dock-footer { margin-top: 6px; padding-top: 6px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .site-dock[data-motion-ready], .dock-tab, .dock-profile, .dock-more, .dock-indicator.is-animated, .dock-more-panel, .dock-tab-label, .dock-tip { transition: none; }
-  .dock-tab:active, .dock-profile:active, .dock-more:active { transform: none; }
+  .site-dock[data-motion-ready], .dock-tab, .dock-profile, .dock-indicator.is-animated, .dock-tab-label, .dock-tip { transition: none; }
+  .dock-tab:active, .dock-profile:active { transform: none; }
 }

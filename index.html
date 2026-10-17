@@ -133,7 +133,7 @@
         .tab-panel:not([hidden]), .tab-panel:not([hidden]) li { animation: none; }
       }
     </style>
-    <link rel="stylesheet" href="assets/dock.css?v=20261017-contact-tab" />
+    <link rel="stylesheet" href="assets/dock.css?v=20261017-rail" />
   </head>
   <body>
     <aside class="site-dock" id="site-navigation" aria-label="사이트 내비게이션" aria-describedby="dock-swipe-help">
@@ -161,16 +161,12 @@
         </button>
       </nav>
       <div class="dock-footer">
-        <button class="dock-more" id="dock-more-trigger" type="button" popovertarget="dock-more-panel" aria-haspopup="menu" aria-controls="dock-more-panel" aria-expanded="false" aria-label="더 보기: Design, Bug Bounty, Writeups, Research">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
         <button class="dock-profile" id="contact-trigger" type="button" role="tab" data-tab="contact-panel" data-route="contact" aria-controls="contact-panel" aria-selected="false" aria-label="Contact" tabindex="-1">
           <img src="favicon.png" width="30" height="30" alt="" /><span class="dock-tip">Contact</span>
         </button>
       </div>
     </aside>
-    <p class="dock-sr-only" id="dock-swipe-help">네비게이션을 누른 채 드래그하여 탭을 전환할 수 있습니다. PC에서는 위아래, 모바일에서는 좌우로 움직이세요. 클릭과 방향키로도 선택할 수 있습니다.</p>
-    <div class="dock-more-panel" id="dock-more-panel" popover="auto" role="menu" aria-label="추가 탭"></div>
+    <p class="dock-sr-only" id="dock-swipe-help">누른 채 드래그한 뒤 놓으면 탭이 전환됩니다. 모바일에서는 바의 왼쪽이나 오른쪽 끝으로 이동하면 그 방향의 숨겨진 탭들이 나타납니다. 클릭과 방향키로도 선택할 수 있습니다.</p>
     <main>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
         <section aria-labelledby="cve-title">
@@ -583,11 +579,8 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       const panels = document.querySelectorAll('.tab-panel');
       const tabList = document.querySelector('.dock-tabs');
       const siteNavigation = document.getElementById('site-navigation');
-      const moreTrigger = document.getElementById('dock-more-trigger');
-      const morePanel = document.getElementById('dock-more-panel');
       const mobileNavigation = matchMedia('(max-width: 900px)');
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-      const overflowLabel = '더 보기: ' + tabs.filter((tab) => tab.hasAttribute('data-mobile-secondary')).map((tab) => tab.querySelector('.dock-tab-label').childNodes[0].textContent.trim()).join(', ');
       siteNavigation.addEventListener('pointerdown', () => siteNavigation.setAttribute('data-pointer-input', ''));
       document.addEventListener('keydown', (event) => {
         if (!['Shift', 'Control', 'Alt', 'Meta'].includes(event.key)) siteNavigation.removeAttribute('data-pointer-input');
@@ -602,67 +595,25 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         });
         button.addEventListener('pointerleave', () => { tooltipWarmUntil = performance.now() + 300; });
       });
-      function closeNavigation() {
-        if (morePanel.matches(':popover-open')) morePanel.hidePopover();
-      }
       function revealTab(tab, animate) {
-        if (mobileNavigation.matches || !tab.offsetHeight) return;
+        if (!tab.offsetHeight) return;
+        if (mobileNavigation.matches) {
+          if (!tabList.contains(tab)) return;
+          const left = tab.offsetLeft;
+          const right = left + tab.offsetWidth;
+          if (left < tabList.scrollLeft || right > tabList.scrollLeft + tabList.clientWidth) {
+            tabList.scrollTo({ left: left - (tabList.clientWidth - tab.offsetWidth) / 2, behavior: animate && !reducedMotion.matches ? 'smooth' : 'instant' });
+          }
+          return;
+        }
         const top = tab.getBoundingClientRect().top - siteNavigation.getBoundingClientRect().top + siteNavigation.scrollTop;
         const bottom = top + tab.offsetHeight;
         if (top < siteNavigation.scrollTop || bottom > siteNavigation.scrollTop + siteNavigation.clientHeight) {
           siteNavigation.scrollTo({ top: top - (siteNavigation.clientHeight - tab.offsetHeight) / 2, behavior: animate && !reducedMotion.matches ? 'smooth' : 'instant' });
         }
       }
-      // 더 보기 메뉴는 기존 탭에서 생성해 이름·건수의 중복 관리를 피한다.
-      tabs.filter((tab) => tab.hasAttribute('data-mobile-secondary')).forEach((tab) => {
-        const item = document.createElement('button');
-        item.type = 'button';
-        item.className = 'dock-menu-item';
-        item.setAttribute('role', 'menuitem');
-        item.tabIndex = -1;
-        item.dataset.route = tab.dataset.route;
-        item.append(tab.querySelector('svg').cloneNode(true));
-        const label = document.createElement('span');
-        label.textContent = tab.querySelector('.dock-tab-label').childNodes[0].textContent.trim();
-        item.append(label, tab.querySelector('small').cloneNode(true));
-        item.addEventListener('click', (event) => {
-          morePanel.toggleAttribute('data-keyboard', event.detail === 0);
-          selectTab(tab, event.detail !== 0);
-          history.replaceState(null, '', '#' + tab.dataset.route);
-          syncWriteups();
-          closeNavigation();
-          moreTrigger.focus({ preventScroll: true });
-        });
-        morePanel.append(item);
-      });
-      moreTrigger.addEventListener('click', (event) => {
-        morePanel.toggleAttribute('data-keyboard', event.detail === 0);
-      });
-      morePanel.addEventListener('toggle', (event) => {
-        const opened = event.newState === 'open';
-        moreTrigger.setAttribute('aria-expanded', String(opened));
-        if (opened) {
-          (morePanel.querySelector('[aria-current="page"]') || morePanel.firstElementChild).focus({ preventScroll: true });
-        } else if (morePanel.contains(document.activeElement)) {
-          moreTrigger.focus({ preventScroll: true });
-        }
-      });
-      morePanel.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') morePanel.setAttribute('data-keyboard', '');
-        if (event.key === 'Tab') { closeNavigation(); return; }
-        const items = [...morePanel.querySelectorAll('button')];
-        const index = items.indexOf(document.activeElement);
-        let next;
-        if (event.key === 'ArrowDown') next = (index + 1) % items.length;
-        else if (event.key === 'ArrowUp') next = (index + items.length - 1) % items.length;
-        else if (event.key === 'Home') next = 0;
-        else if (event.key === 'End') next = items.length - 1;
-        else return;
-        event.preventDefault();
-        items[next].focus();
-      });
       mobileNavigation.addEventListener('change', () => {
-        closeNavigation();
+        tabList.scrollLeft = 0;
         tabList.setAttribute('aria-orientation', mobileNavigation.matches ? 'horizontal' : 'vertical');
         selectTab(tabs.find((tab) => tab.getAttribute('aria-selected') === 'true'), false);
       });
@@ -703,14 +654,6 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
           item.setAttribute('aria-selected', String(item === tab));
           item.tabIndex = item === tab ? 0 : -1;
         });
-        const overflowSelected = mobileNavigation.matches && tab.hasAttribute('data-mobile-secondary');
-        moreTrigger.toggleAttribute('data-active', overflowSelected);
-        moreTrigger.setAttribute('aria-label', overflowSelected ? '더 보기, 현재 ' + tab.querySelector('.dock-tab-label').textContent.trim() : overflowLabel);
-        if (overflowSelected) tabs.find((item) => !item.hasAttribute('data-mobile-secondary')).tabIndex = 0;
-        morePanel.querySelectorAll('button').forEach((item) => {
-          if (item.dataset.route === tab.dataset.route) item.setAttribute('aria-current', 'page');
-          else item.removeAttribute('aria-current');
-        });
         panels.forEach((panel) => {
           panel.toggleAttribute('data-keyboard', !animate);
           panel.hidden = panel.id !== tab.dataset.tab;
@@ -735,7 +678,6 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         selectTab(tab, animate);
         history.replaceState(null, '', '#' + tab.dataset.route);
         syncWriteups();
-        closeNavigation();
       }
       tabs.forEach((tab) => {
         tab.addEventListener('click', (event) => {
@@ -759,7 +701,6 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       });
       window.addEventListener('hashchange', () => {
         syncTab(true);
-        closeNavigation();
       });
       new ResizeObserver(() => {
         moveIndicator(false);
@@ -767,7 +708,7 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }).observe(tabList);
       syncTab(false);
     </script>
-    <script src="assets/dock-swipe.js?v=20261017-contact-tab"></script>
-    <script src="assets/dock-scroll.js?v=20261017-contact-tab"></script>
+    <script src="assets/dock-swipe.js?v=20261017-rail"></script>
+    <script src="assets/dock-scroll.js?v=20261017-rail"></script>
   </body>
 </html>

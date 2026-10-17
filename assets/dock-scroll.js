@@ -2,7 +2,6 @@
 (() => {
   const dock = document.getElementById('site-navigation');
   const nav = dock.querySelector('.dock-tabs');
-  const popovers = [...document.querySelectorAll('#dock-more-panel[popover]')];
   let lastY = Math.max(0, scrollY);
   let travel = 0;
   let frame = 0;
@@ -26,7 +25,7 @@
     const delta = y - lastY;
     lastY = y;
     const keyboardFocus = dock.contains(document.activeElement) && !dock.hasAttribute('data-pointer-input');
-    if (y <= 24 || pointerBusy || nav.hasAttribute('data-scrubbing') || popovers.some((panel) => panel.matches(':popover-open')) || keyboardFocus) {
+    if (y <= 24 || pointerBusy || nav.hasAttribute('data-scrubbing') || keyboardFocus) {
       reveal(keyboardFocus);
       return;
     }
@@ -52,9 +51,6 @@
   window.addEventListener('pointerup', release);
   window.addEventListener('pointercancel', release);
   window.addEventListener('blur', release);
-  popovers.forEach((panel) => panel.addEventListener('beforetoggle', (event) => {
-    if (event.newState === 'open') reveal();
-  }));
   window.addEventListener('hashchange', () => reveal());
   window.addEventListener('resize', () => {
     // 모바일 주소창 높이 변화에는 반응하지 않고 실제 가로 크기 변경에만 복원한다.

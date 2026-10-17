@@ -7,6 +7,8 @@
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let gesture = null;
   let suppressClickUntil = 0;
+  let edgeFrame = 0;
+  let edgeTime = 0;
 
   // 이전에 잘못 추가한 도크 위치 기억 기능의 값만 정리한다.
   try { localStorage.removeItem('portfolio-dock-position-v1'); } catch { /* 저장소 없이도 전환할 수 있다. */ }
@@ -36,15 +38,34 @@
     const last = visible[visible.length - 1];
     const offset = mobile.matches ? 'offsetLeft' : 'offsetTop';
     const size = mobile.matches ? 'offsetWidth' : 'offsetHeight';
-    const raw = position - (mobile.matches ? r.left : r.top) - nearest[size] / 2;
+    const raw = position - (mobile.matches ? r.left : r.top) + (mobile.matches ? nav.scrollLeft : 0) - nearest[size] / 2;
     const at = Math.max(first[offset], Math.min(last[offset], raw));
     indicator.hidden = false;
     indicator.style.transform = mobile.matches ? `translate(${at}px, 0px)` : `translate(0px, ${at}px)`;
+  }
+  function edgeScroll(time) {
+    edgeFrame = 0;
+    if (!gesture?.moved || !mobile.matches) return;
+    const r = nav.getBoundingClientRect();
+    const x = gesture.pointerX;
+    const y = gesture.pointerY;
+    const edge = Math.min(48, r.width * .18);
+    const clamp = (value) => Math.max(0, Math.min(1, value));
+    const inside = x >= r.left - 24 && x <= r.right + 24 && y >= r.top - 20 && y <= r.bottom + 20;
+    const pressure = inside ? clamp((x - r.right + edge) / edge) - clamp((r.left + edge - x) / edge) : 0;
+    const elapsed = Math.min(32, Math.max(0, time - edgeTime));
+    edgeTime = time;
+    // 가장자리로 밀수록 빨라지며, 한 화면 분량을 약 1초에 이동한다.
+    if (pressure) nav.scrollLeft += pressure * r.width * elapsed / 1000;
+    activateAt(x, y);
+    edgeFrame = requestAnimationFrame(edgeScroll);
   }
   function finish(event, cancelled = false) {
     if (!gesture || event.pointerId !== gesture.id) return;
     const previous = gesture;
     gesture = null;
+    cancelAnimationFrame(edgeFrame);
+    edgeFrame = 0;
     nav.removeAttribute('data-scrubbing');
     tabs.forEach((tab) => tab.removeAttribute('data-drag-preview'));
     if (previous.button.hasPointerCapture(previous.id)) previous.button.releasePointerCapture(previous.id);
@@ -52,6 +73,7 @@
     if (previous.moved) {
       if (cancelled || previous.multiTouch) {
         moveIndicator(false);
+        revealTab(tabs.find((tab) => tab.getAttribute('aria-selected') === 'true') || document.getElementById('contact-trigger'), false);
       } else {
         activateTab(previous.pendingTab, true);
         tabs.find((tab) => tab.getAttribute('aria-selected') === 'true')?.focus({ preventScroll: true });
@@ -67,17 +89,19 @@
     const button = event.target.closest('[data-tab]');
     if (!button) return;
     suppressClickUntil = 0;
-    gesture = { id: event.pointerId, pointerType: event.pointerType, button, pendingTab: button, x: event.clientX, y: event.clientY, moved: false, multiTouch: false };
+    gesture = { id: event.pointerId, pointerType: event.pointerType, button, pendingTab: button, x: event.clientX, y: event.clientY, pointerX: event.clientX, pointerY: event.clientY, moved: false, multiTouch: false };
   });
   window.addEventListener('pointermove', (event) => {
     if (!gesture || event.pointerId !== gesture.id) return;
+    gesture.pointerX = event.clientX;
+    gesture.pointerY = event.clientY;
     if (event.pointerType !== 'touch' && event.buttons === 0) { finish(event, true); return; }
     if (!gesture.moved) {
       if (Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) < 6) return;
       gesture.moved = true;
       nav.setAttribute('data-scrubbing', '');
       gesture.button.setPointerCapture(event.pointerId);
-      for (const panel of document.querySelectorAll('#dock-more-panel[popover]')) if (panel.matches(':popover-open')) panel.hidePopover();
+      if (mobile.matches) { edgeTime = performance.now(); edgeFrame = requestAnimationFrame(edgeScroll); }
     }
     activateAt(event.clientX, event.clientY);
   }, { passive: true });

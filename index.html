@@ -19,7 +19,7 @@
       {"@context":"https://schema.org","@type":"Person","name":"Lee Seonghyeon","alternateName":["이성현","ihopenre-eng"],"jobTitle":"Security Researcher and Product Engineer","knowsAbout":["Security research","Responsible disclosure","Open-source software","Product engineering"],"url":"https://ihopenre-eng.github.io/","sameAs":["https://github.com/ihopenre-eng","https://gitlab.com/ihopenre-eng","https://hakca.vn/"]}
     </script>
     <style>
-      :root { color-scheme: dark; --sidebar-width: 232px; }
+      :root { color-scheme: dark; }
       * { box-sizing: border-box; }
       html { -webkit-text-size-adjust: 100%; }
       * { scrollbar-width: none; }
@@ -27,12 +27,6 @@
       body { margin: 0; min-width: 320px; padding-left: var(--sidebar-width); background: #000; color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
       main { width: min(640px, calc(100% - 3rem)); margin: 0 auto; padding: 3rem 0; }
       main:has(.writeup:not([hidden])) { width: min(860px, calc(100% - 3rem)); }
-      .site-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 20; width: var(--sidebar-width); height: 100dvh; margin: 0; padding: 2.3rem 1.25rem 2rem max(1.5rem, env(safe-area-inset-left)); overflow-y: auto; overscroll-behavior: contain; border: 0; border-right: 1px solid #1d1d1d; background: #000; color: #f5f5f5; }
-      .sidebar-heading, .menu-trigger { display: none; }
-      .menu-trigger, .menu-close { align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 1px solid #303030; border-radius: 10px; background: #0a0a0a; color: #f5f5f5; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; transition: transform 120ms cubic-bezier(.23, 1, .32, 1); }
-      .menu-trigger svg, .menu-close svg { width: 18px; height: 18px; }
-      .menu-trigger:active, .menu-close:active { transform: scale(.97); }
-      .menu-trigger:focus-visible, .menu-close:focus-visible { outline: 1px solid #f5f5f5; outline-offset: 4px; }
       section + section { margin-top: 4rem; }
       .intro { margin: 0 0 2rem; color: #d1d5da; font-size: .78rem; line-height: 1.6; }
       h1, h2 { margin: 0 0 1rem; font-size: .75rem; font-weight: 650; letter-spacing: .12em; }
@@ -40,14 +34,6 @@
       li { display: flex; justify-content: space-between; gap: 1rem; padding: .65rem 0; border-bottom: 1px solid #252525; }
       a { color: #f5f5f5; font-size: .92rem; text-decoration: none; } a:hover, a:focus-visible { text-decoration: underline; text-underline-offset: .25em; }
       span { color: #8a8a8a; font-size: .68rem; letter-spacing: .06em; }
-      .tabs-shell { position: relative; }
-      .tabs { display: flex; flex-direction: column; gap: .25rem; margin: 0; }
-      .tab { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex: 0 0 auto; min-height: 44px; margin: 0; padding: .7rem .75rem; border: 0; border-left: 2px solid transparent; color: #888; background: none; font: inherit; font-size: .75rem; font-weight: 600; letter-spacing: .015em; text-align: left; white-space: nowrap; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
-      .tab[aria-selected="true"] { color: #f5f5f5; border-left-color: #f5f5f5; }
-      .tab:focus-visible { outline: 1px solid #a3a3a3; outline-offset: -3px; border-radius: 3px; }
-      .tab:active { color: #fff; }
-      .tab small { margin-left: auto; color: #666; font-size: .62rem; font-weight: 500; }
-      .tab[aria-selected="true"] small { color: #aaa; }
       .tab-panel[hidden] { display: none; }
       #security-panel li { display: block; }
       #security-panel li a { display: flex; align-items: baseline; gap: .65rem; line-height: 1.6; overflow-wrap: anywhere; }
@@ -130,10 +116,7 @@
       .writeup th, .writeup td { padding: .7rem .5rem; border-bottom: 1px solid #25282c; vertical-align: top; }
       .writeup th { color: #a3a3a3; font-size: .72rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
       main { padding-bottom: 7rem; }
-      .contact-trigger { position: fixed; right: max(1.5rem, env(safe-area-inset-right)); bottom: calc(1.5rem + env(safe-area-inset-bottom)); z-index: 10; display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; padding: .65rem 1rem; border: 1px solid #363636; border-radius: 999px; background: #111; color: #f5f5f5; font: inherit; font-size: .8rem; cursor: pointer; box-shadow: 0 4px 24px #0006; transition: transform 120ms cubic-bezier(.23, 1, .32, 1), border-color 150ms ease; }
-      .contact-trigger svg { width: 16px; height: 16px; }
-      .contact-trigger:active { transform: scale(.97); }
-      .contact-trigger:focus-visible, .contact-close:focus-visible, .contact-panel a:focus-visible { outline: 2px solid #f5f5f5; outline-offset: 4px; }
+      .contact-close:focus-visible, .contact-panel a:focus-visible { outline: 2px solid #f5f5f5; outline-offset: 4px; }
       .contact-panel { position: fixed; inset: auto; right: max(1.5rem, env(safe-area-inset-right)); bottom: calc(5rem + env(safe-area-inset-bottom)); width: min(320px, calc(100vw - 3rem)); max-height: calc(100dvh - 7rem); overflow-y: auto; margin: 0; padding: 1.2rem; border: 1px solid #303030; border-radius: 16px; background: #101010; color: #f5f5f5; box-shadow: 0 12px 60px #0009; opacity: 0; transform: translateY(6px) scale(.98); transform-origin: bottom right; transition: opacity 160ms ease, transform 160ms cubic-bezier(.23, 1, .32, 1), display 160ms allow-discrete, overlay 160ms allow-discrete; }
       .contact-panel:popover-open { opacity: 1; transform: none; }
       @starting-style { .contact-panel:popover-open { opacity: 0; transform: translateY(6px) scale(.98); } }
@@ -148,70 +131,60 @@
       .contact-profiles { display: grid; border-top: 1px solid #292929; padding-top: .45rem; }
       .contact-profiles a { display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: .82rem; }
       .contact-profiles a span { font-size: 1rem; }
-      @media (hover: hover) and (pointer: fine) { .contact-trigger:hover { border-color: #707070; } .contact-close:hover { background: #202020; color: #fff; } }
-      @media (prefers-reduced-motion: reduce) { .contact-panel, .contact-trigger { transition: none; transform: none; } }
-      @media (max-width: 480px) { .contact-trigger { right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom)); } .contact-panel { right: 1rem; bottom: calc(4.5rem + env(safe-area-inset-bottom)); width: min(320px, calc(100vw - 2rem)); } }
+      @media (hover: hover) and (pointer: fine) { .contact-close:hover { background: #202020; color: #fff; } }
+      @media (prefers-reduced-motion: reduce) { .contact-panel { transition: none; transform: none; } }
       @media (max-width: 480px) { main, main:has(.writeup:not([hidden])) { width: min(100% - 2rem, 860px); padding-top: 2rem; } a { font-size: .82rem; } }
       @media (max-width: 600px) { #security-panel li { padding: .8rem 0; } #security-panel li a { flex-direction: column; align-items: flex-start; gap: .35rem; } #security-panel .cve-severity { margin-left: 0; line-height: 1.4; } }
-      @media (max-width: 900px) {
-        body { padding-left: 0; }
-        main, main:has(.writeup:not([hidden])) { padding-top: calc(6rem + env(safe-area-inset-top)); }
-        .menu-trigger { position: fixed; top: max(1rem, env(safe-area-inset-top)); left: max(1rem, env(safe-area-inset-left)); z-index: 30; display: inline-flex; }
-        .site-sidebar { display: none; width: min(280px, calc(100vw - 3rem)); padding: calc(1rem + env(safe-area-inset-top)) 1rem calc(2rem + env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); opacity: 0; transform: translateX(-12px); transition: opacity 180ms ease, transform 180ms cubic-bezier(.23, 1, .32, 1), display 180ms allow-discrete, overlay 180ms allow-discrete; }
-        .site-sidebar:popover-open { display: block; opacity: 1; transform: none; }
-        @starting-style { .site-sidebar:popover-open { opacity: 0; transform: translateX(-12px); } }
-        .site-sidebar::backdrop { background: #0009; }
-        .site-sidebar[data-keyboard] { transition: none; }
-        .sidebar-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-left: .75rem; }
-        .sidebar-heading span { color: #aaa; font-size: .7rem; letter-spacing: .06em; }
-        .menu-close { display: inline-flex; border-color: transparent; background: transparent; }
-        .tab { font-size: .82rem; }
-        body:has(.site-sidebar:popover-open) { overflow: hidden; }
-      }
       @media (max-width: 480px) { .writeup h1 { font-size: 2.15rem; } .writeup p, .writeup li { font-size: .95rem; } }
       @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }
       @media (min-width: 561px) { .intro { white-space: nowrap; } }
-      /* 탭 선택 표시 */
-      .tabs { position: relative; }
-      .tab { transition: color .15s ease; }
-      @media (hover: hover) and (pointer: fine) { .tab:hover { color: #bdbdbd; } }
-      .tabs.has-indicator .tab[aria-selected="true"] { border-left-color: transparent; }
-      .tab-indicator { position: absolute; top: 0; left: 0; width: 2px; height: 26px; background: #f5f5f5; pointer-events: none; will-change: transform; }
-      .tab-indicator.is-animated { transition: transform .18s cubic-bezier(.22, 1, .36, 1); }
       .tab-panel[data-keyboard], .tab-panel[data-keyboard] li:not(.writeup li) { animation: none; }
       @keyframes panel-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
       @keyframes item-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
       .tab-panel:not([hidden]) { animation: panel-in .42s cubic-bezier(.22, 1, .36, 1) both; }
       .tab-panel:not([hidden]) li:not(.writeup li) { animation: item-in .45s cubic-bezier(.22, 1, .36, 1) both; animation-delay: calc(min(var(--i, 0), 14) * 28ms + 60ms); }
       @media (prefers-reduced-motion: reduce) {
-        main, .tab, .tab-indicator.is-animated, .site-sidebar, .menu-trigger, .menu-close { transition: none; }
+        main { transition: none; }
         .tab-panel:not([hidden]), .tab-panel:not([hidden]) li { animation: none; }
       }
     </style>
+    <link rel="stylesheet" href="assets/dock.css?v=20261017" />
   </head>
   <body>
-    <button class="menu-trigger" id="menu-trigger" type="button" popovertarget="site-navigation" aria-controls="site-navigation" aria-expanded="false" aria-label="사이트 메뉴 열기">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
-    </button>
-    <aside class="site-sidebar" id="site-navigation" aria-label="사이트 메뉴">
-      <div class="sidebar-heading">
-        <span>MENU</span>
-        <button class="menu-close" type="button" popovertarget="site-navigation" popovertargetaction="hide" aria-label="사이트 메뉴 닫기">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+    <aside class="site-dock" id="site-navigation" aria-label="사이트 내비게이션">
+      <nav class="dock-tabs" role="tablist" aria-label="포트폴리오 분류" aria-orientation="vertical">
+        <button class="dock-tab" type="button" role="tab" aria-label="Security, 12건" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.3 3 7.5 7.5 9.5 4.5-2 7.5-5.2 7.5-9.5V6L12 3Z"/><path d="m8.5 12 2.3 2.3 4.7-5"/></svg><span class="dock-tab-label">Security <small>12</small></span>
+        </button>
+        <button class="dock-tab" type="button" role="tab" aria-label="Merged PRs · MRs, 35건" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M6 7v10m12 0v-4c0-4-8-3-8-7m0 0 3-3m-3 3 3 3"/></svg><span class="dock-tab-label">Merged PRs · MRs <small>35</small></span>
+        </button>
+        <button class="dock-tab" type="button" role="tab" aria-label="Development, 6개" aria-selected="false" aria-controls="development-panel" id="development-tab" data-tab="development-panel" data-route="development" tabindex="-1">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7-5 5 5 5m10-10 5 5-5 5M14 4l-4 16"/></svg><span class="dock-tab-label">Development <small>06</small></span>
+        </button>
+        <button class="dock-tab" type="button" role="tab" aria-label="Design, 2개" aria-selected="false" aria-controls="design-panel" id="design-tab" data-tab="design-panel" data-route="design" data-mobile-secondary tabindex="-1">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1.5a2 2 0 0 0 1.5-3.3 1.4 1.4 0 0 1 1-2.4h1a4 4 0 0 0 4-4C21 6.7 17 3 12 3Z"/><circle cx="7.5" cy="10" r=".6"/><circle cx="11" cy="7" r=".6"/><circle cx="15.5" cy="8" r=".6"/></svg><span class="dock-tab-label">Design <small>02</small></span>
+        </button>
+        <button class="dock-tab" type="button" role="tab" aria-label="Bug Bounty, 1건" aria-selected="false" aria-controls="bugbounty-panel" id="bugbounty-tab" data-tab="bugbounty-panel" data-route="bugbounty" data-mobile-secondary tabindex="-1">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="10" height="15" rx="5"/><path d="m9 3 1.5 3m4.5-3-1.5 3M3 9l4 2m10 0 4-2M3 15h4m10 0h4M4 21l4-3m8 0 4 3M12 10v10"/></svg><span class="dock-tab-label">Bug Bounty <small>01</small></span>
+        </button>
+        <button class="dock-tab" type="button" role="tab" aria-label="Writeups, 2개" aria-selected="false" aria-controls="writeups-panel" id="writeups-tab" data-tab="writeups-panel" data-route="writeups" tabindex="-1">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Zm0 0v6h6M8 13h8m-8 4h6"/></svg><span class="dock-tab-label">Writeups <small>02</small></span>
+        </button>
+        <button class="dock-tab" type="button" role="tab" aria-label="Research, 1개" aria-selected="false" aria-controls="research-panel" id="research-tab" data-tab="research-panel" data-route="research" data-mobile-secondary tabindex="-1">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6m-5 0v7l-6 9a1.3 1.3 0 0 0 1 2h14a1.3 1.3 0 0 0 1-2l-6-9V3M7.5 15h9"/><path d="M10 18h.01m4-1h.01"/></svg><span class="dock-tab-label">Research <small>01</small></span>
+        </button>
+      </nav>
+      <div class="dock-footer">
+        <button class="dock-more" id="dock-more-trigger" type="button" popovertarget="dock-more-panel" aria-haspopup="menu" aria-controls="dock-more-panel" aria-expanded="false" aria-label="더 보기: Design, Bug Bounty, Research">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+        </button>
+        <button class="dock-profile" id="contact-trigger" type="button" popovertarget="contact-panel" aria-controls="contact-panel" aria-expanded="false" aria-label="연락처 열기">
+          <img src="favicon.png" width="30" height="30" alt="" /><span class="dock-tip">Contact</span>
         </button>
       </div>
-      <div class="tabs-shell">
-      <nav class="tabs" role="tablist" aria-label="포트폴리오 분류" aria-orientation="vertical">
-        <button class="tab" type="button" role="tab" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">Security <small>12</small></button>
-        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">Merged PRs · MRs <small>35</small></button>
-        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="development-panel" id="development-tab" data-tab="development-panel" data-route="development" tabindex="-1">Development <small>06</small></button>
-        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="design-panel" id="design-tab" data-tab="design-panel" data-route="design" tabindex="-1">Design <small>02</small></button>
-        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="bugbounty-panel" id="bugbounty-tab" data-tab="bugbounty-panel" data-route="bugbounty" tabindex="-1">Bug Bounty <small>01</small></button>
-        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="writeups-panel" id="writeups-tab" data-tab="writeups-panel" data-route="writeups" tabindex="-1">Writeups <small>02</small></button>
-        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="research-panel" id="research-tab" data-tab="research-panel" data-route="research" tabindex="-1">Research <small>01</small></button>
-      </nav>
-      </div>
     </aside>
+    <div class="dock-more-panel" id="dock-more-panel" popover="auto" role="menu" aria-label="추가 탭"></div>
     <main>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
         <section aria-labelledby="cve-title">
@@ -608,10 +581,6 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         </article>
       </div>
     </main>
-    <button class="contact-trigger" id="contact-trigger" type="button" popovertarget="contact-panel" aria-controls="contact-panel" aria-expanded="false">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
-      Contact
-    </button>
     <aside class="contact-panel" id="contact-panel" popover="auto" role="dialog" aria-labelledby="contact-title">
       <div class="contact-panel-header">
         <h2 id="contact-title">Contact</h2>
@@ -640,76 +609,79 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       });
       const tabs = [...document.querySelectorAll('[data-tab]')];
       const panels = document.querySelectorAll('.tab-panel');
-      const tabList = document.querySelector('.tabs');
+      const tabList = document.querySelector('.dock-tabs');
       const siteNavigation = document.getElementById('site-navigation');
-      const menuTrigger = document.getElementById('menu-trigger');
-      const mainContent = document.querySelector('main');
+      const moreTrigger = document.getElementById('dock-more-trigger');
+      const morePanel = document.getElementById('dock-more-panel');
       const mobileNavigation = matchMedia('(max-width: 900px)');
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-      function syncNavigationLayout() {
-        if (siteNavigation.matches(':popover-open')) siteNavigation.hidePopover();
-        siteNavigation.toggleAttribute('popover', mobileNavigation.matches);
-        if (mobileNavigation.matches) {
-          siteNavigation.setAttribute('popover', 'auto');
-          siteNavigation.setAttribute('role', 'dialog');
-          siteNavigation.setAttribute('aria-modal', 'true');
-        } else {
-          siteNavigation.removeAttribute('role');
-          siteNavigation.removeAttribute('aria-modal');
-        }
-        mainContent.inert = false;
-        contactTrigger.inert = false;
-        menuTrigger.setAttribute('aria-expanded', 'false');
-      }
       function closeNavigation() {
-        if (siteNavigation.matches(':popover-open')) siteNavigation.hidePopover();
+        if (morePanel.matches(':popover-open')) morePanel.hidePopover();
       }
       function revealTab(tab, animate) {
-        if (!tab.offsetHeight) return;
+        if (mobileNavigation.matches || !tab.offsetHeight) return;
         const top = tab.getBoundingClientRect().top - siteNavigation.getBoundingClientRect().top + siteNavigation.scrollTop;
         const bottom = top + tab.offsetHeight;
         if (top < siteNavigation.scrollTop || bottom > siteNavigation.scrollTop + siteNavigation.clientHeight) {
           siteNavigation.scrollTo({ top: top - (siteNavigation.clientHeight - tab.offsetHeight) / 2, behavior: animate && !reducedMotion.matches ? 'smooth' : 'instant' });
         }
       }
-      menuTrigger.addEventListener('click', (event) => {
-        siteNavigation.toggleAttribute('data-keyboard', event.detail === 0);
+      // 더 보기 메뉴는 기존 탭에서 생성해 이름·건수의 중복 관리를 피한다.
+      tabs.filter((tab) => tab.hasAttribute('data-mobile-secondary')).forEach((tab) => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'dock-menu-item';
+        item.setAttribute('role', 'menuitem');
+        item.tabIndex = -1;
+        item.dataset.route = tab.dataset.route;
+        item.append(tab.querySelector('svg').cloneNode(true));
+        const label = document.createElement('span');
+        label.textContent = tab.querySelector('.dock-tab-label').childNodes[0].textContent.trim();
+        item.append(label, tab.querySelector('small').cloneNode(true));
+        item.addEventListener('click', (event) => {
+          morePanel.toggleAttribute('data-keyboard', event.detail === 0);
+          selectTab(tab, event.detail !== 0);
+          history.replaceState(null, '', '#' + tab.dataset.route);
+          syncWriteups();
+          closeNavigation();
+          moreTrigger.focus({ preventScroll: true });
+        });
+        morePanel.append(item);
       });
-      document.querySelector('.menu-close').addEventListener('click', (event) => {
-        siteNavigation.toggleAttribute('data-keyboard', event.detail === 0);
+      moreTrigger.addEventListener('click', (event) => {
+        morePanel.toggleAttribute('data-keyboard', event.detail === 0);
       });
-      siteNavigation.addEventListener('toggle', (event) => {
+      morePanel.addEventListener('toggle', (event) => {
         const opened = event.newState === 'open';
-        menuTrigger.setAttribute('aria-expanded', String(opened));
-        mainContent.inert = opened;
-        contactTrigger.inert = opened;
+        moreTrigger.setAttribute('aria-expanded', String(opened));
         if (opened) {
-          const selected = tabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
-          selected.focus({ preventScroll: true });
-          moveIndicator(false);
-          revealTab(selected, false);
-        } else if (mobileNavigation.matches && siteNavigation.contains(document.activeElement)) {
-          menuTrigger.focus({ preventScroll: true });
+          (morePanel.querySelector('[aria-current="page"]') || morePanel.firstElementChild).focus({ preventScroll: true });
+        } else if (morePanel.contains(document.activeElement)) {
+          moreTrigger.focus({ preventScroll: true });
         }
       });
-      siteNavigation.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') siteNavigation.setAttribute('data-keyboard', '');
-        if (event.key !== 'Tab' || !siteNavigation.matches(':popover-open')) return;
-        const controls = [...siteNavigation.querySelectorAll('button')].filter((button) => button.tabIndex >= 0);
-        const first = controls[0];
-        const last = controls[controls.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
+      morePanel.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') morePanel.setAttribute('data-keyboard', '');
+        if (event.key === 'Tab') { closeNavigation(); return; }
+        const items = [...morePanel.querySelectorAll('button')];
+        const index = items.indexOf(document.activeElement);
+        let next;
+        if (event.key === 'ArrowDown') next = (index + 1) % items.length;
+        else if (event.key === 'ArrowUp') next = (index + items.length - 1) % items.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = items.length - 1;
+        else return;
+        event.preventDefault();
+        items[next].focus();
       });
-      mobileNavigation.addEventListener('change', syncNavigationLayout);
-      syncNavigationLayout();
+      mobileNavigation.addEventListener('change', () => {
+        closeNavigation();
+        tabList.setAttribute('aria-orientation', mobileNavigation.matches ? 'horizontal' : 'vertical');
+        selectTab(tabs.find((tab) => tab.getAttribute('aria-selected') === 'true'), false);
+      });
+      tabList.setAttribute('aria-orientation', mobileNavigation.matches ? 'horizontal' : 'vertical');
       const indicator = document.createElement('div');
-      indicator.className = 'tab-indicator';
+      indicator.className = 'dock-indicator';
       indicator.setAttribute('aria-hidden', 'true');
       tabList.append(indicator);
       tabList.classList.add('has-indicator');
@@ -731,12 +703,12 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }
       function moveIndicator(animate) {
         const tab = tabs.find((item) => item.getAttribute('aria-selected') === 'true');
-        if (!tab || !tab.offsetHeight) return;
-        const height = Math.max(24, tab.offsetHeight - 18) + 'px';
-        const transform = `translateY(${tab.offsetTop + 9}px)`;
-        if (indicator.style.height === height && indicator.style.transform === transform) return;
-        indicator.classList.toggle('is-animated', animate);
-        indicator.style.height = height;
+        indicator.hidden = !tab || !tab.offsetWidth;
+        if (indicator.hidden) return;
+        const transform = `translate(${tab.offsetLeft}px, ${tab.offsetTop}px)`;
+        indicator.classList.toggle('is-animated', animate && !reducedMotion.matches);
+        indicator.style.width = tab.offsetWidth + 'px';
+        indicator.style.height = tab.offsetHeight + 'px';
         indicator.style.transform = transform;
       }
       function selectTab(tab, animate = true) {
@@ -744,6 +716,14 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         tabs.forEach((item) => {
           item.setAttribute('aria-selected', String(item === tab));
           item.tabIndex = item === tab ? 0 : -1;
+        });
+        const overflowSelected = mobileNavigation.matches && tab.hasAttribute('data-mobile-secondary');
+        moreTrigger.toggleAttribute('data-active', overflowSelected);
+        moreTrigger.setAttribute('aria-label', overflowSelected ? '더 보기, 현재 ' + tab.querySelector('.dock-tab-label').textContent.trim() : '더 보기: Design, Bug Bounty, Research');
+        if (overflowSelected) tabs.find((item) => !item.hasAttribute('data-mobile-secondary')).tabIndex = 0;
+        morePanel.querySelectorAll('button').forEach((item) => {
+          if (item.dataset.route === tab.dataset.route) item.setAttribute('aria-current', 'page');
+          else item.removeAttribute('aria-current');
         });
         panels.forEach((panel) => {
           panel.toggleAttribute('data-keyboard', !animate);
@@ -758,25 +738,26 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         selectTab(tabs.find((tab) => tab.dataset.route === route) || tabs[0], animate);
         syncWriteups();
       }
-      tabs.forEach((tab, index) => {
+      tabs.forEach((tab) => {
         tab.addEventListener('click', (event) => {
-          siteNavigation.toggleAttribute('data-keyboard', event.detail === 0);
           selectTab(tab, event.detail !== 0);
           history.replaceState(null, '', '#' + tab.dataset.route);
           syncWriteups();
           closeNavigation();
         });
         tab.addEventListener('keydown', (event) => {
+          const visibleTabs = tabs.filter((item) => item.offsetWidth > 0);
+          const index = visibleTabs.indexOf(tab);
           let next;
-          if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (index + 1) % tabs.length;
-          else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
+          if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (index + 1) % visibleTabs.length;
+          else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index + visibleTabs.length - 1) % visibleTabs.length;
           else if (event.key === 'Home') next = 0;
-          else if (event.key === 'End') next = tabs.length - 1;
+          else if (event.key === 'End') next = visibleTabs.length - 1;
           else return;
           event.preventDefault();
-          tabs[next].focus({ preventScroll: true });
-          selectTab(tabs[next], false);
-          history.replaceState(null, '', '#' + tabs[next].dataset.route);
+          visibleTabs[next].focus({ preventScroll: true });
+          selectTab(visibleTabs[next], false);
+          history.replaceState(null, '', '#' + visibleTabs[next].dataset.route);
           syncWriteups();
         });
       });

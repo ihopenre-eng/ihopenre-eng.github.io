@@ -1,34 +1,30 @@
 /* 플로팅 도크: PC 세로 / 모바일 하단 가로 */
-:root { --sidebar-width: 128px; }
-.site-dock { position: fixed; top: 50%; left: max(24px, env(safe-area-inset-left)); z-index: 20; width: 86px; margin: 0; padding: 12px 10px; border: 1px solid #292929; border-radius: 48px; background: linear-gradient(155deg, #101010 0%, #070707 36%, #050505 100%); color: #f5f5f5; box-shadow: inset 0 1px 0 #ffffff0c, inset 0 -1px 0 #ffffff04, 0 16px 48px #000b, 0 0 0 5px #ffffff02; transform: translateY(-50%); user-select: none; -webkit-user-select: none; }
+:root { --sidebar-width: 128px; --ease-out: cubic-bezier(.23, 1, .32, 1); --ease-in-out: cubic-bezier(.77, 0, .175, 1); }
+.site-dock { position: fixed; top: 50%; left: max(24px, env(safe-area-inset-left)); z-index: 20; width: 86px; margin: 0; padding: 12px 11px; border: 0; border-radius: 48px; background: #000; color: #fff; box-shadow: none; transform: translateY(-50%); user-select: none; -webkit-user-select: none; }
 .dock-tabs[data-scrubbing], .dock-tabs[data-scrubbing] * { cursor: grabbing; }
 .dock-tabs[data-scrubbing] .dock-tab, .dock-tabs[data-scrubbing] .dock-indicator { transform-origin: center; transition: none; }
 .dock-tabs[data-scrubbing] .dock-tab { transform: none; }
 .dock-tabs[data-scrubbing] .dock-tab-label { opacity: 0; }
 .dock-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .dock-tabs { position: relative; display: flex; flex-direction: column; gap: 6px; margin: 0; touch-action: none; }
-.dock-tab, .dock-profile, .dock-more { position: relative; z-index: 1; display: grid; place-items: center; flex: 0 0 auto; width: 64px; height: 52px; margin: 0; padding: 0; border: 0; border-radius: 28px; background: transparent; color: #929292; font: inherit; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; transition: color 120ms ease, transform 120ms cubic-bezier(.23, 1, .32, 1); }
+.dock-tab, .dock-profile, .dock-more { position: relative; z-index: 1; display: grid; place-items: center; flex: 0 0 auto; width: 64px; height: 52px; margin: 0; padding: 0; border: 0; border-radius: 28px; background: transparent; color: #f5f5f5; font: inherit; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; transition: transform 120ms var(--ease-out); }
 .dock-tab > svg, .dock-more > svg { display: block; width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
-.dock-tab[aria-selected="true"] { color: #fff; background: #282828; }
+.dock-tab[aria-selected="true"] { color: #fff; background: #303030; }
 .dock-tab[aria-selected="true"] > svg { stroke-width: 2; }
-/* 선택 표식은 이동하는 배경과 분리해 드래그 중에도 또렷하게 유지한다. */
-.dock-tab::after { content: ""; position: absolute; left: 6px; top: calc(50% - 7px); width: 2px; height: 14px; border-radius: 2px; background: #fff; opacity: 0; pointer-events: none; }
-.dock-tab[aria-selected="true"]::after { opacity: .85; }
 .dock-tab:focus-visible, .dock-profile:focus-visible, .dock-more:focus-visible { outline: 2px solid #d9dde1; outline-offset: 2px; }
 .dock-tab:active, .dock-profile:active, .dock-more:active { transform: scale(.94); }
-.dock-tab-label, .dock-tip { position: absolute; left: calc(100% + 22px); top: 50%; display: flex; align-items: center; gap: 12px; width: max-content; min-height: 36px; padding: 7px 10px; border: 1px solid #303030; border-radius: 11px; background: #141414; color: #f1f1f1; box-shadow: inset 0 1px 0 #ffffff06, 0 8px 24px #0009; font-size: .75rem; font-weight: 500; letter-spacing: 0; line-height: 1.3; white-space: nowrap; opacity: 0; transform: translateY(-50%); pointer-events: none; }
-.dock-tab-label::before, .dock-tip::before { content: ""; position: absolute; left: -4px; top: calc(50% - 4px); width: 7px; height: 7px; border-left: 1px solid #303030; border-bottom: 1px solid #303030; background: #141414; transform: rotate(45deg); }
-.dock-tab-label small { display: grid; place-items: center; min-width: 23px; height: 20px; padding: 0 5px; border: 1px solid #ffffff09; border-radius: 5px; background: #ffffff06; color: #aaa; font-size: .65rem; font-variant-numeric: tabular-nums; }
-.dock-tab:focus-visible .dock-tab-label, .dock-profile:focus-visible .dock-tip { opacity: 1; }
-.dock-footer { position: relative; margin-top: 10px; padding-top: 11px; border-top: 0; }
-.dock-footer::before { content: ""; position: absolute; top: 0; left: 6px; right: 6px; height: 1px; background: linear-gradient(90deg, transparent, #ffffff20, transparent); pointer-events: none; }
-.dock-profile img { display: block; width: 34px; height: 34px; padding: 2px; object-fit: cover; border: 1px solid #ffffff35; border-radius: 50%; background: #111; box-shadow: 0 2px 8px #0008; pointer-events: none; }
-.dock-profile[aria-expanded="true"], .dock-more[aria-expanded="true"] { background: #202020; color: #fff; }
+.dock-tab-label, .dock-tip { position: absolute; left: calc(100% + 22px); top: 50%; display: flex; align-items: center; gap: 12px; width: max-content; min-height: 36px; padding: 7px 10px; border: 0; border-radius: 10px; background: #171717; color: #f1f1f1; font-size: .75rem; font-weight: 500; letter-spacing: 0; line-height: 1.3; white-space: nowrap; opacity: 0; transform: translateY(-50%); pointer-events: none; transition: opacity 125ms var(--ease-out); }
+.dock-tab-label small { color: #aaa; font-size: .65rem; font-variant-numeric: tabular-nums; }
+.dock-tab:focus-visible .dock-tab-label, .dock-profile:focus-visible .dock-tip { opacity: 1; transition: none; }
+.dock-tab-label[data-instant], .dock-tip[data-instant] { transition: none; }
+.dock-footer { position: relative; margin-top: 10px; padding-top: 10px; border: 0; }
+.dock-profile img { display: block; width: 34px; height: 34px; padding: 0; object-fit: cover; border: 0; border-radius: 50%; background: #111; pointer-events: none; }
+.dock-profile[aria-expanded="true"], .dock-more[aria-expanded="true"] { background: #303030; color: #fff; }
 .dock-more { display: none; }
 .dock-tabs.has-indicator .dock-tab[aria-selected="true"] { background: transparent; }
-.dock-indicator { position: absolute; top: 0; left: 0; width: 64px; height: 52px; border: 1px solid #ffffff17; border-radius: 28px; background: linear-gradient(155deg, #333, #222 72%); box-shadow: inset 0 1px 0 #ffffff10, inset 0 -1px 0 #0004, 0 3px 9px #0006; pointer-events: none; will-change: transform; }
+.dock-indicator { position: absolute; top: 0; left: 0; width: 64px; height: 52px; border: 0; border-radius: 28px; background: #303030; box-shadow: none; pointer-events: none; will-change: transform; }
 .dock-indicator[hidden] { display: none; }
-.dock-indicator.is-animated { transition: transform 180ms cubic-bezier(.22, 1, .36, 1); }
+.dock-indicator.is-animated { transition: transform 200ms var(--ease-in-out); }
 .dock-more-panel { position: fixed; inset: auto 1rem calc(5.75rem + env(safe-area-inset-bottom)) auto; width: min(250px, calc(100vw - 2rem)); margin: 0; padding: 8px; border: 1px solid #252525; border-radius: 18px; background: #090909; color: #f5f5f5; box-shadow: 0 12px 40px #0008; opacity: 0; transform: translateY(5px); transform-origin: bottom right; transition: opacity 140ms ease, transform 140ms cubic-bezier(.23, 1, .32, 1), display 140ms allow-discrete, overlay 140ms allow-discrete; }
 .dock-more-panel:popover-open { opacity: 1; transform: none; }
 @starting-style { .dock-more-panel:popover-open { opacity: 0; transform: translateY(5px); } }
@@ -41,10 +37,9 @@
 .dock-menu-item:active { background: #282828; }
 .contact-panel { inset: auto auto max(1.5rem, calc(50dvh - 250px)) 7.5rem; border-color: #252525; border-radius: 18px; background: #090909; transform-origin: bottom left; }
 @media (hover: hover) and (pointer: fine) {
-  .dock-tab:hover { color: #e5e5e5; }
-  .dock-tab:not([aria-selected="true"]):hover { background: #ffffff06; }
+  .dock-tab:not([aria-selected="true"]):hover { background: #171717; }
   .dock-tab:hover .dock-tab-label, .dock-profile:hover .dock-tip { opacity: 1; }
-  .dock-profile:hover, .dock-more:hover { background: #ffffff0b; }
+  .dock-profile:hover, .dock-more:hover { background: #171717; }
   .dock-menu-item:hover { background: #171717; color: #fff; }
 }
 @media (max-width: 900px) {
@@ -54,14 +49,11 @@
   .dock-tabs { flex-direction: row; gap: 4px; }
   .dock-tab, .dock-more, .dock-profile { width: 46px; height: 46px; border-radius: 50%; }
   .dock-tab > svg, .dock-more > svg { width: 25px; height: 25px; }
-  .dock-tab::after { left: calc(50% - 2px); top: auto; bottom: 4px; width: 4px; height: 2px; }
   .dock-tab[data-mobile-secondary] { display: none; }
   .dock-footer { display: flex; gap: 4px; margin: 0; padding: 0; border: 0; }
-  .dock-footer::before { display: none; }
   .dock-more { display: grid; }
-  .dock-more[data-active] { background: linear-gradient(155deg, #333, #222 72%); box-shadow: inset 0 0 0 1px #ffffff17, inset 0 1px 0 #ffffff10; color: #fff; }
+  .dock-more[data-active] { background: #303030; color: #fff; }
   .dock-tab-label, .dock-tip { left: 50%; top: auto; bottom: calc(100% + 20px); transform: translateX(-50%); }
-  .dock-tab-label::before, .dock-tip::before { left: calc(50% - 4px); top: auto; bottom: -4px; border-left: 0; border-right: 1px solid #303030; }
   .dock-profile img { width: 32px; height: 32px; }
   .contact-panel { inset: auto 1rem calc(5.75rem + env(safe-area-inset-bottom)) auto; width: min(320px, calc(100vw - 2rem)); transform-origin: bottom right; }
 }
@@ -77,5 +69,6 @@
   .dock-footer { margin-top: 6px; padding-top: 6px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .dock-tab, .dock-profile, .dock-more, .dock-indicator.is-animated, .dock-more-panel { transition: none; }
+  .dock-tab, .dock-profile, .dock-more, .dock-indicator.is-animated, .dock-more-panel, .dock-tab-label, .dock-tip { transition: none; }
+  .dock-tab:active, .dock-profile:active, .dock-more:active { transform: none; }
 }

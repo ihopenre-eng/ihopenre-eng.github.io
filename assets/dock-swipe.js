@@ -3,6 +3,8 @@
   const nav = document.querySelector('.dock-tabs');
   const mobile = matchMedia('(max-width: 900px)');
   const tabs = [...nav.querySelectorAll('[data-tab]')];
+  const indicator = nav.querySelector('.dock-indicator');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let gesture = null;
   let suppressClickUntil = 0;
 
@@ -19,7 +21,22 @@
       const distance = Math.abs(position - (mobile.matches ? b.left + b.width / 2 : b.top + b.height / 2));
       return !best || distance < best.distance ? { tab, distance } : best;
     }, null)?.tab;
-    if (nearest && nearest.getAttribute('aria-selected') !== 'true') nearest.click();
+    if (nearest && nearest.getAttribute('aria-selected') !== 'true') activateTab(nearest, false);
+    if (reduceMotion.matches) {
+      nav.removeAttribute('data-scrubbing');
+      moveIndicator(false);
+      nav.setAttribute('data-scrubbing', '');
+      return;
+    }
+    // 배경만 포인터에 붙인다. 도크 위치와 탭 순서는 바뀌지 않는다.
+    const first = visible[0];
+    const last = visible[visible.length - 1];
+    const offset = mobile.matches ? 'offsetLeft' : 'offsetTop';
+    const size = mobile.matches ? 'offsetWidth' : 'offsetHeight';
+    const raw = position - (mobile.matches ? r.left : r.top) - nearest[size] / 2;
+    const at = Math.max(first[offset], Math.min(last[offset], raw));
+    indicator.hidden = false;
+    indicator.style.transform = mobile.matches ? `translate(${at}px, 0px)` : `translate(0px, ${at}px)`;
   }
   function finish(event, cancelled = false) {
     if (!gesture || event.pointerId !== gesture.id) return;
@@ -34,11 +51,12 @@
         syncTab(false);
         window.scrollTo({ top: previous.scrollY, behavior: 'instant' });
       } else {
+        moveIndicator(!reduceMotion.matches);
         tabs.find((tab) => tab.getAttribute('aria-selected') === 'true')?.focus({ preventScroll: true });
       }
     } else if (!cancelled && !previous.multiTouch && previous.pointerType === 'touch') {
       const r = previous.button.getBoundingClientRect();
-      if (event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom) previous.button.click();
+      if (event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom) activateTab(previous.button, true);
     }
   }
   nav.addEventListener('pointerdown', (event) => {

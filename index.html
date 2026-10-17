@@ -138,17 +138,12 @@
       @media (max-width: 480px) { .writeup h1 { font-size: 2.15rem; } .writeup p, .writeup li { font-size: .95rem; } }
       @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }
       @media (min-width: 561px) { .intro { white-space: nowrap; } }
-      .tab-panel[data-keyboard], .tab-panel[data-keyboard] li:not(.writeup li) { animation: none; }
-      @keyframes panel-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-      @keyframes item-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-      .tab-panel:not([hidden]) { animation: panel-in .42s cubic-bezier(.22, 1, .36, 1) both; }
-      .tab-panel:not([hidden]) li:not(.writeup li) { animation: item-in .45s cubic-bezier(.22, 1, .36, 1) both; animation-delay: calc(min(var(--i, 0), 14) * 28ms + 60ms); }
       @media (prefers-reduced-motion: reduce) {
         main { transition: none; }
         .tab-panel:not([hidden]), .tab-panel:not([hidden]) li { animation: none; }
       }
     </style>
-    <link rel="stylesheet" href="assets/dock.css?v=20261017-polish" />
+    <link rel="stylesheet" href="assets/dock.css?v=20261017-flat-motion" />
   </head>
   <body>
     <aside class="site-dock" id="site-navigation" aria-label="사이트 내비게이션" aria-describedby="dock-swipe-help">
@@ -616,6 +611,16 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       const morePanel = document.getElementById('dock-more-panel');
       const mobileNavigation = matchMedia('(max-width: 900px)');
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+      const motionEase = getComputedStyle(siteNavigation).getPropertyValue('--ease-out').trim();
+      let panelMotion = null;
+      let tooltipWarmUntil = 0;
+      siteNavigation.querySelectorAll('.dock-tab, .dock-profile').forEach((button) => {
+        button.addEventListener('pointerenter', () => {
+          if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+          button.querySelector('.dock-tab-label, .dock-tip').toggleAttribute('data-instant', performance.now() < tooltipWarmUntil);
+        });
+        button.addEventListener('pointerleave', () => { tooltipWarmUntil = performance.now() + 300; });
+      });
       function closeNavigation() {
         if (morePanel.matches(':popover-open')) morePanel.hidePopover();
       }
@@ -686,10 +691,6 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       indicator.setAttribute('aria-hidden', 'true');
       tabList.append(indicator);
       tabList.classList.add('has-indicator');
-      document.querySelectorAll('.tab-panel ul').forEach((list) => {
-        if (list.closest('.writeup')) return;
-        [...list.children].forEach((item, i) => item.style.setProperty('--i', i));
-      });
       const writeups = [...document.querySelectorAll('#writeups-panel .writeup')];
       const writeupIndex = document.querySelector('.writeup-index-view');
       function syncWriteups() {
@@ -703,6 +704,7 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         writeupIndex.hidden = !!opened;
       }
       function moveIndicator(animate) {
+        if (tabList.hasAttribute('data-scrubbing')) return;
         const tab = tabs.find((item) => item.getAttribute('aria-selected') === 'true');
         indicator.hidden = !tab || !tab.offsetWidth;
         if (indicator.hidden) return;
@@ -714,6 +716,8 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }
       function selectTab(tab, animate = true) {
         const changed = tab.getAttribute('aria-selected') !== 'true';
+        panelMotion?.cancel();
+        panelMotion = null;
         tabs.forEach((item) => {
           item.setAttribute('aria-selected', String(item === tab));
           item.tabIndex = item === tab ? 0 : -1;
@@ -730,6 +734,13 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
           panel.toggleAttribute('data-keyboard', !animate);
           panel.hidden = panel.id !== tab.dataset.tab;
         });
+        // 빠르게 탭을 다시 눌러도 이전 모션이 누적되지 않는다.
+        if (changed && animate && !reducedMotion.matches) {
+          panelMotion = document.getElementById(tab.dataset.tab).animate(
+            [{ opacity: .65 }, { opacity: 1 }],
+            { duration: 180, easing: motionEase }
+          );
+        }
         if (changed) window.scrollTo({ top: 0, behavior: 'instant' });
         moveIndicator(animate);
         revealTab(tab, animate);
@@ -739,12 +750,15 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         selectTab(tabs.find((tab) => tab.dataset.route === route) || tabs[0], animate);
         syncWriteups();
       }
+      function activateTab(tab, animate) {
+        selectTab(tab, animate);
+        history.replaceState(null, '', '#' + tab.dataset.route);
+        syncWriteups();
+        closeNavigation();
+      }
       tabs.forEach((tab) => {
         tab.addEventListener('click', (event) => {
-          selectTab(tab, event.detail !== 0);
-          history.replaceState(null, '', '#' + tab.dataset.route);
-          syncWriteups();
-          closeNavigation();
+          activateTab(tab, event.detail !== 0);
         });
         tab.addEventListener('keydown', (event) => {
           const visibleTabs = tabs.filter((item) => item.offsetWidth > 0);
@@ -772,6 +786,6 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }).observe(tabList);
       syncTab(false);
     </script>
-    <script src="assets/dock-swipe.js?v=20261017"></script>
+    <script src="assets/dock-swipe.js?v=20261017-motion"></script>
   </body>
 </html>

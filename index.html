@@ -74,6 +74,34 @@
       .bounty-hof li a { font-size: inherit; }
       .bounty-profile { margin-top: 2.5rem; }
       .bounty-profile a { font-size: .82rem; }
+      #security-panel > .content-subtabs .content-subtab { min-width: 44px; white-space: nowrap; }
+      .ctf-results { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+      .ctf-results th { color: #888; font-size: .62rem; font-weight: 500; text-align: left; }
+      .ctf-results th, .ctf-results td { padding: .65rem .6rem; border-bottom: 1px solid #252525; }
+      .ctf-results th:first-child, .ctf-results td:first-child { padding-left: 0; }
+      .ctf-results th:last-child, .ctf-results td:last-child { padding-right: 0; }
+      .ctf-results td { font-size: .82rem; }
+      .ctf-results td a { display: inline-flex; align-items: center; min-height: 44px; font-size: inherit; }
+      .ctf-results td:not(:nth-child(2)) { white-space: nowrap; }
+      .ctf-badge { display: flex; align-items: center; gap: 1.25rem; padding-bottom: 1.5rem; border-bottom: 1px solid #252525; }
+      .ctf-badge img { display: block; width: 112px; height: 112px; flex: 0 0 112px; object-fit: contain; }
+      .ctf-badge-copy { display: grid; gap: .45rem; color: inherit; font-size: inherit; letter-spacing: 0; }
+      .ctf-badge-copy strong { font-size: .9rem; line-height: 1.5; font-weight: 550; }
+      .ctf-badge-copy small { color: #999; font-size: .72rem; line-height: 1.6; }
+      .ctf-badge-copy .ctf-credential { color: #d1d5da; font-size: .72rem; letter-spacing: 0; }
+      @media (max-width: 480px) {
+        #security-panel > .content-subtabs { gap: .75rem; }
+        #security-panel > .content-subtabs .content-subtab { gap: .35rem; font-size: .75rem; }
+        .ctf-results thead { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+        .ctf-results tbody, .ctf-results tr { display: block; }
+        .ctf-results tbody tr { display: grid; grid-template-columns: .6fr 1fr 1fr; gap: 1rem; padding: .5rem 0 1.25rem; border-bottom: 1px solid #252525; }
+        .ctf-results td { display: block; padding: 0; border: 0; }
+        .ctf-results td:nth-child(2) { grid-column: 1 / -1; grid-row: 1; }
+        .ctf-results td:not(:nth-child(2))::before { display: block; margin-bottom: .5rem; color: #888; font-size: .62rem; content: attr(data-label); }
+        .ctf-results td:last-child a { align-items: flex-start; min-width: 44px; }
+        .ctf-badge { gap: 1rem; }
+        .ctf-badge img { width: 88px; height: 88px; flex-basis: 88px; }
+      }
       .content-subtabs { display: flex; gap: 1.5rem; margin: 0 0 2rem; border-bottom: 1px solid #252525; }
       .content-subtab { display: inline-flex; align-items: center; gap: .55rem; min-width: 88px; min-height: 44px; padding: 0 .1rem; border: 0; border-bottom: 2px solid transparent; background: none; color: #999; font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
       .content-subtab small { color: #888; font-size: .65rem; font-weight: 400; font-variant-numeric: tabular-nums; }
@@ -153,8 +181,8 @@
   <body>
     <aside class="site-dock" id="site-navigation" aria-label="사이트 내비게이션" aria-describedby="dock-swipe-help">
       <nav class="dock-tabs" role="tablist" aria-label="포트폴리오 분류" aria-orientation="vertical" aria-owns="contact-trigger">
-        <button class="dock-tab" type="button" role="tab" aria-label="Security, 13건" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.3 3 7.5 7.5 9.5 4.5-2 7.5-5.2 7.5-9.5V6L12 3Z"/><path d="m8.5 12 2.3 2.3 4.7-5"/></svg><span class="dock-tab-label">Security <small>13</small></span>
+        <button class="dock-tab" type="button" role="tab" aria-label="Security, 15건" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.3 3 7.5 7.5 9.5 4.5-2 7.5-5.2 7.5-9.5V6L12 3Z"/><path d="m8.5 12 2.3 2.3 4.7-5"/></svg><span class="dock-tab-label">Security <small>15</small></span>
         </button>
         <button class="dock-tab" type="button" role="tab" aria-label="Merged PRs · MRs, 35건" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M6 7v10m12 0v-4c0-4-8-3-8-7m0 0 3-3m-3 3 3 3"/></svg><span class="dock-tab-label">Merged PRs · MRs <small>35</small></span>
@@ -183,6 +211,7 @@
         <div class="content-subtabs" role="tablist" aria-label="Security 분류">
           <button class="content-subtab" id="security-vulnerabilities-tab" type="button" role="tab" data-security-kind="vulnerabilities" aria-controls="security-vulnerabilities-list" aria-selected="true">Vulnerabilities <small>12</small></button>
           <button class="content-subtab" id="security-bugbounty-tab" type="button" role="tab" data-security-kind="bugbounty" aria-controls="security-bugbounty-list" aria-selected="false" tabindex="-1">Bug Bounty <small>01</small></button>
+          <button class="content-subtab" id="security-ctf-tab" type="button" role="tab" data-security-kind="ctf" aria-controls="security-ctf-list" aria-selected="false" tabindex="-1">CTF <small>02</small></button>
         </div>
         <div class="content-list-panel" id="security-vulnerabilities-list" role="tabpanel" data-security-list="vulnerabilities" aria-labelledby="security-vulnerabilities-tab">
         <section aria-labelledby="cve-title">
@@ -216,6 +245,22 @@
             </ul>
           </section>
           <p class="bounty-profile"><a href="https://bugcrowd.com/ihopenre-eng" rel="me">Bugcrowd profile ↗</a></p>
+        </div>
+        <div class="content-list-panel" id="security-ctf-list" role="tabpanel" data-security-list="ctf" aria-labelledby="security-ctf-tab" hidden>
+          <section aria-labelledby="ctf-results-title">
+            <h2 id="ctf-results-title">Results</h2>
+            <table class="ctf-results" aria-labelledby="ctf-results-title">
+              <thead><tr><th scope="col">Place</th><th scope="col">Event</th><th scope="col">CTF points</th><th scope="col">Rating points</th></tr></thead>
+              <tbody><tr><td data-label="Place">18</td><td data-label="Event"><a href="https://ctftime.org/event/3354">GaianSpace CTF 2026</a></td><td data-label="CTF points">6144.0000</td><td data-label="Rating points"><a href="https://ctftime.org/event/3354/weight" aria-label="Rating points 0.000, 대회 가중치 보기">0.000*</a></td></tr></tbody>
+            </table>
+          </section>
+          <section aria-labelledby="ctf-badges-title">
+            <h2 id="ctf-badges-title">Participation</h2>
+            <a class="ctf-badge" href="https://credforge.app/credentials/9e34b897-de27-4b33-b05e-7b51672ce25b">
+              <img src="assets/ctf/deadface-ctf-2026-competitor.png" width="1648" height="1648" loading="lazy" alt="DEADFACE CTF 2026 Competitor 배지" />
+              <span class="ctf-badge-copy"><strong>DEADFACE CTF 2026 Competitor</strong><small>Cyber Hacktics · 2026-10-18</small><span class="ctf-credential">View credential ↗</span></span>
+            </a>
+          </section>
         </div>
       </div>
       <section class="tab-panel" id="prs-panel" role="tabpanel" aria-labelledby="prs-tab" hidden>
@@ -703,7 +748,8 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         syncSecurity();
       }
       function syncSecurity() {
-        const kind = location.hash.slice(1).split('/')[1] === 'bugbounty' ? 'bugbounty' : 'vulnerabilities';
+        const requestedKind = location.hash.slice(1).split('/')[1];
+        const kind = securityTabs.some((tab) => tab.dataset.securityKind === requestedKind) ? requestedKind : 'vulnerabilities';
         securityTabs.forEach((tab) => {
           const selected = tab.dataset.securityKind === kind;
           tab.setAttribute('aria-selected', String(selected));

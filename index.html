@@ -74,6 +74,15 @@
       .bounty-hof li a { font-size: inherit; }
       .bounty-profile { margin-top: 2.5rem; }
       .bounty-profile a { font-size: .82rem; }
+      .research-subtabs { display: flex; gap: 1.5rem; margin: 0 0 2rem; border-bottom: 1px solid #252525; }
+      .research-subtab { display: inline-flex; align-items: center; gap: .55rem; min-width: 88px; min-height: 44px; padding: 0 .1rem; border: 0; border-bottom: 2px solid transparent; background: none; color: #999; font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+      .research-subtab small { color: #888; font-size: .65rem; font-weight: 400; font-variant-numeric: tabular-nums; }
+      .research-subtab[aria-selected="true"] { border-bottom-color: #f5f5f5; color: #f5f5f5; }
+      .research-subtab:focus-visible { outline: 2px solid #d9dde1; outline-offset: 4px; }
+      .research-subtab:active { opacity: .7; }
+      .research-list-panel + .research-list-panel { margin-top: 0; }
+      .research-list-panel[hidden] { display: none; }
+      @media (hover: hover) and (pointer: fine) { .research-subtab:hover { color: #f5f5f5; } }
       .writeup-index li { display: block; padding: 0; border: 0; }
       .writeup-index li + li { margin-top: .75rem; }
       .writeup-index a { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.25rem; padding: 1.05rem 1.15rem; border: 1px solid #252525; border-radius: 10px; font-size: inherit; text-decoration: none; transition: border-color .2s ease, background .2s ease, transform .2s ease; }
@@ -319,15 +328,19 @@
       </div>
       <div class="tab-panel" id="research-panel" role="tabpanel" aria-labelledby="research-tab" hidden>
         <div class="writeup-index-view">
-        <section aria-labelledby="writeups-index-title">
-          <h2 id="writeups-index-title">Writeups</h2>
+        <div class="research-subtabs" role="tablist" aria-label="Research 분류">
+          <button class="research-subtab" id="research-writeups-tab" type="button" role="tab" data-research-kind="writeups" aria-controls="research-writeups-list" aria-selected="true">Writeups <small>02</small></button>
+          <button class="research-subtab" id="research-papers-tab" type="button" role="tab" data-research-kind="papers" aria-controls="research-papers-list" aria-selected="false" tabindex="-1">Papers <small>01</small></button>
+        </div>
+        <section class="research-list-panel" id="research-writeups-list" role="tabpanel" data-research-list="writeups" aria-labelledby="research-writeups-tab">
+          <h2 class="dock-sr-only" id="writeups-index-title">Writeups</h2>
           <ul class="writeup-index">
             <li><a href="#research/cve-2026-88008"><span class="wi-main"><span class="wi-title">Traefik h2c upgrade</span><span class="wi-desc">A client-chosen h2c upgrade tunnels past router middleware to protected paths on the same backend.</span></span><span class="wi-meta"><span class="wi-code">CVE-2026-88008</span></span></a></li>
             <li><a href="#research/cve-2026-73842"><span class="wi-main"><span class="wi-title">OpenChoreo cluster-gateway</span><span class="wi-desc">Unauthenticated proxy with full CRUD across every connected data plane.</span></span><span class="wi-meta"><span class="wi-code">CVE-2026-73842</span></span></a></li>
           </ul>
         </section>
-        <section aria-labelledby="papers-index-title">
-          <h2 id="papers-index-title">Papers</h2>
+        <section class="research-list-panel" id="research-papers-list" role="tabpanel" data-research-list="papers" aria-labelledby="research-papers-tab" hidden>
+          <h2 class="dock-sr-only" id="papers-index-title">Papers</h2>
           <ul class="project-list">
             <li>
               <h3><a href="/assets/research/awid3-hybrid-wips.pdf" target="_blank" rel="noopener">Hybrid WIPS · AWID3 deployment gap <span aria-hidden="true">↗</span></a></h3>
@@ -338,7 +351,7 @@
         </section>
         </div>
         <article class="writeup" id="wr-cve-2026-73842" data-writeup="cve-2026-73842" aria-labelledby="writeup-h-73842" hidden>
-          <a class="writeup-back" href="#research">← Research</a>
+          <a class="writeup-back" href="#research/writeups">← Writeups</a>
           <header class="writeup-header">
             <p class="writeup-kicker">Security writeup · public disclosure</p>
             <h1 id="writeup-h-73842">Writeup: CVE-2026-73842 in OpenChoreo</h1>
@@ -452,7 +465,7 @@ blockedPaths:  "/api/v1/namespaces/kube-system/secrets"
         </article>
 
         <article class="writeup" id="wr-cve-2026-88008" data-writeup="cve-2026-88008" aria-labelledby="writeup-h-88008" hidden>
-          <a class="writeup-back" href="#research">← Research</a>
+          <a class="writeup-back" href="#research/writeups">← Writeups</a>
           <header class="writeup-header">
             <p class="writeup-kicker">Security writeup · public disclosure</p>
             <h1 id="writeup-h-88008">Writeup: CVE-2026-88008 in Traefik</h1>
@@ -629,8 +642,11 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       tabList.classList.add('has-indicator');
       const writeups = [...document.querySelectorAll('#research-panel .writeup')];
       const writeupIndex = document.querySelector('.writeup-index-view');
+      const researchTabs = [...document.querySelectorAll('[data-research-kind]')];
+      const researchLists = [...document.querySelectorAll('[data-research-list]')];
       function syncWriteups() {
         const slug = location.hash.slice(1).split('/')[1] || '';
+        const kind = slug === 'papers' ? 'papers' : 'writeups';
         let opened = null;
         writeups.forEach((article) => {
           const match = article.dataset.writeup === slug;
@@ -638,7 +654,32 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
           if (match) opened = article;
         });
         writeupIndex.hidden = !!opened;
+        researchTabs.forEach((tab) => {
+          const selected = tab.dataset.researchKind === kind;
+          tab.setAttribute('aria-selected', String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+        });
+        researchLists.forEach((list) => { list.hidden = list.dataset.researchList !== kind; });
       }
+      function selectResearchKind(tab) {
+        history.replaceState(null, '', '#research/' + tab.dataset.researchKind);
+        syncWriteups();
+      }
+      researchTabs.forEach((tab) => {
+        tab.addEventListener('click', () => selectResearchKind(tab));
+        tab.addEventListener('keydown', (event) => {
+          const index = researchTabs.indexOf(tab);
+          let next;
+          if (event.key === 'ArrowRight') next = (index + 1) % researchTabs.length;
+          else if (event.key === 'ArrowLeft') next = (index + researchTabs.length - 1) % researchTabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = researchTabs.length - 1;
+          else return;
+          event.preventDefault();
+          researchTabs[next].focus({ preventScroll: true });
+          selectResearchKind(researchTabs[next]);
+        });
+      });
       function moveIndicator(animate) {
         if (tabList.hasAttribute('data-scrubbing')) return;
         const tab = tabs.find((item) => item.getAttribute('aria-selected') === 'true');

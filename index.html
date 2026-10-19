@@ -35,10 +35,10 @@
       a { color: #f5f5f5; font-size: .92rem; text-decoration: none; } a:hover, a:focus-visible { text-decoration: underline; text-underline-offset: .25em; }
       span { color: #8a8a8a; font-size: .68rem; letter-spacing: .06em; }
       .tab-panel[hidden] { display: none; }
-      #security-panel li { display: block; }
-      #security-panel li a { display: flex; align-items: baseline; gap: .65rem; line-height: 1.6; overflow-wrap: anywhere; }
-      #security-panel .cve-code { color: #f5f5f5; font-size: .86rem; letter-spacing: 0; }
-      #security-panel .cve-severity { margin-left: auto; color: #d1d5da; font-size: .62rem; font-weight: 650; letter-spacing: .08em; white-space: nowrap; }
+      #security-vulnerabilities-list li { display: block; }
+      #security-vulnerabilities-list li a { display: flex; align-items: baseline; gap: .65rem; line-height: 1.6; overflow-wrap: anywhere; }
+      #security-vulnerabilities-list .cve-code { color: #f5f5f5; font-size: .86rem; letter-spacing: 0; }
+      #security-vulnerabilities-list .cve-severity { margin-left: auto; color: #d1d5da; font-size: .62rem; font-weight: 650; letter-spacing: .08em; white-space: nowrap; }
       .recognition { margin-bottom: 3rem; }
       .badge-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
       .badge-grid li { display: block; padding: 0; border: 0; }
@@ -133,7 +133,7 @@
       .contact-profiles a { display: flex; align-items: center; justify-content: space-between; min-height: 56px; border-bottom: 1px solid #252525; font-size: .92rem; }
       .contact-profiles a span { font-size: 1rem; }
       @media (max-width: 480px) { main, main:has(.writeup:not([hidden])) { width: min(100% - 2rem, 860px); padding-top: 2rem; } a { font-size: .82rem; } }
-      @media (max-width: 600px) { #security-panel li { padding: .8rem 0; } #security-panel li a { flex-direction: column; align-items: flex-start; gap: .35rem; } #security-panel .cve-severity { margin-left: 0; line-height: 1.4; } }
+      @media (max-width: 600px) { #security-vulnerabilities-list li { padding: .8rem 0; } #security-vulnerabilities-list li a { flex-direction: column; align-items: flex-start; gap: .35rem; } #security-vulnerabilities-list .cve-severity { margin-left: 0; line-height: 1.4; } }
       @media (max-width: 480px) { .writeup h1 { font-size: 2.15rem; } .writeup p, .writeup li { font-size: .95rem; } }
       @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }
       @media (min-width: 561px) { .intro { white-space: nowrap; } }
@@ -147,17 +147,14 @@
   <body>
     <aside class="site-dock" id="site-navigation" aria-label="사이트 내비게이션" aria-describedby="dock-swipe-help">
       <nav class="dock-tabs" role="tablist" aria-label="포트폴리오 분류" aria-orientation="vertical" aria-owns="contact-trigger">
-        <button class="dock-tab" type="button" role="tab" aria-label="Security, 12건" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.3 3 7.5 7.5 9.5 4.5-2 7.5-5.2 7.5-9.5V6L12 3Z"/><path d="m8.5 12 2.3 2.3 4.7-5"/></svg><span class="dock-tab-label">Security <small>12</small></span>
+        <button class="dock-tab" type="button" role="tab" aria-label="Security, 13건" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.3 3 7.5 7.5 9.5 4.5-2 7.5-5.2 7.5-9.5V6L12 3Z"/><path d="m8.5 12 2.3 2.3 4.7-5"/></svg><span class="dock-tab-label">Security <small>13</small></span>
         </button>
         <button class="dock-tab" type="button" role="tab" aria-label="Merged PRs · MRs, 35건" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M6 7v10m12 0v-4c0-4-8-3-8-7m0 0 3-3m-3 3 3 3"/></svg><span class="dock-tab-label">Merged PRs · MRs <small>35</small></span>
         </button>
         <button class="dock-tab" type="button" role="tab" aria-label="Development, 8개" aria-selected="false" aria-controls="development-panel" id="development-tab" data-tab="development-panel" data-route="development" tabindex="-1">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7-5 5 5 5m10-10 5 5-5 5M14 4l-4 16"/></svg><span class="dock-tab-label">Development <small>08</small></span>
-        </button>
-        <button class="dock-tab" type="button" role="tab" aria-label="Bug Bounty, 1건" aria-selected="false" aria-controls="bugbounty-panel" id="bugbounty-tab" data-tab="bugbounty-panel" data-route="bugbounty" data-mobile-secondary tabindex="-1">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="10" height="15" rx="5"/><path d="m9 3 1.5 3m4.5-3-1.5 3M3 9l4 2m10 0 4-2M3 15h4m10 0h4M4 21l4-3m8 0 4 3M12 10v10"/></svg><span class="dock-tab-label">Bug Bounty <small>01</small></span>
         </button>
         <button class="dock-tab" type="button" role="tab" aria-label="Research, 3개" aria-selected="false" aria-controls="research-panel" id="research-tab" data-tab="research-panel" data-route="research" data-mobile-secondary tabindex="-1">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6m-5 0v7l-6 9a1.3 1.3 0 0 0 1 2h14a1.3 1.3 0 0 0 1-2l-6-9V3M7.5 15h9"/><path d="M10 18h.01m4-1h.01"/></svg><span class="dock-tab-label">Research <small>03</small></span>
@@ -177,6 +174,11 @@
     <p class="dock-sr-only" id="dock-swipe-help">누른 채 드래그한 뒤 놓으면 탭이 전환됩니다. 모바일에서는 바의 왼쪽이나 오른쪽 끝으로 이동하면 그 방향의 숨겨진 탭들이 나타납니다. 클릭과 방향키로도 선택할 수 있습니다.</p>
     <main>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
+        <div class="content-subtabs" role="tablist" aria-label="Security 분류">
+          <button class="content-subtab" id="security-vulnerabilities-tab" type="button" role="tab" data-security-kind="vulnerabilities" aria-controls="security-vulnerabilities-list" aria-selected="true">Vulnerabilities <small>12</small></button>
+          <button class="content-subtab" id="security-bugbounty-tab" type="button" role="tab" data-security-kind="bugbounty" aria-controls="security-bugbounty-list" aria-selected="false" tabindex="-1">Bug Bounty <small>01</small></button>
+        </div>
+        <div class="content-list-panel" id="security-vulnerabilities-list" role="tabpanel" data-security-list="vulnerabilities" aria-labelledby="security-vulnerabilities-tab">
         <section aria-labelledby="cve-title">
           <h2 id="cve-title">CVE</h2>
           <ul>
@@ -199,6 +201,16 @@
             <li><a href="https://github.com/oauth2-proxy/oauth2-proxy/security/advisories/GHSA-wr5q-7wxw-x568"><span class="cve-code">GHSA-wr5q-7wxw-x568</span><span class="cve-severity">CRITICAL</span></a></li>
           </ul>
         </section>
+        </div>
+        <div class="content-list-panel" id="security-bugbounty-list" role="tabpanel" data-security-list="bugbounty" aria-labelledby="security-bugbounty-tab" hidden>
+          <section class="bounty-hof" aria-labelledby="bounty-hof-title">
+            <h2 id="bounty-hof-title">Hall of Fame</h2>
+            <ul>
+              <li><a href="https://bugcrowd.com/openai"><span class="bounty-name">OpenAI</span></a><span>P1</span></li>
+            </ul>
+          </section>
+          <p class="bounty-profile"><a href="https://bugcrowd.com/ihopenre-eng" rel="me">Bugcrowd profile ↗</a></p>
+        </div>
       </div>
       <section class="tab-panel" id="prs-panel" role="tabpanel" aria-labelledby="prs-tab" hidden>
         <section class="recognition" aria-labelledby="recognition-title">
@@ -319,15 +331,6 @@
           </li>
         </ul>
       </section>
-      </div>
-      <div class="tab-panel" id="bugbounty-panel" role="tabpanel" aria-labelledby="bugbounty-tab" hidden>
-        <section class="bounty-hof" aria-labelledby="bounty-hof-title">
-          <h2 id="bounty-hof-title">Hall of Fame</h2>
-          <ul>
-            <li><a href="https://bugcrowd.com/openai"><span class="bounty-name">OpenAI</span></a><span>P1</span></li>
-          </ul>
-        </section>
-        <p class="bounty-profile"><a href="https://bugcrowd.com/ihopenre-eng" rel="me">Bugcrowd profile ↗</a></p>
       </div>
       <div class="tab-panel" id="research-panel" role="tabpanel" aria-labelledby="research-tab" hidden>
         <div class="writeup-index-view">
@@ -649,6 +652,8 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       const researchLists = [...document.querySelectorAll('[data-research-list]')];
       const developmentTabs = [...document.querySelectorAll('[data-development-kind]')];
       const developmentLists = [...document.querySelectorAll('[data-development-list]')];
+      const securityTabs = [...document.querySelectorAll('[data-security-kind]')];
+      const securityLists = [...document.querySelectorAll('[data-security-list]')];
       function syncWriteups() {
         const slug = location.hash.slice(1).split('/')[1] || '';
         const kind = slug === 'papers' ? 'papers' : 'writeups';
@@ -686,8 +691,22 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       function syncContent() {
         syncWriteups();
         syncDevelopment();
+        syncSecurity();
       }
-      // 두 카테고리는 동일한 키보드 탐색 규칙을 사용한다.
+      function syncSecurity() {
+        const kind = location.hash.slice(1).split('/')[1] === 'bugbounty' ? 'bugbounty' : 'vulnerabilities';
+        securityTabs.forEach((tab) => {
+          const selected = tab.dataset.securityKind === kind;
+          tab.setAttribute('aria-selected', String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+        });
+        securityLists.forEach((list) => { list.hidden = list.dataset.securityList !== kind; });
+      }
+      function selectSecurityKind(tab) {
+        history.replaceState(null, '', '#security/' + tab.dataset.securityKind);
+        syncSecurity();
+      }
+      // 모든 카테고리는 동일한 키보드 탐색 규칙을 사용한다.
       function bindSubtabs(items, select) {
         items.forEach((tab) => {
           tab.addEventListener('click', () => select(tab));
@@ -707,6 +726,7 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }
       bindSubtabs(researchTabs, selectResearchKind);
       bindSubtabs(developmentTabs, selectDevelopmentKind);
+      bindSubtabs(securityTabs, selectSecurityKind);
       function moveIndicator(animate) {
         if (tabList.hasAttribute('data-scrubbing')) return;
         const tab = tabs.find((item) => item.getAttribute('aria-selected') === 'true');
@@ -743,7 +763,7 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }
       function syncTab(animate) {
         let route = location.hash.slice(1).split('/')[0];
-        // 기존에 공유된 글·디자인 주소도 통합된 카테고리로 연결한다.
+        // 기존에 공유된 주소도 통합된 카테고리로 연결한다.
         if (route === 'writeups') {
           history.replaceState(null, '', '#research' + location.hash.slice('#writeups'.length));
           route = 'research';
@@ -751,6 +771,10 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         if (route === 'design') {
           history.replaceState(null, '', '#development/design');
           route = 'development';
+        }
+        if (route === 'bugbounty') {
+          history.replaceState(null, '', '#security/bugbounty');
+          route = 'security';
         }
         selectTab(tabs.find((tab) => tab.dataset.route === route) || tabs[0], animate);
         syncContent();

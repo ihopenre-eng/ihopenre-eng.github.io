@@ -74,15 +74,15 @@
       .bounty-hof li a { font-size: inherit; }
       .bounty-profile { margin-top: 2.5rem; }
       .bounty-profile a { font-size: .82rem; }
-      .research-subtabs { display: flex; gap: 1.5rem; margin: 0 0 2rem; border-bottom: 1px solid #252525; }
-      .research-subtab { display: inline-flex; align-items: center; gap: .55rem; min-width: 88px; min-height: 44px; padding: 0 .1rem; border: 0; border-bottom: 2px solid transparent; background: none; color: #999; font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
-      .research-subtab small { color: #888; font-size: .65rem; font-weight: 400; font-variant-numeric: tabular-nums; }
-      .research-subtab[aria-selected="true"] { border-bottom-color: #f5f5f5; color: #f5f5f5; }
-      .research-subtab:focus-visible { outline: 2px solid #d9dde1; outline-offset: 4px; }
-      .research-subtab:active { opacity: .7; }
-      .research-list-panel + .research-list-panel { margin-top: 0; }
-      .research-list-panel[hidden] { display: none; }
-      @media (hover: hover) and (pointer: fine) { .research-subtab:hover { color: #f5f5f5; } }
+      .content-subtabs { display: flex; gap: 1.5rem; margin: 0 0 2rem; border-bottom: 1px solid #252525; }
+      .content-subtab { display: inline-flex; align-items: center; gap: .55rem; min-width: 88px; min-height: 44px; padding: 0 .1rem; border: 0; border-bottom: 2px solid transparent; background: none; color: #999; font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+      .content-subtab small { color: #888; font-size: .65rem; font-weight: 400; font-variant-numeric: tabular-nums; }
+      .content-subtab[aria-selected="true"] { border-bottom-color: #f5f5f5; color: #f5f5f5; }
+      .content-subtab:focus-visible { outline: 2px solid #d9dde1; outline-offset: 4px; }
+      .content-subtab:active { opacity: .7; }
+      .content-list-panel + .content-list-panel { margin-top: 0; }
+      .content-list-panel[hidden] { display: none; }
+      @media (hover: hover) and (pointer: fine) { .content-subtab:hover { color: #f5f5f5; } }
       .writeup-index li { display: block; padding: 0; border: 0; }
       .writeup-index li + li { margin-top: .75rem; }
       .writeup-index a { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.25rem; padding: 1.05rem 1.15rem; border: 1px solid #252525; border-radius: 10px; font-size: inherit; text-decoration: none; transition: border-color .2s ease, background .2s ease, transform .2s ease; }
@@ -153,11 +153,8 @@
         <button class="dock-tab" type="button" role="tab" aria-label="Merged PRs · MRs, 35건" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M6 7v10m12 0v-4c0-4-8-3-8-7m0 0 3-3m-3 3 3 3"/></svg><span class="dock-tab-label">Merged PRs · MRs <small>35</small></span>
         </button>
-        <button class="dock-tab" type="button" role="tab" aria-label="Development, 6개" aria-selected="false" aria-controls="development-panel" id="development-tab" data-tab="development-panel" data-route="development" tabindex="-1">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7-5 5 5 5m10-10 5 5-5 5M14 4l-4 16"/></svg><span class="dock-tab-label">Development <small>06</small></span>
-        </button>
-        <button class="dock-tab" type="button" role="tab" aria-label="Design, 2개" aria-selected="false" aria-controls="design-panel" id="design-tab" data-tab="design-panel" data-route="design" data-mobile-secondary tabindex="-1">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1.5a2 2 0 0 0 1.5-3.3 1.4 1.4 0 0 1 1-2.4h1a4 4 0 0 0 4-4C21 6.7 17 3 12 3Z"/><circle cx="7.5" cy="10" r=".6"/><circle cx="11" cy="7" r=".6"/><circle cx="15.5" cy="8" r=".6"/></svg><span class="dock-tab-label">Design <small>02</small></span>
+        <button class="dock-tab" type="button" role="tab" aria-label="Development, 8개" aria-selected="false" aria-controls="development-panel" id="development-tab" data-tab="development-panel" data-route="development" tabindex="-1">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7-5 5 5 5m10-10 5 5-5 5M14 4l-4 16"/></svg><span class="dock-tab-label">Development <small>08</small></span>
         </button>
         <button class="dock-tab" type="button" role="tab" aria-label="Bug Bounty, 1건" aria-selected="false" aria-controls="bugbounty-panel" id="bugbounty-tab" data-tab="bugbounty-panel" data-route="bugbounty" data-mobile-secondary tabindex="-1">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="10" height="15" rx="5"/><path d="m9 3 1.5 3m4.5-3-1.5 3M3 9l4 2m10 0 4-2M3 15h4m10 0h4M4 21l4-3m8 0 4 3M12 10v10"/></svg><span class="dock-tab-label">Bug Bounty <small>01</small></span>
@@ -259,8 +256,13 @@
           </ul>
         </section>
       </section>
-      <section class="tab-panel" id="development-panel" role="tabpanel" aria-labelledby="development-tab" hidden>
-        <h2>Selected projects</h2>
+      <div class="tab-panel" id="development-panel" role="tabpanel" aria-labelledby="development-tab" hidden>
+        <div class="content-subtabs" role="tablist" aria-label="Development 분류">
+          <button class="content-subtab" id="development-projects-tab" type="button" role="tab" data-development-kind="projects" aria-controls="development-projects-list" aria-selected="true">Projects <small>06</small></button>
+          <button class="content-subtab" id="development-design-tab" type="button" role="tab" data-development-kind="design" aria-controls="development-design-list" aria-selected="false" tabindex="-1">Design <small>02</small></button>
+        </div>
+      <section class="content-list-panel" id="development-projects-list" role="tabpanel" data-development-list="projects" aria-labelledby="development-projects-tab">
+        <h2 class="dock-sr-only">Selected projects</h2>
         <ul class="project-list">
           <li>
             <h3><a href="https://hakca.vn/">HAKCA <span aria-hidden="true">↗</span></a></h3>
@@ -288,8 +290,8 @@
           </li>
         </ul>
       </section>
-      <section class="tab-panel" id="design-panel" role="tabpanel" aria-labelledby="design-tab" hidden>
-        <h2>Selected designs</h2>
+      <section class="content-list-panel" id="development-design-list" role="tabpanel" data-development-list="design" aria-labelledby="development-design-tab" hidden>
+        <h2 class="dock-sr-only">Selected designs</h2>
         <ul class="design-list">
           <li>
             <a class="design-card" href="https://www.figma.com/design/ySsZY1FaZ4kV8H70g5VqRq/CGV-Vietnam-%E2%80%94-Liquid-Glass-App?node-id=0-1" target="_blank" rel="noopener noreferrer" aria-label="CGV Vietnam — Liquid Glass App, Figma에서 보기 (새 탭)">
@@ -317,6 +319,7 @@
           </li>
         </ul>
       </section>
+      </div>
       <div class="tab-panel" id="bugbounty-panel" role="tabpanel" aria-labelledby="bugbounty-tab" hidden>
         <section class="bounty-hof" aria-labelledby="bounty-hof-title">
           <h2 id="bounty-hof-title">Hall of Fame</h2>
@@ -328,18 +331,18 @@
       </div>
       <div class="tab-panel" id="research-panel" role="tabpanel" aria-labelledby="research-tab" hidden>
         <div class="writeup-index-view">
-        <div class="research-subtabs" role="tablist" aria-label="Research 분류">
-          <button class="research-subtab" id="research-writeups-tab" type="button" role="tab" data-research-kind="writeups" aria-controls="research-writeups-list" aria-selected="true">Writeups <small>02</small></button>
-          <button class="research-subtab" id="research-papers-tab" type="button" role="tab" data-research-kind="papers" aria-controls="research-papers-list" aria-selected="false" tabindex="-1">Papers <small>01</small></button>
+        <div class="content-subtabs" role="tablist" aria-label="Research 분류">
+          <button class="content-subtab" id="research-writeups-tab" type="button" role="tab" data-research-kind="writeups" aria-controls="research-writeups-list" aria-selected="true">Writeups <small>02</small></button>
+          <button class="content-subtab" id="research-papers-tab" type="button" role="tab" data-research-kind="papers" aria-controls="research-papers-list" aria-selected="false" tabindex="-1">Papers <small>01</small></button>
         </div>
-        <section class="research-list-panel" id="research-writeups-list" role="tabpanel" data-research-list="writeups" aria-labelledby="research-writeups-tab">
+        <section class="content-list-panel" id="research-writeups-list" role="tabpanel" data-research-list="writeups" aria-labelledby="research-writeups-tab">
           <h2 class="dock-sr-only" id="writeups-index-title">Writeups</h2>
           <ul class="writeup-index">
             <li><a href="#research/cve-2026-88008"><span class="wi-main"><span class="wi-title">Traefik h2c upgrade</span><span class="wi-desc">A client-chosen h2c upgrade tunnels past router middleware to protected paths on the same backend.</span></span><span class="wi-meta"><span class="wi-code">CVE-2026-88008</span></span></a></li>
             <li><a href="#research/cve-2026-73842"><span class="wi-main"><span class="wi-title">OpenChoreo cluster-gateway</span><span class="wi-desc">Unauthenticated proxy with full CRUD across every connected data plane.</span></span><span class="wi-meta"><span class="wi-code">CVE-2026-73842</span></span></a></li>
           </ul>
         </section>
-        <section class="research-list-panel" id="research-papers-list" role="tabpanel" data-research-list="papers" aria-labelledby="research-papers-tab" hidden>
+        <section class="content-list-panel" id="research-papers-list" role="tabpanel" data-research-list="papers" aria-labelledby="research-papers-tab" hidden>
           <h2 class="dock-sr-only" id="papers-index-title">Papers</h2>
           <ul class="project-list">
             <li>
@@ -644,6 +647,8 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       const writeupIndex = document.querySelector('.writeup-index-view');
       const researchTabs = [...document.querySelectorAll('[data-research-kind]')];
       const researchLists = [...document.querySelectorAll('[data-research-list]')];
+      const developmentTabs = [...document.querySelectorAll('[data-development-kind]')];
+      const developmentLists = [...document.querySelectorAll('[data-development-list]')];
       function syncWriteups() {
         const slug = location.hash.slice(1).split('/')[1] || '';
         const kind = slug === 'papers' ? 'papers' : 'writeups';
@@ -665,21 +670,43 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
         history.replaceState(null, '', '#research/' + tab.dataset.researchKind);
         syncWriteups();
       }
-      researchTabs.forEach((tab) => {
-        tab.addEventListener('click', () => selectResearchKind(tab));
-        tab.addEventListener('keydown', (event) => {
-          const index = researchTabs.indexOf(tab);
-          let next;
-          if (event.key === 'ArrowRight') next = (index + 1) % researchTabs.length;
-          else if (event.key === 'ArrowLeft') next = (index + researchTabs.length - 1) % researchTabs.length;
-          else if (event.key === 'Home') next = 0;
-          else if (event.key === 'End') next = researchTabs.length - 1;
-          else return;
-          event.preventDefault();
-          researchTabs[next].focus({ preventScroll: true });
-          selectResearchKind(researchTabs[next]);
+      function syncDevelopment() {
+        const kind = location.hash.slice(1).split('/')[1] === 'design' ? 'design' : 'projects';
+        developmentTabs.forEach((tab) => {
+          const selected = tab.dataset.developmentKind === kind;
+          tab.setAttribute('aria-selected', String(selected));
+          tab.tabIndex = selected ? 0 : -1;
         });
-      });
+        developmentLists.forEach((list) => { list.hidden = list.dataset.developmentList !== kind; });
+      }
+      function selectDevelopmentKind(tab) {
+        history.replaceState(null, '', '#development/' + tab.dataset.developmentKind);
+        syncDevelopment();
+      }
+      function syncContent() {
+        syncWriteups();
+        syncDevelopment();
+      }
+      // 두 카테고리는 동일한 키보드 탐색 규칙을 사용한다.
+      function bindSubtabs(items, select) {
+        items.forEach((tab) => {
+          tab.addEventListener('click', () => select(tab));
+          tab.addEventListener('keydown', (event) => {
+            const index = items.indexOf(tab);
+            let next;
+            if (event.key === 'ArrowRight') next = (index + 1) % items.length;
+            else if (event.key === 'ArrowLeft') next = (index + items.length - 1) % items.length;
+            else if (event.key === 'Home') next = 0;
+            else if (event.key === 'End') next = items.length - 1;
+            else return;
+            event.preventDefault();
+            items[next].focus({ preventScroll: true });
+            select(items[next]);
+          });
+        });
+      }
+      bindSubtabs(researchTabs, selectResearchKind);
+      bindSubtabs(developmentTabs, selectDevelopmentKind);
       function moveIndicator(animate) {
         if (tabList.hasAttribute('data-scrubbing')) return;
         const tab = tabs.find((item) => item.getAttribute('aria-selected') === 'true');
@@ -716,18 +743,22 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
       }
       function syncTab(animate) {
         let route = location.hash.slice(1).split('/')[0];
-        // 기존에 공유된 글 주소도 통합된 Research 탭으로 연결한다.
+        // 기존에 공유된 글·디자인 주소도 통합된 카테고리로 연결한다.
         if (route === 'writeups') {
           history.replaceState(null, '', '#research' + location.hash.slice('#writeups'.length));
           route = 'research';
         }
+        if (route === 'design') {
+          history.replaceState(null, '', '#development/design');
+          route = 'development';
+        }
         selectTab(tabs.find((tab) => tab.dataset.route === route) || tabs[0], animate);
-        syncWriteups();
+        syncContent();
       }
       function activateTab(tab, animate) {
         selectTab(tab, animate);
         history.replaceState(null, '', '#' + tab.dataset.route);
-        syncWriteups();
+        syncContent();
       }
       tabs.forEach((tab) => {
         tab.addEventListener('click', (event) => {
@@ -746,7 +777,7 @@ HTTP2-Settings: AAMAAABkAAQAoAAAAAIAAAAA</code></pre>
           visibleTabs[next].focus({ preventScroll: true });
           selectTab(visibleTabs[next], false);
           history.replaceState(null, '', '#' + visibleTabs[next].dataset.route);
-          syncWriteups();
+          syncContent();
         });
       });
       window.addEventListener('hashchange', () => {

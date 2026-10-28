@@ -95,7 +95,7 @@
         #security-panel > .content-subtabs .content-subtab { gap: .35rem; font-size: .75rem; }
         .ctf-results thead { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
         .ctf-results tbody, .ctf-results tr { display: block; }
-        .ctf-results tbody tr { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: .5rem 0 1.25rem; border-bottom: 1px solid #252525; }
+        .ctf-results tbody tr { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; padding: .5rem 0 1.25rem; border-bottom: 1px solid #252525; }
         .ctf-results td { display: block; padding: 0; border: 0; }
         .ctf-results td:nth-child(2) { grid-column: 1 / -1; grid-row: 1; }
         .ctf-results td:not(:nth-child(2))::before { display: block; margin-bottom: .5rem; color: #888; font-size: .62rem; content: attr(data-label); }
@@ -251,11 +251,11 @@
           <section aria-labelledby="ctf-results-title">
             <h2 id="ctf-results-title">Results</h2>
             <table class="ctf-results" aria-labelledby="ctf-results-title">
-              <thead><tr><th scope="col">Place</th><th scope="col">Event</th><th scope="col">Score</th></tr></thead>
+              <thead><tr><th scope="col">Place</th><th scope="col">Event</th><th scope="col">Score</th><th scope="col">Weight</th></tr></thead>
               <tbody>
-                <tr><td data-label="Place">18 / 99</td><td data-label="Event"><a href="https://ctftime.org/event/3354">GaianSpace CTF 2026</a></td><td data-label="Score">6144</td></tr>
-                <tr><td data-label="Place">102 / 1547</td><td data-label="Event"><a href="https://ctftime.org/event/3340">HITCON CTF 2026</a></td><td data-label="Score">946</td></tr>
-                <tr><td data-label="Place">348 / 550</td><td data-label="Event"><a href="https://ctftime.org/event/3279">DEADFACE CTF 2026</a></td><td data-label="Score">1892</td></tr>
+                <tr><td data-label="Place">102 / 1547</td><td data-label="Event"><a href="https://ctftime.org/event/3340">HITCON CTF 2026</a></td><td data-label="Score">946</td><td data-label="Weight">91.16</td></tr>
+                <tr><td data-label="Place">348 / 550</td><td data-label="Event"><a href="https://ctftime.org/event/3279">DEADFACE CTF 2026</a></td><td data-label="Score">1892</td><td data-label="Weight">35.39</td></tr>
+                <tr><td data-label="Place">18 / 99</td><td data-label="Event"><a href="https://ctftime.org/event/3354">GaianSpace CTF 2026</a></td><td data-label="Score">6144</td><td data-label="Weight">—</td></tr>
               </tbody>
             </table>
           </section>

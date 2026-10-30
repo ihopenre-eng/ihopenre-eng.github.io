@@ -39,6 +39,7 @@
       #security-vulnerabilities-list li a { display: flex; align-items: baseline; gap: .65rem; line-height: 1.6; overflow-wrap: anywhere; }
       #security-vulnerabilities-list .cve-code { color: #f5f5f5; font-size: .86rem; letter-spacing: 0; }
       #security-vulnerabilities-list .cve-severity { margin-left: auto; color: #d1d5da; font-size: .62rem; font-weight: 650; letter-spacing: .08em; white-space: nowrap; }
+      .upstream-credit { margin-left: auto; color: #aaa; font-size: .65rem; letter-spacing: .02em; white-space: nowrap; }
       .recognition { margin-bottom: 3rem; }
       .badge-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
       .badge-grid li { display: block; padding: 0; border: 0; }
@@ -168,7 +169,7 @@
       .contact-icon-outline { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
       .contact-arrow { font-size: 1rem; }
       @media (max-width: 480px) { main, main:has(.writeup:not([hidden])) { width: min(100% - 2rem, 860px); padding-top: 2rem; } a { font-size: .82rem; } }
-      @media (max-width: 600px) { #security-vulnerabilities-list li { padding: .8rem 0; } #security-vulnerabilities-list li a { flex-direction: column; align-items: flex-start; gap: .35rem; } #security-vulnerabilities-list .cve-severity { margin-left: 0; line-height: 1.4; } }
+      @media (max-width: 600px) { #security-vulnerabilities-list li { padding: .8rem 0; } #security-vulnerabilities-list li a { flex-direction: column; align-items: flex-start; gap: .35rem; } #security-vulnerabilities-list .cve-severity, .upstream-credit { margin-left: 0; line-height: 1.4; } }
       @media (max-width: 480px) { .writeup h1 { font-size: 2.15rem; } .writeup p, .writeup li { font-size: .95rem; } }
       @media (max-width: 560px) { .pr-list a { display: block; } .pr-title { display: block; margin-top: .25rem; } }
       @media (min-width: 561px) { .intro { white-space: nowrap; } }
@@ -182,8 +183,8 @@
   <body>
     <aside class="site-dock" id="site-navigation" aria-label="사이트 내비게이션" aria-describedby="dock-swipe-help">
       <nav class="dock-tabs" role="tablist" aria-label="포트폴리오 분류" aria-orientation="vertical" aria-owns="contact-trigger">
-        <button class="dock-tab" type="button" role="tab" aria-label="Security, 15건" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.3 3 7.5 7.5 9.5 4.5-2 7.5-5.2 7.5-9.5V6L12 3Z"/><path d="m8.5 12 2.3 2.3 4.7-5"/></svg><span class="dock-tab-label">Security <small>15</small></span>
+        <button class="dock-tab" type="button" role="tab" aria-label="Security, 17건" aria-selected="true" aria-controls="security-panel" id="security-tab" data-tab="security-panel" data-route="security">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.3 3 7.5 7.5 9.5 4.5-2 7.5-5.2 7.5-9.5V6L12 3Z"/><path d="m8.5 12 2.3 2.3 4.7-5"/></svg><span class="dock-tab-label">Security <small>17</small></span>
         </button>
         <button class="dock-tab" type="button" role="tab" aria-label="Merged PRs · MRs, 35건" aria-selected="false" aria-controls="prs-panel" id="prs-tab" data-tab="prs-panel" data-route="contributions" tabindex="-1">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M6 7v10m12 0v-4c0-4-8-3-8-7m0 0 3-3m-3 3 3 3"/></svg><span class="dock-tab-label">Merged PRs · MRs <small>35</small></span>
@@ -210,7 +211,7 @@
     <main>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
         <div class="content-subtabs" role="tablist" aria-label="Security 분류">
-          <button class="content-subtab" id="security-vulnerabilities-tab" type="button" role="tab" data-security-kind="vulnerabilities" aria-controls="security-vulnerabilities-list" aria-selected="true">Vulnerabilities <small>12</small></button>
+          <button class="content-subtab" id="security-vulnerabilities-tab" type="button" role="tab" data-security-kind="vulnerabilities" aria-controls="security-vulnerabilities-list" aria-selected="true">Vulnerabilities <small>13</small></button>
           <button class="content-subtab" id="security-bugbounty-tab" type="button" role="tab" data-security-kind="bugbounty" aria-controls="security-bugbounty-list" aria-selected="false" tabindex="-1">Bug Bounty <small>01</small></button>
           <button class="content-subtab" id="security-ctf-tab" type="button" role="tab" data-security-kind="ctf" aria-controls="security-ctf-list" aria-selected="false" tabindex="-1">CTF <small>03</small></button>
         </div>
@@ -235,6 +236,12 @@
           <h2 id="ghsa-title">GHSA</h2>
           <ul>
             <li><a href="https://github.com/oauth2-proxy/oauth2-proxy/security/advisories/GHSA-wr5q-7wxw-x568"><span class="cve-code">GHSA-wr5q-7wxw-x568</span><span class="cve-severity">CRITICAL</span></a></li>
+          </ul>
+        </section>
+        <section aria-labelledby="upstream-reports-title">
+          <h2 id="upstream-reports-title">Upstream Reports</h2>
+          <ul>
+            <li><a href="https://github.com/torvalds/linux/commit/328c7e307e8411899e2f90beae83da9e4c45d700"><span class="cve-code">Linux Kernel · SMB Direct listener backlog exhaustion</span><span class="upstream-credit">Reported-by</span></a></li>
           </ul>
         </section>
         </div>

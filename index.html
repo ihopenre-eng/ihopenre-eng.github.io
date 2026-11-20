@@ -240,17 +240,17 @@
           <ul class="cve-kernel-list">
             <li class="cve-kernel">
               <div class="ck-head"><a class="cve-code" href="https://www.cve.org/CVERecord?id=CVE-2026-99565">CVE-2026-99565</a><span class="ck-target">fs/smb/server</span><span class="ck-roles"><span class="role">Reported-by</span><span class="role">Reviewed-by</span><span class="role">Stable Backport</span></span></div>
-              <p class="ck-desc"><strong>Pre-auth remote OOB read and kernel heap info-leak</strong> (CWE-362, CWE-125). A pipelined SMB2 PDU is read before SMB1 negotiation finishes and swaps <code>conn-&gt;ops</code>, so the shorter SMB1 request is parsed by SMB2 handlers past its slab buffer.</p>
+              <p class="ck-desc"><strong>Pre-auth remote OOB read / heap info-leak.</strong> Negotiation race lets a pipelined SMB2 PDU swap <code>conn-&gt;ops</code> mid-request.</p>
               <p class="ck-meta">Published 2026-11-19 · Fix <a href="https://git.kernel.org/stable/c/68f410faedaf6ee74d81e574733c50ebcc1bd8ed">68f410faedaf</a> · Backported to 7.3, 7.2, 6.18, 6.12, 6.6, 6.1, 5.15</p>
             </li>
             <li class="cve-kernel">
               <div class="ck-head"><a class="cve-code" href="https://www.cve.org/CVERecord?id=CVE-2026-99563">CVE-2026-99563</a><span class="ck-target">fs/smb/smbdirect</span><span class="ck-roles"><span class="role">Reported-by</span><span class="role">Stable Backport</span></span></div>
-              <p class="ck-desc"><strong>Pre-auth remote denial of service</strong> via listener backlog leak. Sockets that fail before accept never leave the pending and ready lists, so about ten failed RDMA connects exhaust the backlog and every new SMB-Direct connection gets <code>-EBUSY</code> for good. The same patch series also fixed <a href="https://www.cve.org/CVERecord?id=CVE-2026-99564">CVE-2026-99564</a>, backported to stable alongside it.</p>
+              <p class="ck-desc"><strong>Pre-auth remote DoS.</strong> ~10 failed connects leak the listener backlog and block all new SMB-Direct connections. Same series also fixed <a href="https://www.cve.org/CVERecord?id=CVE-2026-99564">CVE-2026-99564</a>.</p>
               <p class="ck-meta">Published 2026-11-19 · Fix <a href="https://git.kernel.org/stable/c/328c7e307e8411899e2f90beae83da9e4c45d700">328c7e307e84</a> · Backported to 7.3, 7.2</p>
             </li>
             <li class="cve-kernel">
               <div class="ck-head"><a class="cve-code" href="https://www.cve.org/CVERecord?id=CVE-2026-99562">CVE-2026-99562</a><span class="ck-target">fs/smb/server</span><span class="ck-roles"><span class="role role-author">Patch Author</span><span class="role">Stable Backport</span></span></div>
-              <p class="ck-desc"><strong>Authenticated remote kernel panic.</strong> <code>FSCTL_SET_ZERO_DATA</code> on a directory handle opened with <code>FILE_WRITE_DATA</code> reaches <code>kernel_write()</code> on a file without <code>FMODE_WRITE</code> and trips <code>WARN_ON_ONCE</code>, which panics <code>panic_on_warn</code> hosts. Found and patched upstream.</p>
+              <p class="ck-desc"><strong>Authenticated remote kernel panic.</strong> <code>FSCTL_SET_ZERO_DATA</code> on a directory handle hits <code>WARN_ON_ONCE</code> in <code>kernel_write()</code>.</p>
               <p class="ck-meta">Published 2026-11-19 · Fix <a href="https://git.kernel.org/stable/c/ef85bad39cf273a8377722c9f3078294dcc2fc7a">ef85bad39cf2</a> · Backported to 7.3</p>
             </li>
           </ul>

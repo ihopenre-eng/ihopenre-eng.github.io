@@ -40,6 +40,23 @@
       #security-vulnerabilities-list .cve-code { color: #f5f5f5; font-size: .86rem; letter-spacing: 0; }
       #security-vulnerabilities-list .cve-severity { margin-left: auto; color: #d1d5da; font-size: .62rem; font-weight: 650; letter-spacing: .08em; white-space: nowrap; }
       .upstream-credit { margin-left: auto; color: #aaa; font-size: .65rem; letter-spacing: .02em; white-space: nowrap; }
+      .cve-group { margin: 1.5rem 0 .25rem; color: #8a8a8a; font-size: .62rem; font-weight: 650; letter-spacing: .1em; text-transform: uppercase; }
+      #cve-title + .cve-group { margin-top: 0; }
+      #security-vulnerabilities-list li.cve-kernel { padding: 1rem 0; }
+      #security-vulnerabilities-list .cve-kernel a { display: inline; }
+      .ck-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .65rem; }
+      #security-vulnerabilities-list .ck-head .cve-code { font-weight: 600; }
+      .ck-target { color: #8a8a8a; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .68rem; letter-spacing: 0; }
+      .ck-roles { display: flex; flex-wrap: wrap; gap: .3rem; margin-left: auto; }
+      .ck-roles .role { padding: .12rem .45rem; border: 1px solid #343a40; border-radius: 999px; color: #d1d5da; font-size: .58rem; font-weight: 650; letter-spacing: .05em; white-space: nowrap; }
+      .ck-roles .role-author { border-color: #f5f5f5; color: #000; background: #f5f5f5; }
+      .ck-desc { max-width: 70ch; margin: .45rem 0 0; color: #a3a3a3; font-size: .8rem; line-height: 1.6; }
+      .ck-desc strong { color: #f0f2f4; font-weight: 600; }
+      .ck-desc code, .ck-target { overflow-wrap: anywhere; }
+      .ck-desc code { padding: .05em .3em; border-radius: 4px; color: #e6e9ee; background: #1a1c1f; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .9em; }
+      .ck-meta { margin: .35rem 0 0; color: #8a8a8a; font-size: .7rem; line-height: 1.6; }
+      .ck-meta a { color: #d1d5da; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: inherit; }
+      @media (max-width: 600px) { .ck-roles { margin-left: 0; width: 100%; } }
       .recognition { margin-bottom: 3rem; }
       .badge-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
       .badge-grid li { display: block; padding: 0; border: 0; }
@@ -211,13 +228,32 @@
     <main>
       <div class="tab-panel" id="security-panel" role="tabpanel" aria-labelledby="security-tab">
         <div class="content-subtabs" role="tablist" aria-label="Security 분류">
-          <button class="content-subtab" id="security-vulnerabilities-tab" type="button" role="tab" data-security-kind="vulnerabilities" aria-controls="security-vulnerabilities-list" aria-selected="true">Vulnerabilities <small>14</small></button>
+          <button class="content-subtab" id="security-vulnerabilities-tab" type="button" role="tab" data-security-kind="vulnerabilities" aria-controls="security-vulnerabilities-list" aria-selected="true">Vulnerabilities <small>15</small></button>
           <button class="content-subtab" id="security-ctf-tab" type="button" role="tab" data-security-kind="ctf" aria-controls="security-ctf-list" aria-selected="false" tabindex="-1">CTF <small>05</small></button>
           <button class="content-subtab" id="security-bugbounty-tab" type="button" role="tab" data-security-kind="bugbounty" aria-controls="security-bugbounty-list" aria-selected="false" tabindex="-1">Bug Bounty <small>01</small></button>
         </div>
         <div class="content-list-panel" id="security-vulnerabilities-list" role="tabpanel" data-security-list="vulnerabilities" aria-labelledby="security-vulnerabilities-tab">
         <section aria-labelledby="cve-title">
           <h2 id="cve-title">CVE</h2>
+          <p class="cve-group">Linux Kernel · ksmbd / SMB-Direct</p>
+          <ul class="cve-kernel-list">
+            <li class="cve-kernel">
+              <div class="ck-head"><a class="cve-code" href="https://www.cve.org/CVERecord?id=CVE-2026-99565">CVE-2026-99565</a><span class="ck-target">fs/smb/server</span><span class="ck-roles"><span class="role">Reported-by</span><span class="role">Reviewed-by</span><span class="role">Stable Backport</span></span></div>
+              <p class="ck-desc"><strong>Pre-auth remote OOB read and kernel heap info-leak</strong> (CWE-362, CWE-125). A pipelined SMB2 PDU is read before SMB1 negotiation finishes and swaps <code>conn-&gt;ops</code>, so the shorter SMB1 request is parsed by SMB2 handlers past its slab buffer.</p>
+              <p class="ck-meta">Published 2026-11-19 · Fix <a href="https://git.kernel.org/stable/c/68f410faedaf6ee74d81e574733c50ebcc1bd8ed">68f410faedaf</a> · Backported to 7.3, 7.2, 6.18, 6.12, 6.6, 6.1, 5.15</p>
+            </li>
+            <li class="cve-kernel">
+              <div class="ck-head"><a class="cve-code" href="https://www.cve.org/CVERecord?id=CVE-2026-99563">CVE-2026-99563</a><span class="ck-target">fs/smb/smbdirect</span><span class="ck-roles"><span class="role">Reported-by</span><span class="role">Stable Backport</span></span></div>
+              <p class="ck-desc"><strong>Pre-auth remote denial of service</strong> via listener backlog leak. Sockets that fail before accept never leave the pending and ready lists, so about ten failed RDMA connects exhaust the backlog and every new SMB-Direct connection gets <code>-EBUSY</code> for good.</p>
+              <p class="ck-meta">Published 2026-11-19 · Fix <a href="https://git.kernel.org/stable/c/328c7e307e8411899e2f90beae83da9e4c45d700">328c7e307e84</a> · Backported to 7.3, 7.2</p>
+            </li>
+            <li class="cve-kernel">
+              <div class="ck-head"><a class="cve-code" href="https://www.cve.org/CVERecord?id=CVE-2026-99562">CVE-2026-99562</a><span class="ck-target">fs/smb/server</span><span class="ck-roles"><span class="role role-author">Patch Author</span><span class="role">Stable Backport</span></span></div>
+              <p class="ck-desc"><strong>Authenticated remote kernel panic.</strong> <code>FSCTL_SET_ZERO_DATA</code> on a directory handle opened with <code>FILE_WRITE_DATA</code> reaches <code>kernel_write()</code> on a file without <code>FMODE_WRITE</code> and trips <code>WARN_ON_ONCE</code>, which panics <code>panic_on_warn</code> hosts. Found and patched upstream.</p>
+              <p class="ck-meta">Published 2026-11-19 · Fix <a href="https://git.kernel.org/stable/c/ef85bad39cf273a8377722c9f3078294dcc2fc7a">ef85bad39cf2</a> · Backported to 7.3</p>
+            </li>
+          </ul>
+          <p class="cve-group">Open Source</p>
           <ul>
             <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327"><span class="cve-code">CVE-2026-73842</span><span class="cve-severity">CRITICAL</span></a></li>
             <li><a href="https://github.com/traefik/traefik/security/advisories/GHSA-w4v4-9rw7-5326"><span class="cve-code">CVE-2026-88008</span><span class="cve-severity">HIGH</span></a></li>
@@ -230,14 +266,6 @@
             <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g"><span class="cve-code">CVE-2026-73840</span><span class="cve-severity">MEDIUM</span></a></li>
             <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h"><span class="cve-code">CVE-2026-73506</span><span class="cve-severity">MEDIUM</span></a></li>
             <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w"><span class="cve-code">CVE-2026-100401</span><span class="cve-severity">LOW</span></a></li>
-          </ul>
-        </section>
-        <section aria-labelledby="upstream-reports-title">
-          <h2 id="upstream-reports-title">Linux Kernel</h2>
-          <ul>
-            <li><a href="https://github.com/torvalds/linux/commit/ef85bad39cf273a8377722c9f3078294dcc2fc7a"><span class="cve-code">Linux Kernel · ksmbd FSCTL_SET_ZERO_DATA directory-handle panic</span><span class="upstream-credit">Authored</span></a></li>
-            <li><a href="https://github.com/torvalds/linux/commit/328c7e307e8411899e2f90beae83da9e4c45d700"><span class="cve-code">Linux Kernel · SMB Direct listener backlog exhaustion</span><span class="upstream-credit">Reported-by</span></a></li>
-            <li><a href="https://github.com/torvalds/linux/commit/68f410faedaf6ee74d81e574733c50ebcc1bd8ed"><span class="cve-code">Linux Kernel · SMB negotiation protocol-confusion race</span><span class="upstream-credit">Reported-by · Reviewed-by</span></a></li>
           </ul>
         </section>
         <section aria-labelledby="ghsa-title">

@@ -52,6 +52,7 @@
       .ck-roles .role-author { border-color: #f5f5f5; color: #000; background: #f5f5f5; }
       .ck-desc { max-width: 70ch; margin: .45rem 0 0; color: #a3a3a3; font-size: .8rem; line-height: 1.6; }
       .ck-desc strong { color: #f0f2f4; font-weight: 600; }
+      .ck-desc a { color: #d1d5da; font-size: inherit; text-decoration: underline; text-underline-offset: .2em; }
       .ck-desc code, .ck-target { overflow-wrap: anywhere; }
       .ck-desc code { padding: .05em .3em; border-radius: 4px; color: #e6e9ee; background: #1a1c1f; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .9em; }
       .ck-meta { margin: .35rem 0 0; color: #8a8a8a; font-size: .7rem; line-height: 1.6; }
@@ -244,7 +245,7 @@
             </li>
             <li class="cve-kernel">
               <div class="ck-head"><a class="cve-code" href="https://www.cve.org/CVERecord?id=CVE-2026-99563">CVE-2026-99563</a><span class="ck-target">fs/smb/smbdirect</span><span class="ck-roles"><span class="role">Reported-by</span><span class="role">Stable Backport</span></span></div>
-              <p class="ck-desc"><strong>Pre-auth remote denial of service</strong> via listener backlog leak. Sockets that fail before accept never leave the pending and ready lists, so about ten failed RDMA connects exhaust the backlog and every new SMB-Direct connection gets <code>-EBUSY</code> for good.</p>
+              <p class="ck-desc"><strong>Pre-auth remote denial of service</strong> via listener backlog leak. Sockets that fail before accept never leave the pending and ready lists, so about ten failed RDMA connects exhaust the backlog and every new SMB-Direct connection gets <code>-EBUSY</code> for good. The same patch series also fixed <a href="https://www.cve.org/CVERecord?id=CVE-2026-99564">CVE-2026-99564</a>, backported to stable alongside it.</p>
               <p class="ck-meta">Published 2026-11-19 · Fix <a href="https://git.kernel.org/stable/c/328c7e307e8411899e2f90beae83da9e4c45d700">328c7e307e84</a> · Backported to 7.3, 7.2</p>
             </li>
             <li class="cve-kernel">

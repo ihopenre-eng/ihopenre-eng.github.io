@@ -53,6 +53,13 @@
       .ck-desc { max-width: 70ch; margin: .45rem 0 0; color: #a3a3a3; font-size: .8rem; line-height: 1.6; }
       .ck-desc strong { color: #f0f2f4; font-weight: 600; }
       .ck-desc a { color: #d1d5da; font-size: inherit; text-decoration: underline; text-underline-offset: .2em; }
+      #security-vulnerabilities-list li a.cve-row { flex-wrap: wrap; row-gap: .3rem; text-decoration: none; }
+      #security-vulnerabilities-list .cve-row .cve-code { font-weight: 600; }
+      .cve-desc { flex-basis: 100%; max-width: 70ch; color: #a3a3a3; font-size: .8rem; letter-spacing: 0; line-height: 1.6; }
+      .cve-desc strong { color: #f0f2f4; font-weight: 600; }
+      .cve-desc code { padding: .05em .3em; border-radius: 4px; color: #e6e9ee; background: #1a1c1f; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .9em; overflow-wrap: anywhere; }
+      @media (max-width: 600px) { #security-vulnerabilities-list li a.cve-row { flex-direction: row; align-items: baseline; gap: .3rem .55rem; } #security-vulnerabilities-list .cve-row .cve-severity { margin-left: auto; } }
+      #security-vulnerabilities-list .cve-row:hover .cve-code, #security-vulnerabilities-list .cve-row:focus-visible .cve-code { text-decoration: underline; text-underline-offset: .25em; }
       .ck-desc code, .ck-target { overflow-wrap: anywhere; }
       .ck-desc code { padding: .05em .3em; border-radius: 4px; color: #e6e9ee; background: #1a1c1f; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .9em; }
       .ck-meta { margin: .35rem 0 0; color: #8a8a8a; font-size: .7rem; line-height: 1.6; }
@@ -256,23 +263,23 @@
           </ul>
           <p class="cve-group">Open Source</p>
           <ul>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327"><span class="cve-code">CVE-2026-73842</span><span class="cve-severity">CRITICAL</span></a></li>
-            <li><a href="https://github.com/traefik/traefik/security/advisories/GHSA-w4v4-9rw7-5326"><span class="cve-code">CVE-2026-88008</span><span class="cve-severity">HIGH</span></a></li>
-            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4"><span class="cve-code">CVE-2026-86070</span><span class="cve-severity">HIGH</span></a></li>
-            <li><a href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw"><span class="cve-code">CVE-2026-86069</span><span class="cve-severity">HIGH</span></a></li>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx"><span class="cve-code">CVE-2026-73841</span><span class="cve-severity">HIGH</span></a></li>
-            <li><a href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq"><span class="cve-code">CVE-2026-73505</span><span class="cve-severity">HIGH</span></a></li>
-            <li><a href="https://github.com/go-gitea/gitea/security/advisories/GHSA-g4hw-fg4c-89mq"><span class="cve-code">CVE-2026-104636</span><span class="cve-severity">MEDIUM</span></a></li>
-            <li><a href="https://github.com/go-gitea/gitea/security/advisories/GHSA-54w9-6cc5-9wj9"><span class="cve-code">CVE-2026-96400</span><span class="cve-severity">MEDIUM</span></a></li>
-            <li><a href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g"><span class="cve-code">CVE-2026-73840</span><span class="cve-severity">MEDIUM</span></a></li>
-            <li><a href="https://github.com/advisories/GHSA-fwjx-9p69-h25h"><span class="cve-code">CVE-2026-73506</span><span class="cve-severity">MEDIUM</span></a></li>
-            <li><a href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w"><span class="cve-code">CVE-2026-100401</span><span class="cve-severity">LOW</span></a></li>
+            <li><a class="cve-row" href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-rh53-xvx2-j327"><span class="cve-code">CVE-2026-73842</span><span class="ck-target">openchoreo</span><span class="cve-severity">CRITICAL</span><span class="cve-desc"><strong>Unauthenticated cross-cluster takeover.</strong> The cluster-gateway skipped caller auth and its read-only proxy allowed writes.</span></a></li>
+            <li><a class="cve-row" href="https://github.com/traefik/traefik/security/advisories/GHSA-w4v4-9rw7-5326"><span class="cve-code">CVE-2026-88008</span><span class="ck-target">traefik</span><span class="cve-severity">HIGH</span><span class="cve-desc"><strong>Auth middleware bypass.</strong> A client-initiated h2c upgrade tunnels HTTP/2 requests past router middleware.</span></a></li>
+            <li><a class="cve-row" href="https://github.com/updatecli/updatecli/security/advisories/GHSA-gc47-hwcc-8qp4"><span class="cve-code">CVE-2026-86070</span><span class="ck-target">updatecli</span><span class="cve-severity">HIGH</span><span class="cve-desc"><strong>Credential leak.</strong> Credentials in URL userinfo are logged in cleartext to console and CI logs.</span></a></li>
+            <li><a class="cve-row" href="https://github.com/updatecli/updatecli/security/advisories/GHSA-hj4x-hm4v-7wpw"><span class="cve-code">CVE-2026-86069</span><span class="ck-target">updatecli</span><span class="cve-severity">HIGH</span><span class="cve-desc"><strong>Arbitrary file write.</strong> Source-templated target paths escape the working directory.</span></a></li>
+            <li><a class="cve-row" href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-52gf-6rpq-fgmx"><span class="cve-code">CVE-2026-73841</span><span class="ck-target">openchoreo</span><span class="cve-severity">HIGH</span><span class="cve-desc"><strong>Cross-project authorization bypass.</strong> A project-scoped exec or wirelogs grant reaches other projects' workloads.</span></a></li>
+            <li><a class="cve-row" href="https://github.com/advisories/GHSA-6xj8-qv9j-xcjq"><span class="cve-code">CVE-2026-73505</span><span class="ck-target">oh-my-posh</span><span class="cve-severity">HIGH</span><span class="cve-desc"><strong>Command execution via folder name.</strong> Directory names are re-parsed as Go templates when the prompt renders.</span></a></li>
+            <li><a class="cve-row" href="https://github.com/go-gitea/gitea/security/advisories/GHSA-g4hw-fg4c-89mq"><span class="cve-code">CVE-2026-104636</span><span class="ck-target">gitea</span><span class="cve-severity">MEDIUM</span><span class="cve-desc"><strong>Blind SSRF.</strong> Git push and fetch requests follow redirects into policy-blocked addresses.</span></a></li>
+            <li><a class="cve-row" href="https://github.com/go-gitea/gitea/security/advisories/GHSA-54w9-6cc5-9wj9"><span class="cve-code">CVE-2026-96400</span><span class="ck-target">gitea</span><span class="cve-severity">MEDIUM</span><span class="cve-desc"><strong>SSRF filter bypass.</strong> A wildcard <code>ALLOWED_DOMAINS</code> entry overrides <code>ALLOW_LOCALNETWORKS=false</code>.</span></a></li>
+            <li><a class="cve-row" href="https://github.com/openchoreo/openchoreo/security/advisories/GHSA-c5f6-2rm9-2w8g"><span class="cve-code">CVE-2026-73840</span><span class="ck-target">openchoreo</span><span class="cve-severity">MEDIUM</span><span class="cve-desc"><strong>Unauthenticated build trigger.</strong> A spoofed <code>X-Event-Key</code> routes webhooks to an unsigned Bitbucket path.</span></a></li>
+            <li><a class="cve-row" href="https://github.com/advisories/GHSA-fwjx-9p69-h25h"><span class="cve-code">CVE-2026-73506</span><span class="ck-target">oh-my-posh</span><span class="cve-severity">MEDIUM</span><span class="cve-desc"><strong>Terminal escape injection.</strong> Control bytes in folder names or commit metadata reach the terminal unfiltered.</span></a></li>
+            <li><a class="cve-row" href="https://github.com/hatchet-dev/hatchet/security/advisories/GHSA-6rg8-xpvg-m49w"><span class="cve-code">CVE-2026-100401</span><span class="ck-target">hatchet</span><span class="cve-severity">LOW</span><span class="cve-desc"><strong>Login rate-limit bypass.</strong> Spoofed client-IP headers give each attempt a fresh rate-limit bucket.</span></a></li>
           </ul>
         </section>
         <section aria-labelledby="ghsa-title">
           <h2 id="ghsa-title">GHSA</h2>
           <ul>
-            <li><a href="https://github.com/oauth2-proxy/oauth2-proxy/security/advisories/GHSA-wr5q-7wxw-x568"><span class="cve-code">GHSA-wr5q-7wxw-x568</span><span class="cve-severity">CRITICAL</span></a></li>
+            <li><a class="cve-row" href="https://github.com/oauth2-proxy/oauth2-proxy/security/advisories/GHSA-wr5q-7wxw-x568"><span class="cve-code">GHSA-wr5q-7wxw-x568</span><span class="ck-target">oauth2-proxy</span><span class="cve-severity">CRITICAL</span><span class="cve-desc"><strong>Authentication bypass.</strong> Spoofed client-IP headers satisfy <code>--trusted-ip</code> behind <code>--reverse-proxy</code>.</span></a></li>
           </ul>
         </section>
         </div>
